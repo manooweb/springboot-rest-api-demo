@@ -1,0 +1,12 @@
+# Java / Maven
+backend/target/
+*.log
+
+# Node / Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+npm-debug.log*
+
+# Env files
+.env
