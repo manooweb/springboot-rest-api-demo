@@ -38,8 +38,7 @@ public class TaskService {
                 TaskStatus.TODO,
                 dueDate,
                 now,
-                now
-        );
+                now);
 
         return taskRepository.save(task);
     }
@@ -63,20 +62,8 @@ public class TaskService {
 
     public Task updateStatus(UUID taskId, TaskStatus status) {
         Task task = getById(taskId);
-
-        OffsetDateTime now = OffsetDateTime.now();
-
-        Task updated = new Task(
-                task.getId(),
-                task.getProject(),
-                task.getTitle(),
-                status,
-                task.getDueDate(),
-                task.getCreatedAt(),
-                now
-        );
-
-        return taskRepository.save(updated);
+        task.changeStatus(status, OffsetDateTime.now());
+        return taskRepository.save(task);
     }
 
     public void delete(UUID taskId) {

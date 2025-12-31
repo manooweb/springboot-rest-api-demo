@@ -45,7 +45,7 @@ public class Task {
     }
 
     public Task(UUID id, Project project, String title, TaskStatus status, LocalDate dueDate,
-                OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+            OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.id = id;
         this.project = project;
         this.title = title;
@@ -81,5 +81,10 @@ public class Task {
 
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void changeStatus(TaskStatus status, OffsetDateTime updatedAt) {
+        this.status = status;
+        this.updatedAt = updatedAt;
     }
 }
