@@ -58,6 +58,7 @@ public class DemoDataRunner implements CommandLineRunner {
                 UUID.randomUUID(),
                 project,
                 "Create initial domain model",
+                "Create initial domain model",
                 TaskStatus.DONE,
                 LocalDate.now().plusDays(1),
                 now,
@@ -66,6 +67,7 @@ public class DemoDataRunner implements CommandLineRunner {
         Task task2 = new Task(
                 UUID.randomUUID(),
                 project,
+                "Implement REST endpoints",
                 "Implement REST endpoints",
                 TaskStatus.TODO,
                 LocalDate.now().plusDays(7),
