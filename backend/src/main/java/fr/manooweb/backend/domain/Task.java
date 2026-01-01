@@ -27,6 +27,9 @@ public class Task {
     @Column(nullable = false, length = 200)
     private String title;
 
+    @Column(columnDefinition = "text")
+    private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private TaskStatus status;
@@ -44,11 +47,12 @@ public class Task {
         // JPA only
     }
 
-    public Task(UUID id, Project project, String title, TaskStatus status, LocalDate dueDate,
+    public Task(UUID id, Project project, String title, String description, TaskStatus status, LocalDate dueDate,
             OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.id = id;
         this.project = project;
         this.title = title;
+        this.description = description;
         this.status = status;
         this.dueDate = dueDate;
         this.createdAt = createdAt;
@@ -65,6 +69,10 @@ public class Task {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public TaskStatus getStatus() {

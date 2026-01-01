@@ -26,7 +26,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task create(UUID projectId, String title, LocalDate dueDate) {
+    public Task create(UUID projectId, String title, String description, LocalDate dueDate) {
         Project project = projectService.getById(projectId);
 
         OffsetDateTime now = OffsetDateTime.now();
@@ -35,6 +35,7 @@ public class TaskService {
                 UUID.randomUUID(),
                 project,
                 title,
+                description,
                 TaskStatus.TODO,
                 dueDate,
                 now,
