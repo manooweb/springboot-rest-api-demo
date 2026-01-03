@@ -10,11 +10,15 @@ get {
   auth: none
 }
 
+vars:pre-request {
+  projectId: a642053f-2f54-4f9c-8719-ead042cb3afc
+}
+
 tests {
   test("status is 200", function () {
     expect(res.status).to.equal(200);
   });
-
+  
   test("id matches", function () {
     expect(res.body.id).to.equal(bru.getEnvVar("projectId"));
   });
