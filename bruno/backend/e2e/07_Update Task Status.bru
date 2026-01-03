@@ -1,0 +1,30 @@
+meta {
+  name: Update Task Status
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}/status
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "status": "DONE"
+  }
+}
+
+tests {
+  test("status is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("status changed to DONE", function () {
+    expect(res.body.status).to.equal("DONE");
+  });
+}

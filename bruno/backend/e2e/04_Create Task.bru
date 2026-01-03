@@ -1,0 +1,41 @@
+meta {
+  name: Create Task
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/v1/projects/{{projectId}}/tasks
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "My first task",
+    "description": "Created from Bruno",
+    "dueDate": "2026-01-02"
+  }
+}
+
+vars:pre-request {
+  projectId: 8f602828-f8aa-42f8-a643-1ce7cb1368eb
+}
+
+tests {
+  test("status is 201", function () {
+    expect(res.status).to.equal(201);
+  });
+
+  test("response has id", function () {
+    expect(res.body.id).to.be.a("string");
+  });
+
+  test("save taskId", function () {
+    bru.setVar("taskId", res.body.id);
+  });
+}

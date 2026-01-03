@@ -1,0 +1,36 @@
+meta {
+  name: Create Project
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/projects
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+  "name": "My first project",
+  "description": "Created from Bruno"
+  }
+}
+
+tests {
+  test("status is 201", function () {
+    expect(res.status).to.equal(201);
+  });
+
+  test("response has id", function () {
+    expect(res.body.id).to.be.a("string");
+  });
+
+  test("save projectId", function () {
+    bru.setVar("projectId", res.body.id);
+  });
+}

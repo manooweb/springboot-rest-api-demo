@@ -1,0 +1,24 @@
+{
+  "name": "springboot-rest-api-demo",
+  "version": "1.0.0",
+  "description": "[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)",
+  "main": "index.js",
+  "scripts": {
+    "test:api": "cd bruno/backend && npx bru run e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manooweb/springboot-rest-api-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/manooweb/springboot-rest-api-demo/issues"
+  },
+  "homepage": "https://github.com/manooweb/springboot-rest-api-demo#readme",
+  "devDependencies": {
+    "@usebruno/cli": "^2.15.1"
+  }
+}

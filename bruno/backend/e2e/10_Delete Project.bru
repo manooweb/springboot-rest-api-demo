@@ -1,0 +1,15 @@
+meta {
+  name: Delete Project
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/projects/{{projectId}}
+}
+
+tests {
+  test("status is 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List Projects
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/projects
+}
+
+tests {
+  test("status is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("response is an array", function () {
+    expect(res.body).to.be.an("array");
+  });
+
+  test("created project is present in list", function () {
+    const projectId = bru.getVar("projectId");
+    const found = res.body.some(p => p.id === projectId);
+    expect(found).to.equal(true);
+  });
+}
