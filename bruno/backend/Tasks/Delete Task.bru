@@ -1,0 +1,21 @@
+meta {
+  name: Delete Task
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  taskId: fa7219c5-0165-472c-a4b5-ae9686c3ede2
+}
+
+tests {
+  test("status is 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}

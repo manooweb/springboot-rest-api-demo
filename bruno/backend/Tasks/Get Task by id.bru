@@ -1,0 +1,25 @@
+meta {
+  name: Get Task by id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  taskId: fa7219c5-0165-472c-a4b5-ae9686c3ede2
+}
+
+tests {
+  test("status is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("id matches taskId", function () {
+    expect(res.body.id).to.equal(bru.getEnvVar("taskId"));
+  });
+}
