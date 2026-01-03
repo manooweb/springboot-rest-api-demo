@@ -1,6 +1,6 @@
 # springboot-rest-api-demo
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
+[![Backend CI](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml) [![API E2E (Bruno)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
 
 Demo project to showcase a modern Java backend stack using Spring Boot.
 
@@ -93,27 +93,102 @@ Once the backend is running, Swagger UI is available at:
 
 ---
 
-## API testing with Bruno
+### API testing with Bruno
 
-This repository contains a Bruno collection to test the backend REST API.
+This repository includes a fully versioned API test suite using **Bruno**, covering both **manual testing** and **automated end-to-end (E2E)** scenarios.
 
-### Location
+All Bruno collections are stored directly in the repository and can be executed locally or in CI.
 
-- bruno/backend
+---
 
-### Steps
+### Bruno collections structure
 
-1. Start PostgreSQL with Docker
+- **bruno/backend/Projects**
+  Manual API tests for **Projects** endpoints
+  (Create, List, Get, Delete)
+
+- **bruno/backend/Tasks**
+  Manual API tests for **Tasks** endpoints
+  (Create, List, Get, Update status, Delete)
+
+- **bruno/backend/e2e**
+  Automated **end-to-end scenario** covering the full lifecycle:
+
+1. Create Project
+2. List Projects and verify creation
+3. Get Project
+4. Create Task
+5. List Tasks and verify creation
+6. Get Task
+7. Update Task status
+8. Delete Task
+9. Verify Task deletion
+10. Delete Project
+11. Verify Project deletion
+
+The E2E collection uses **runtime variables** to automatically propagate `projectId` and `taskId` between requests.
+
+---
+
+### Manual API testing (Bruno UI)
+
+1. Start PostgreSQL using Docker
 2. Start the Spring Boot backend
 3. Open Bruno
-4. Open the collection located in bruno/backend
-5. Run the requests in this order:
-   - Create Project
-   - List Projects
-   - Get Project by id
-   - Delete Project
+4. Open the collection located in `bruno/backend`
+5. Run the requests manually in the suggested order
 
-The collection automatically stores the created project id and reuses it in subsequent requests.
+Manual collections rely on **pre-request variables** (such as `baseUrl`) and are designed for readability and onboarding.
+
+---
+
+### Automated API testing (local)
+
+The project uses **Bruno CLI** to run automated E2E API tests locally.
+
+#### Prerequisites
+
+- Node.js
+- PostgreSQL running
+- Spring Boot backend running
+
+### Run E2E tests
+
+```bash
+npm run test:api
+```
+
+This command executes the E2E collection located in `bruno/backend/e2e`.
+
+```bash
+npm install
+```
+
+is necessary the first time you want to run tests to install Bruno CLI.
+
+---
+
+### API testing in CI (GitHub Actions)
+
+Automated API tests are executed in CI using **GitHub Actions**.
+
+The workflow:
+
+- Starts PostgreSQL
+- Starts the Spring Boot backend using the Docker profile
+- Runs the Bruno E2E test suite via Bruno CLI
+
+This ensures the API is validated end-to-end on every push to the `main` branch.
+
+---
+
+### Notes
+
+- Manual and automated tests intentionally coexist:
+  - Manual collections are ideal for exploration and onboarding
+  - E2E collections guarantee functional integrity
+- Authentication (JWT) is not yet implemented and will be integrated later
+- Error handling (404 / 409) will be improved in future iterations
 
 ---
 
