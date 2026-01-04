@@ -1,0 +1,15 @@
+meta {
+  name: Get Task
+  type: http
+  seq: 9.1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}
+}
+
+tests {
+  test("status is 404 after deletion", function () {
+    expect(res.status).to.equal(404);
+  });
+}
