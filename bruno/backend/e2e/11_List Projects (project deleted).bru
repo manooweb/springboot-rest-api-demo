@@ -1,25 +1,26 @@
 meta {
-    name: List Projects (project deleted)
-    type: http
-    seq: 11
+  name: List Projects (project deleted)
+  type: http
+  seq: 11
 }
 
 get {
-    url: {{baseUrl}}/api/v1/projects
+  url: {{baseUrl}}/api/v1/projects
+  auth: inherit
 }
 
 tests {
-    test("status is 200", function () {
-        expect(res.status).to.equal(200);
-    });
+  test("status is 200", function () {
+    expect(res.status).to.equal(200);
+  });
 
-    test("response is an array", function () {
-        expect(res.body).to.be.an("array");
-    });
+  test("response is an array", function () {
+    expect(res.body).to.be.an("array");
+  });
 
-    test("deleted project is not present in list", function () {
-        const projectId = bru.getVar("projectId");
-        const found = res.body.some(p => p.id === projectId);
-        expect(found).to.equal(false);
-    });
+  test("deleted project is not present in list", function () {
+    const projectId = bru.getVar("projectId");
+    const found = res.body.some(p => p.id === projectId);
+    expect(found).to.equal(false);
+  });
 }

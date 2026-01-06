@@ -6,13 +6,15 @@ meta {
 
 get {
   url: {{baseUrl}}/api/v1/projects
+  body: none
+  auth: inherit
 }
 
 tests {
   test("status is 200", function () {
     expect(res.status).to.equal(200);
   });
-
+  
   test("response is an array", function () {
     expect(res.body).to.be.an("array");
   });
