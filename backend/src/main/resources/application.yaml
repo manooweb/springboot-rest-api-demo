@@ -1,3 +1,10 @@
 spring:
   application:
     name: backend
+
+app:
+  security:
+    jwt:
+      issuer: "http://localhost:8080"
+      secret: "change-me-to-a-long-random-secret-at-least-32-bytes"
+      ttl-seconds: 3600
