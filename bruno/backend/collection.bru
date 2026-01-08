@@ -3,12 +3,11 @@ meta {
 }
 
 auth {
-  mode: basic
+  mode: bearer
 }
 
-auth:basic {
-  username: demo
-  password: demo
+auth:bearer {
+  token: {{token}}
 }
 
 vars:pre-request {

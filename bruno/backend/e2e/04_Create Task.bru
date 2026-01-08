@@ -1,7 +1,7 @@
 meta {
   name: Create Task
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
@@ -30,11 +30,11 @@ tests {
   test("status is 201", function () {
     expect(res.status).to.equal(201);
   });
-
+  
   test("response has id", function () {
     expect(res.body.id).to.be.a("string");
   });
-
+  
   test("save taskId", function () {
     bru.setVar("taskId", res.body.id);
   });

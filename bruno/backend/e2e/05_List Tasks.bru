@@ -1,11 +1,12 @@
 meta {
   name: List Tasks for Project
   type: http
-  seq: 5
+  seq: 6
 }
 
 get {
   url: {{baseUrl}}/api/v1/projects/{{projectId}}/tasks
+  body: none
   auth: inherit
 }
 
@@ -13,11 +14,11 @@ tests {
   test("status is 200", function () {
     expect(res.status).to.equal(200);
   });
-
+  
   test("response is an array", function () {
     expect(res.body).to.be.an("array");
   });
-
+  
   test("created task is present in list", function () {
     const taskId = bru.getVar("taskId");
     const found = res.body.some(t => t.id === taskId);

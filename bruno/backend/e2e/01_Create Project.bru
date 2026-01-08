@@ -1,7 +1,7 @@
 meta {
   name: Create Project
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
@@ -25,11 +25,11 @@ tests {
   test("status is 201", function () {
     expect(res.status).to.equal(201);
   });
-
+  
   test("response has id", function () {
     expect(res.body.id).to.be.a("string");
   });
-
+  
   test("save projectId", function () {
     bru.setVar("projectId", res.body.id);
   });

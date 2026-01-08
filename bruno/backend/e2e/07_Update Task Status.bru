@@ -1,7 +1,7 @@
 meta {
   name: Update Task Status
   type: http
-  seq: 7
+  seq: 8
 }
 
 patch {
@@ -24,7 +24,7 @@ tests {
   test("status is 200", function () {
     expect(res.status).to.equal(200);
   });
-
+  
   test("status changed to DONE", function () {
     expect(res.body.status).to.equal("DONE");
   });

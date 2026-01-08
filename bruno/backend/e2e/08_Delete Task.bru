@@ -1,11 +1,12 @@
 meta {
   name: Delete Task
   type: http
-  seq: 8
+  seq: 9
 }
 
 delete {
   url: {{baseUrl}}/api/v1/tasks/{{taskId}}
+  body: none
   auth: inherit
 }
 
