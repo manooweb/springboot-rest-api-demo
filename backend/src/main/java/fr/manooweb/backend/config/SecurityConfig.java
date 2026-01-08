@@ -90,11 +90,11 @@ public class SecurityConfig {
 
                 // Enable HTTP Basic authentication (handy for quick testing).
                 // Note: if you access endpoints via browser, Spring may also show a login page.
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(basic -> basic.disable())
 
                 // Enable JWT Bearer token authentication (Authorization: Bearer <token>).
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                
+
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints (Swagger + health)
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
