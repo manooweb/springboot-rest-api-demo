@@ -1,1 +1,18 @@
-<p>projects works!</p>
+<h2>Projects</h2>
+
+@if (loading) {
+  <p>Loading projects…</p>
+}
+
+@if (error) {
+  <p class="error">{{ error }}</p>
+}
+
+<ul>
+  @for (project of projects; track project.id) {
+    <li>
+      <strong>{{ project.name }}</strong>
+      <div>{{ project.description }}</div>
+    </li>
+  }
+</ul>
