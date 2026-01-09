@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Auth } from '../../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,17 +16,18 @@ export class Login {
   password = 'demo';
   error: string | null = null;
   loading = false;
-
-  constructor(private authService: Auth) {}
+  router = inject(Router);
+  auth = inject(Auth);
 
   submit() {
     this.error = null;
     this.loading = true;
 
-    this.authService.login(this.username, this.password).subscribe({
+    this.auth.login(this.username, this.password).subscribe({
       next: () => {
         this.loading = false;
         console.log('Login OK, token stored');
+        this.router.navigateByUrl('/projects');
       },
       error: () => {
         this.loading = false;

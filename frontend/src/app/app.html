@@ -3,12 +3,15 @@
 
   <span style="flex: 1 1 auto"></span>
 
+  @if (auth.isLoggedIn()) {
   <a mat-button routerLink="/projects" routerLinkActive="active-link">
     Projects
   </a>
-  <a mat-button routerLink="/login" routerLinkActive="active-link">
-    Login
-  </a>
+  }
+
+  <button matButton="outlined" (click)="onAuthAction()">
+    {{ auth.isLoggedIn() ? 'Logout' : 'Login' }}
+  </button>
 </mat-toolbar>
 
 <div class="app-container">
