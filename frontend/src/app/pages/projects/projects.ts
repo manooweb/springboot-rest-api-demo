@@ -15,16 +15,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateProjectRequest } from '../../services/projects';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatDialogModule],
+  imports: [MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
 export class Projects {
   private projectsService = inject(ProjectsService);
+  private snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
 
   projects: Project[] = [];
@@ -50,6 +52,7 @@ export class Projects {
         },
         error: () => {
           this.error = 'Failed to create project';
+          this.notify(this.error);
         },
       });
     });
@@ -63,12 +66,18 @@ export class Projects {
       next: (projects) => {
         this.projects = projects;
         this.loading = false;
+        this.notify('Project created');
       },
       error: () => {
         this.error = 'Failed to load projects';
         this.loading = false;
+        this.notify(this.error);
       },
     });
+  }
+
+  private notify(message: string) {
+    this.snackBar.open(message, 'Close', { duration: 3000 });
   }
 
   ngOnInit() {
