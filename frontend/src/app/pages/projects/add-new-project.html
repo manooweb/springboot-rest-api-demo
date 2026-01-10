@@ -1,0 +1,37 @@
+<div class="dialog-title">
+  <h2 mat-dialog-title>Add new project</h2>
+
+  <button mat-icon-button (click)="clickOnCancel()" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+
+  <mat-form-field class="full-width">
+    <mat-label>Project name</mat-label>
+    <input matInput [(ngModel)]="name" required/>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>Project description</mat-label>
+    <textarea
+      matInput  [(ngModel)]="description"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="3"
+      cdkAutosizeMaxRows="8"
+    ></textarea>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button matButton (click)="clickOnCancel()">Cancel</button>
+  <button
+    matButton (click)="clickOnOk()"
+    [disabled]="!isValid()"
+    cdkFocusInitial
+  >
+    Create
+  </button>
+</mat-dialog-actions>
