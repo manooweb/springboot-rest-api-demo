@@ -20,6 +20,10 @@ export class ProjectsService {
     return this.http.get<Project[]>('/api/v1/projects');
   }
 
+  getById(id: string) {
+    return this.http.get<Project>(`/api/v1/projects/${id}`);
+  }
+
   create(payload: CreateProjectRequest) {
     return this.http.post<Project>('/api/v1/projects', payload);
   }

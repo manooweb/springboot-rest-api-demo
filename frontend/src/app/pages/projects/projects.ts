@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,7 +21,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
+  imports: [RouterLink, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
@@ -49,6 +50,7 @@ export class Projects {
           // refresh list
           this.loading = true;
           this.loadProjects();
+          this.notify('Project created');
         },
         error: () => {
           this.error = 'Failed to create project';
@@ -66,7 +68,6 @@ export class Projects {
       next: (projects) => {
         this.projects = projects;
         this.loading = false;
-        this.notify('Project created');
       },
       error: () => {
         this.error = 'Failed to load projects';
@@ -115,7 +116,6 @@ export class AddNewProjectDialog {
   clickOnOk(): void {
     if (!this.name.trim()) return;
     this.dialogRef.close({ name: this.name, description: this.description });
-    console.log('Dialog closed with data:', { name: this.name, description: this.description });
   }
 
   clickOnCancel(): void {

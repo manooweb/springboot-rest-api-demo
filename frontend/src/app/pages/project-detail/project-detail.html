@@ -1,0 +1,42 @@
+@if (loadingProject) {
+<p>Loading project…</p>
+}
+
+@if (errorProject) {
+<p class="error">{{ errorProject }}</p>
+}
+
+<h2>{{ project?.name }} project detail</h2>
+<p>{{ project?.description }}</p>
+
+
+<button matButton="outlined" color="primary" (click)="openAddNewTaskDialog()">
+  <mat-icon>add</mat-icon>
+  Add new task
+</button>
+
+<h3>Tasks</h3>
+
+@if (loadingTasks) {
+<p>Loading tasks…</p>
+}
+
+@if (errorTasks) {
+<p class="error">{{ errorTasks }}</p>
+}
+
+<ul>
+  @for (task of tasks; track task.id) {
+  <li>
+    <strong>{{ task.title }}</strong>
+    <div>{{ task.description }}</div>
+    <div>Due date: {{ task.dueDate | date }}</div>
+    <div>
+      <button matButton="tonal" class="status-btn" (click)="onStatusClick(task)" [disabled]="updatingTaskId === task.id">
+        <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
+        <span class="status-label">{{ statusLabel(task.status) }}</span>
+      </button>
+    </div>
+  </li>
+  }
+</ul>

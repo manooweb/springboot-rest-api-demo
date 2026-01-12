@@ -8,6 +8,7 @@
   <mat-icon>add</mat-icon>
   Add new project
 </button>
+
 @if (loading) {
   <p>Loading projects…</p>
 }
@@ -19,6 +20,7 @@
 <ul>
   @for (project of projects; track project.id) {
     <li>
+      <a mat-button routerLink="/projects/{{ project.id }}"><mat-icon>visibility</mat-icon></a>
       <strong>{{ project.name }}</strong>
       <div>{{ project.description }}</div>
     </li>
