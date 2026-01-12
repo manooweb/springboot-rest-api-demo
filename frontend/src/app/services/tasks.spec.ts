@@ -1,13 +1,22 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
-import { Tasks } from './tasks';
+import { TasksService } from './tasks';
+import { provideHttpClient } from '@angular/common/http';
 
-describe('Tasks', () => {
-  let service: Tasks;
+describe('TasksService', () => {
+  let service: TasksService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Tasks);
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideAnimations()
+      ],
+    });
+    service = TestBed.inject(TasksService);
   });
 
   it('should be created', () => {
