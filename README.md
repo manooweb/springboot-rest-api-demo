@@ -2,220 +2,175 @@
 
 [![Backend CI](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml) [![API E2E (Bruno)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
 
-Demo project to showcase a modern Java backend stack using Spring Boot.
+# springboot-rest-api-demo
 
-This repository is built step by step as a technical MVP to demonstrate:
+**Fullstack demo project** built with a modern Java / Angular stack.
 
-- Spring Boot REST API
-- Database access with JPA / Hibernate
-- Database migrations with Flyway
-- Dockerized PostgreSQL
-- API documentation with OpenAPI / Swagger
-- API testing with Bruno
-The project is organized as a mono-repo.
+- **Backend**: Spring Boot 3 (Java 21), PostgreSQL, Flyway, Spring Security, JWT
+- **Frontend**: Angular 20 + Angular Material (**standalone components only**)
+- **API documentation**: OpenAPI / Swagger
+- **API tests**: Bruno (manual + E2E in CI)
 
 ---
 
 ## Repository structure
 
-- backend
-  Spring Boot application (REST API)
-
-- frontend
-  Frontend application (to be implemented later)
-
-- bruno
-  Bruno API test collection
+- `backend/` : Spring Boot REST API (Projects, Tasks, JWT authentication)
+- `frontend/` : Angular UI (login, projects, project details, tasks)
+- `bruno/` : API test collections (manual + e2e)
+- `docker-compose.yml` : PostgreSQL for local development
 
 ---
 
-## Run backend locally
+## Quick start (fullstack)
 
 ### Prerequisites
 
 - Java 21
+- Node.js + npm
 - Docker + Docker Compose
 
-### Start PostgreSQL
+### 1) Start the database
 
 ```bash
 docker compose up -d
 ```
 
-### Start Spring Boot API
+### 2) Start the Spring Boot backend
 
 ```bash
 cd backend
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=docker
 ```
 
-### URLs
+### 3) Start the Angular frontend
 
-- API: <http://localhost:8080/v3/api-docs>
-- Swagger UI: <http://localhost:8080/swagger-ui.html>
+```bash
+cd frontend
+npm install
+npm run start
+```
+
+> The frontend uses an Angular proxy configuration for API calls,
+> therefore it must be started via the `start` npm script.
 
 ---
 
-## Stop and reset PostgreSQL (Docker)
+## Stop services
 
-### Stop PostgreSQL
+### Stop database (keep data)
 
 ```bash
 docker compose down
 ```
 
-This stops the PostgreSQL container but keeps the database data.
-
-### Restart PostgreSQL
-
-```bash
-docker compose up -d
-```
-
-### Reset database (WARNING)
+### Stop database and reset data (remove volumes)
 
 ```bash
 docker compose down -v
 ```
 
-This removes the PostgreSQL container and deletes all database data.
-Use this only if you want to start from a clean database.
+---
+
+## Useful URLs
+
+### Frontend
+
+- UI: http://localhost:4200
+
+### Backend
+
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
 
 ---
 
-## API documentation (Swagger / OpenAPI)
+## Authentication (JWT)
 
-The API is documented using Springdoc OpenAPI.
+### Backend
 
-Once the backend is running, Swagger UI is available at:
+- `POST /api/v1/auth/login` → returns a JWT token
+- All `/api/v1/**` endpoints are protected (except login & swagger)
+- Required header: `Authorization: Bearer <token>`
 
-- <http://localhost:8080/swagger-ui.html>
+### Frontend
 
----
-
-### API testing with Bruno
-
-This repository includes a fully versioned API test suite using **Bruno**, covering both **manual testing** and **automated end-to-end (E2E)** scenarios.
-
-All Bruno collections are stored directly in the repository and can be executed locally or in CI.
-
----
-
-### Bruno collections structure
-
-- **bruno/backend/Projects**
-  Manual API tests for **Projects** endpoints
-  (Create, List, Get, Delete)
-
-- **bruno/backend/Tasks**
-  Manual API tests for **Tasks** endpoints
-  (Create, List, Get, Update status, Delete)
-
-- **bruno/backend/e2e**
-  Automated **end-to-end scenario** covering the full lifecycle:
-
-1. Create Project
-2. List Projects and verify creation
-3. Get Project
-4. Create Task
-5. List Tasks and verify creation
-6. Get Task
-7. Update Task status
-8. Delete Task
-9. Verify Task deletion
-10. Delete Project
-11. Verify Project deletion
-
-The E2E collection uses **runtime variables** to automatically propagate `projectId` and `taskId` between requests.
+- Login page
+- JWT token stored client-side
+- HTTP interceptor automatically adds `Authorization: Bearer <token>`
+- Route guard protects authenticated routes
+- Logout clears the token
 
 ---
 
-### Manual API testing (Bruno UI)
+## Functional scope (MVP v0.16.1)
 
-1. Start PostgreSQL using Docker
-2. Start the Spring Boot backend
-3. Open Bruno
-4. Open the collection located in `bruno/backend`
-5. Run the requests manually in the suggested order
+### Projects
 
-Manual collections rely on **pre-request variables** (such as `baseUrl`) and are designed for readability and onboarding.
+- List projects
+- Create project via Angular Material dialog
+- Project detail page: `/projects/:id`
+
+### Tasks (inside a project)
+
+- List project tasks
+- Create task via dialog:
+  - title (required)
+  - description (optional)
+  - dueDate (datepicker, default = today)
+  - status (TODO / IN_PROGRESS / DONE)
+- Change status with a single click:
+  - rotation TODO → IN_PROGRESS → DONE → TODO
+  - backend PATCH call
+- User feedback via snackbars (success / error)
 
 ---
 
-### Automated API testing (local)
+## API testing with Bruno
 
-The project uses **Bruno CLI** to run automated E2E API tests locally.
+- Manual requests:
+  - `bruno/backend/Projects`
+  - `bruno/backend/Tasks`
+- Full E2E scenario:
+  - `bruno/backend/e2e`
 
-#### Prerequisites
-
-- Node.js
-- PostgreSQL running
-- Spring Boot backend running
-
-### Run E2E tests
-
-```bash
-npm run test:api
-```
-
-This command executes the E2E collection located in `bruno/backend/e2e`.
+Run E2E tests locally:
 
 ```bash
 npm install
+npm run test:api
 ```
 
-is necessary the first time you want to run tests to install Bruno CLI.
+API tests are also executed in CI using GitHub Actions.
 
 ---
 
-### API testing in CI (GitHub Actions)
+## Backend tests (JUnit / Mockito)
 
-Automated API tests are executed in CI using **GitHub Actions**.
+Backend tests can be executed with:
 
-The workflow:
+```bash
+cd backend
+./mvnw test
+```
 
-- Starts PostgreSQL
-- Starts the Spring Boot backend using the Docker profile
-- Runs the Bruno E2E test suite via Bruno CLI
-
-This ensures the API is validated end-to-end on every push to the `main` branch.
-
----
-
-### Notes
-
-- Manual and automated tests intentionally coexist:
-  - Manual collections are ideal for exploration and onboarding
-  - E2E collections guarantee functional integrity
-- Authentication (JWT) is not yet implemented and will be integrated later
-- Error handling (404 / 409) will be improved in future iterations
+Test coverage is intentionally minimal at this stage and will be extended incrementally.
 
 ---
 
-## Database & migrations
+## Project philosophy
 
-- Database: PostgreSQL (Dockerized)
-- ORM: JPA / Hibernate
-- Migrations: Flyway
-
-Database schema is managed via versioned SQL migrations located in:
-
-- backend/src/main/resources/db/migration
-
-Flyway automatically runs migrations on application startup.
+- Angular **standalone components only**
+- Simple template-driven forms on purpose
+- Backend as the single source of truth
+- No premature abstraction
+- Focus on clarity and maintainability
 
 ---
 
-## Project status
+## Planned improvements
 
-This project is intentionally built incrementally.
-
-Current focus:
-
-- Backend API (Projects / Tasks)
-- Clean architecture and best practices
-- Readability for Java / Spring developers
-
-Frontend, authentication and CI/CD will be added later.
-
----
+- Angular frontend tests (unit, auth, interceptor, guard)
+- UI/UX improvements (layout, spacing, responsive)
+- Internationalization (i18n)
+- Deployment
