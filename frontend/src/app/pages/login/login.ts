@@ -26,7 +26,6 @@ export class Login {
     this.auth.login(this.username, this.password).subscribe({
       next: () => {
         this.loading = false;
-        console.log('Login OK, token stored');
         this.router.navigateByUrl('/projects');
       },
       error: () => {
