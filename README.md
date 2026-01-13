@@ -1,6 +1,6 @@
 # springboot-rest-api-demo
 
-[![Backend CI](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml) [![API E2E (Bruno)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
+[![Backend CI](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml) [![API E2E (Bruno)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml) [![Frontend Tests](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
 
 # springboot-rest-api-demo
 
@@ -158,6 +158,27 @@ Test coverage is intentionally minimal at this stage and will be extended increm
 
 ---
 
+## Frontend tests (Angular / Karma / Jasmine)
+
+Frontend unit tests can be executed with:
+
+```bash
+cd frontend
+npm install
+npm test -- --watch=false
+```
+
+Run tests with a headless browser (useful for CI):
+
+```bash
+cd frontend
+npm test -- --watch=false --browsers=ChromeHeadless
+```
+
+Frontend tests are also executed in CI using GitHub Actions.
+
+---
+
 ## Project philosophy
 
 - Angular **standalone components only**
@@ -170,7 +191,7 @@ Test coverage is intentionally minimal at this stage and will be extended increm
 
 ## Planned improvements
 
-- Angular frontend tests (unit, auth, interceptor, guard)
 - UI/UX improvements (layout, spacing, responsive)
+- Accessibility
 - Internationalization (i18n)
 - Deployment
