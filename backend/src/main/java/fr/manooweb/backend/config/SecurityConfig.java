@@ -85,6 +85,9 @@ public class SecurityConfig {
                 // Stateless API: do not create HTTP sessions.
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                // Enable CORS support and delegate configuration to CorsConfigurationSource
+                .cors(Customizer.withDefaults())
+
                 // Stateless API (JWT later). CSRF disabled for simplicity in this MVP.
                 .csrf(csrf -> csrf.disable())
 
@@ -96,6 +99,9 @@ public class SecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
 
                 .authorizeHttpRequests(auth -> auth
+                        // Allow CORS preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         // Public endpoints (Swagger + health)
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/v1/health").permitAll()
