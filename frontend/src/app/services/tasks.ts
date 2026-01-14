@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API_BASE_URL } from '../app.config';
 
 export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
@@ -27,14 +28,14 @@ export class TasksService {
   constructor(private http: HttpClient) { }
 
   getAll(projectId: string) {
-    return this.http.get<Task[]>(`/api/v1/projects/${projectId}/tasks`);
+    return this.http.get<Task[]>(`${API_BASE_URL}/api/v1/projects/${projectId}/tasks`);
   }
 
   create(projectId: string, payload: CreateTaskRequest) {
-    return this.http.post<Task>(`/api/v1/projects/${projectId}/tasks`, payload);
+    return this.http.post<Task>(`${API_BASE_URL}/api/v1/projects/${projectId}/tasks`, payload);
   }
 
   updateStatus(taskId: string, status: TaskStatus) {
-    return this.http.patch<Task>(`/api/v1/tasks/${taskId}/status`, { status });
+    return this.http.patch<Task>(`${API_BASE_URL}/api/v1/tasks/${taskId}/status`, { status });
   }
 }

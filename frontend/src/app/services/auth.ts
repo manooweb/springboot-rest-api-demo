@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { API_BASE_URL } from '../app.config';
 
 export interface LoginResponse {
   tokenType: string;
@@ -16,7 +17,7 @@ export class Auth{
 
   login(username: string, password: string) {
     return this.http
-      .post<LoginResponse>('/api/v1/auth/login', {
+      .post<LoginResponse>(`${API_BASE_URL}/api/v1/auth/login`, {
         username,
         password,
       })
