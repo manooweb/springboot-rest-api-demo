@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    root: INFO
