@@ -4,6 +4,12 @@ spring:
     username: ${PGUSER}
     password: ${PGPASSWORD}
 
+    hikari:
+      connection-timeout: 30000            # 30s max pour obtenir une connexion du pool
+      initialization-fail-timeout: -1      # ne pas fail-fast au démarrage si DB pas prête
+      validation-timeout: 5000
+      maximum-pool-size: 5
+
   jpa:
     open-in-view: false
     hibernate:
@@ -11,6 +17,8 @@ spring:
 
   flyway:
     enabled: true
+    connect-retries: 20
+    connect-retries-interval: 2
 
 logging:
   level:
