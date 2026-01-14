@@ -20,6 +20,9 @@ spring:
     connect-retries: 20
     connect-retries-interval: 2
 
+server:
+  forward-headers-strategy: framework
+
 logging:
   level:
     root: INFO
