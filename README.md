@@ -13,6 +13,41 @@
 
 ---
 
+## Live demo (production)
+
+- Frontend: https://projects.manooweb.fr
+- API: https://projects-api.manooweb.fr
+- Swagger UI: https://projects-api.manooweb.fr/swagger-ui/index.html
+- Healthcheck: https://projects-api.manooweb.fr/api/v1/health
+- Demo account: `demo / demo`
+
+## Public MVP release
+
+The currently deployed public MVP corresponds to the following GitHub release:
+
+- **v0.18.0** — Public MVP deployed (Vercel + Railway)
+
+See full release notes:
+https://github.com/manooweb/springboot-rest-api-demo/releases/tag/v0.18.0
+
+## Known limitations (MVP)
+
+- Swagger UI is publicly accessible (intentional, demo purpose).
+- Demo account (`demo / demo`) shared by all users.
+- No rate limiting or advanced security hardening yet.
+
+## Backlog / known issues
+
+- Project board: https://github.com/users/manooweb/projects/4/views/1
+
+## Infrastructure (MVP)
+
+- Frontend: Vercel
+- Backend: Railway (Spring Boot + PostgreSQL)
+- Database migrations: Flyway
+
+---
+
 ## Repository structure
 
 - `backend/` : Spring Boot REST API (Projects, Tasks, JWT authentication)
