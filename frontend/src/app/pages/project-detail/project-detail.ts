@@ -3,7 +3,6 @@ import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialog,
   MatDialogModule,
@@ -140,7 +139,7 @@ export class ProjectDetail {
       }
     });
   }
-  
+
   nextStatus(current: TaskStatus): TaskStatus {
     switch (current) {
       case 'TODO': return 'IN_PROGRESS';
@@ -186,7 +185,6 @@ export class ProjectDetail {
 })
 export class AddNewTaskDialog {
   readonly dialogRef = inject(MatDialogRef<AddNewTaskDialog>);
-  readonly data = inject<CreateTaskRequest>(MAT_DIALOG_DATA);
 
   title = '';
   description = '';
@@ -199,7 +197,7 @@ export class AddNewTaskDialog {
 
   clickOnOk(): void {
     if (!this.title.trim()) return;
-    this.dialogRef.close({ title: this.title, description: this.description, dueDate: this.dueDate, status: this.data.status });
+    this.dialogRef.close({ title: this.title, description: this.description, dueDate: this.dueDate, status: this.status });
   }
 
   clickOnCancel(): void {
