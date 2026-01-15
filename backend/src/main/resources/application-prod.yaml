@@ -26,3 +26,8 @@ server:
 logging:
   level:
     root: INFO
+
+app:
+  cors:
+    allowed-origins:
+      - "https://projects.manooweb.fr"
