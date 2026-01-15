@@ -4,7 +4,6 @@ import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialog,
   MatDialogModule,
@@ -104,10 +103,9 @@ export class Projects {
 })
 export class AddNewProjectDialog {
   readonly dialogRef = inject(MatDialogRef<AddNewProjectDialog>);
-  readonly data = inject<CreateProjectRequest>(MAT_DIALOG_DATA);
 
-  name = this.data.name ?? '';
-  description = this.data.description ?? '';
+  name = '';
+  description = '';
 
   isValid(): boolean {
     return this.name.trim().length > 0;
