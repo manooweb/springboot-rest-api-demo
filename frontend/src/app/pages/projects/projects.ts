@@ -34,7 +34,6 @@ export class Projects {
   error: string | null = null;
 
   openAddNewProjectDialog() {
-    console.log('Open dialog to add new project');
     const dialogRef = this.dialog.open(AddNewProjectDialog, {
       width: '600px',
       maxWidth: '80vw',

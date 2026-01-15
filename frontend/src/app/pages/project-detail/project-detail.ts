@@ -49,7 +49,6 @@ export class ProjectDetail {
   }
 
   openAddNewTaskDialog() {
-    console.log('Open dialog to add new task');
     const dialogRef = this.dialog.open(AddNewTaskDialog, {
       width: '600px',
       maxWidth: '80vw',
