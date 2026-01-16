@@ -31,7 +31,8 @@ public class TaskController {
                 projectId,
                 request.title(),
                 request.description(),
-                request.dueDate()
+                request.dueDate(),
+                request.status()
         );
 
         return TaskResponse.from(task);
