@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import fr.manooweb.backend.api.dto.TaskCreateRequest;
 import fr.manooweb.backend.api.dto.TaskResponse;
 import fr.manooweb.backend.api.dto.TaskStatusUpdateRequest;
+import fr.manooweb.backend.api.dto.TaskUpdateRequest;
 import fr.manooweb.backend.domain.Task;
 import fr.manooweb.backend.domain.TaskStatus;
 import fr.manooweb.backend.service.TaskService;
@@ -29,6 +30,20 @@ public class TaskController {
     public TaskResponse create(@PathVariable UUID projectId, @Valid @RequestBody TaskCreateRequest request) {
         Task task = taskService.create(
                 projectId,
+                request.title(),
+                request.description(),
+                request.dueDate(),
+                request.status()
+        );
+
+        return TaskResponse.from(task);
+    }
+
+    @PutMapping("/tasks/{taskId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskResponse update(@PathVariable UUID taskId, @Valid @RequestBody TaskUpdateRequest request) {
+        Task task = taskService.update(
+                taskId,
                 request.title(),
                 request.description(),
                 request.dueDate(),
