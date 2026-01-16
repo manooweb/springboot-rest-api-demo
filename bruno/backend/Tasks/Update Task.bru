@@ -23,15 +23,11 @@ body:json {
   }
 }
 
-vars:pre-request {
-  taskId: c9cb7f6e-6d84-4b41-801b-6bd1fc781a9b
-}
-
 tests {
   test("status is 200", function () {
     expect(res.status).to.equal(200);
   });
-
+  
   test("response has id", function () {
     expect(res.body.id).to.be.a("string");
   });
