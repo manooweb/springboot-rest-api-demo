@@ -18,7 +18,8 @@ body:json {
   {
     "title": "My first task",
     "description": "Created from Bruno",
-    "dueDate": "2026-01-02"
+    "dueDate": "2026-01-02",
+    "status": "TODO"
   }
 }
 
@@ -30,11 +31,11 @@ tests {
   test("status is 201", function () {
     expect(res.status).to.equal(201);
   });
-  
+
   test("response has id", function () {
     expect(res.body.id).to.be.a("string");
   });
-  
+
   test("save taskId", function () {
     bru.setVar("taskId", res.body.id);
   });
