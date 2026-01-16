@@ -1,0 +1,47 @@
+meta {
+  name: Update Task
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "My first task updated from Bruno",
+    "description": "Updated from Bruno",
+    "dueDate": "2026-01-16",
+    "status": "DONE"
+  }
+}
+
+tests {
+  test("status is 201", function () {
+    expect(res.status).to.equal(201);
+  });
+
+  test("title changed to My first task updated from Bruno", function () {
+    expect(res.body.title).to.equal("My first task updated from Bruno");
+  });
+
+  test("description changed to Updated from Bruno", function () {
+    expect(res.body.description).to.equal("Updated from Bruno");
+  });
+
+  test("dueDate changed to 2026-01-16", function () {
+    expect(res.body.dueDate).to.equal("2026-01-16");
+  });
+
+  test("status changed to DONE", function () {
+    expect(res.body.status).to.equal("DONE");
+  });
+}
+
