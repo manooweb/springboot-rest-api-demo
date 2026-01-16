@@ -7,11 +7,7 @@ meta {
 delete {
   url: {{baseUrl}}/api/v1/projects/{{projectId}}
   body: none
-  auth: none
-}
-
-vars:pre-request {
-  projectId: 4a0e8a20-94ab-414b-a50e-cdf54c633f0f
+  auth: inherit
 }
 
 tests {
