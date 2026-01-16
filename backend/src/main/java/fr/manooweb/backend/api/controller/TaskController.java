@@ -40,7 +40,7 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{taskId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public TaskResponse update(@PathVariable UUID taskId, @Valid @RequestBody TaskUpdateRequest request) {
         Task task = taskService.update(
                 taskId,
