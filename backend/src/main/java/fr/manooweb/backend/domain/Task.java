@@ -91,6 +91,19 @@ public class Task {
         return updatedAt;
     }
 
+    public void update(
+            String title,
+            String description,
+            LocalDate dueDate,
+            TaskStatus status,
+            OffsetDateTime updatedAt) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.updatedAt = updatedAt;
+    }
+
     public void changeStatus(TaskStatus status, OffsetDateTime updatedAt) {
         this.status = status;
         this.updatedAt = updatedAt;

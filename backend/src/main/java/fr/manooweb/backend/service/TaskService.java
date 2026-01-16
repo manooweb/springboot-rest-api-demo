@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,15 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public Task update(UUID taskId, String title, String description,
+            LocalDate dueDate, TaskStatus status) {
+        Task task = getById(taskId);
+        task.update(title, description, dueDate, status, OffsetDateTime.now());
+        return taskRepository.save(task);
+    }
+
+    @SuppressWarnings("null")
+    @NonNull
     @Transactional(readOnly = true)
     public Task getById(UUID taskId) {
         return taskRepository.findById(taskId)
@@ -71,4 +81,5 @@ public class TaskService {
         Task task = getById(taskId);
         taskRepository.delete(task);
     }
+
 }
