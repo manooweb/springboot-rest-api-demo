@@ -35,6 +35,10 @@ export class TasksService {
     return this.http.post<Task>(`${API_BASE_URL}/api/v1/projects/${projectId}/tasks`, payload);
   }
 
+  update(taskId: string, payload: CreateTaskRequest) {
+    return this.http.put<Task>(`${API_BASE_URL}/api/v1/tasks/${taskId}`, payload);
+  }
+
   updateStatus(taskId: string, status: TaskStatus) {
     return this.http.patch<Task>(`${API_BASE_URL}/api/v1/tasks/${taskId}/status`, { status });
   }

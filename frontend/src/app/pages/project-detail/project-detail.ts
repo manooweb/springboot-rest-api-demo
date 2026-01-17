@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CreateTaskRequest, Task, TasksService, TaskStatus } from '../../services/tasks';
 import { DatePipe } from '@angular/common';
 import { TaskDialog } from './task-dialog';
-import { TaskDialogData } from './task-dialog.types';
+import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
 
 @Component({
   selector: 'app-project-detail',
@@ -48,12 +48,13 @@ export class ProjectDetail {
       data: { mode: 'create' } satisfies TaskDialogData,
     });
 
-    dialogRef.afterClosed().subscribe((result?: CreateTaskRequest) => {
+    dialogRef.afterClosed().subscribe((result?: TaskDialogResult) => {
       if (!result || !this.id) return; // cancel
+      if (result.mode !== 'create') return; // Only create expected here
 
       this.loadingTasks = true;
       this.errorTasks = null;
-      this.tasksService.create(this.id, result).subscribe({
+      this.tasksService.create(this.id, result.payload).subscribe({
         next: () => {
           // refresh list
           this.loadingTasks = true;
@@ -73,6 +74,26 @@ export class ProjectDetail {
       width: '600px',
       maxWidth: '80vw',
       data: { mode: 'edit', task } satisfies TaskDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: TaskDialogResult) => {
+      if (!result || !this.id) return; // cancel
+      if (result.mode !== 'edit'  || !result.taskId) return; // Only edit expected here
+
+      this.loadingTasks = true;
+      this.errorTasks = null;
+      this.tasksService.update(result.taskId, result.payload).subscribe({
+        next: () => {
+          // refresh list
+          this.loadingTasks = true;
+          this.loadTasks();
+          this.notify('Task updated');
+        },
+        error: () => {
+          this.errorTasks = 'Failed to update task';
+          this.notify(this.errorTasks);
+        },
+      });
     });
   }
 
