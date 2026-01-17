@@ -7,7 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { TaskStatus } from "../../services/tasks";
+import { Task, TaskStatus } from "../../services/tasks";
 import { TaskDialogData } from './task-dialog.types';
 
 @Component({
@@ -53,6 +53,12 @@ export class TaskDialog {
     return this.title.trim().length > 0;
   }
 
+  ngOnInit() {
+    if (this.isEdit && this.data.task) {
+      this.prefillFromTask(this.data.task);
+    }
+  }
+
   clickOnOk(): void {
     if (!this.title.trim()) return;
     this.dialogRef.close({ title: this.title, description: this.description, dueDate: this.dueDate, status: this.status });
@@ -60,5 +66,12 @@ export class TaskDialog {
 
   clickOnCancel(): void {
     this.dialogRef.close();
+  }
+
+  private prefillFromTask(task: Task) {
+    this.title = task.title ?? '';
+    this.description = task.description ?? '';
+    this.status = task.status ?? 'TODO';
+    this.dueDate = task.dueDate ?? this.dueDate;
   }
 }
