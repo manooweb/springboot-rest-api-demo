@@ -7,8 +7,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { Task, TaskStatus } from "../../services/tasks";
-import { TaskDialogData } from './task-dialog.types';
+import { CreateTaskRequest, Task, TaskStatus } from "../../services/tasks";
+import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
 
 @Component({
   selector: 'task-dialog',
@@ -61,7 +61,19 @@ export class TaskDialog {
 
   clickOnOk(): void {
     if (!this.title.trim()) return;
-    this.dialogRef.close({ title: this.title, description: this.description, dueDate: this.dueDate, status: this.status });
+
+    const payload: CreateTaskRequest = {
+      title: this.title.trim(),
+      description: this.description?.trim() || undefined,
+      dueDate: this.dueDate || undefined,
+      status: this.status,
+    };
+
+    const result: TaskDialogResult = this.isEdit
+      ? { mode: 'edit', taskId: this.data.task!.id, payload }
+      : { mode: 'create', payload };
+
+    this.dialogRef.close(result);
   }
 
   clickOnCancel(): void {
