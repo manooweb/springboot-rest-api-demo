@@ -3,22 +3,14 @@ import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  MatDialogRef,
   MatDialog,
   MatDialogModule,
-  MatDialogActions,
-  MatDialogContent,
-  MatDialogTitle
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { CreateTaskRequest, Task, TasksService, TaskStatus } from '../../services/tasks';
 import { DatePipe } from '@angular/common';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
+import { TaskDialog } from './task-dialog';
 
 @Component({
   selector: 'app-project-detail',
@@ -49,7 +41,7 @@ export class ProjectDetail {
   }
 
   openAddNewTaskDialog() {
-    const dialogRef = this.dialog.open(AddNewTaskDialog, {
+    const dialogRef = this.dialog.open(TaskDialog, {
       width: '600px',
       maxWidth: '80vw',
     });
@@ -161,45 +153,5 @@ export class ProjectDetail {
       case 'IN_PROGRESS': return '⏳';
       case 'DONE': return '✅';
     }
-  }
-}
-
-@Component({
-  selector: 'add-new-task-dialog',
-  templateUrl: 'add-new-task.html',
-  styleUrl: 'add-new-task.scss',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDatepickerModule,
-    MatSelectModule,
-  ],
-})
-export class AddNewTaskDialog {
-  readonly dialogRef = inject(MatDialogRef<AddNewTaskDialog>);
-
-  title = '';
-  description = '';
-  dueDate: string = new Date().toISOString().split('T')[0];
-  status: TaskStatus = 'TODO';
-
-  isValid(): boolean {
-    return this.title.trim().length > 0;
-  }
-
-  clickOnOk(): void {
-    if (!this.title.trim()) return;
-    this.dialogRef.close({ title: this.title, description: this.description, dueDate: this.dueDate, status: this.status });
-  }
-
-  clickOnCancel(): void {
-    this.dialogRef.close();
   }
 }
