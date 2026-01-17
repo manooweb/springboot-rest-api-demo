@@ -1,0 +1,50 @@
+import { Component, inject } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { TaskStatus } from "../../services/tasks";
+
+@Component ({
+  selector: 'task-dialog',
+  templateUrl: 'task-dialog.html',
+  styleUrl: 'task-dialog.scss',
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDatepickerModule,
+    MatSelectModule,
+  ],
+})
+export class TaskDialog {
+  readonly dialogRef = inject(MatDialogRef<TaskDialog>);
+
+  title = '';
+  description = '';
+  dueDate: string = new Date().toISOString().split('T')[0];
+  status: TaskStatus = 'TODO';
+
+  isValid(): boolean {
+    return this.title.trim().length > 0;
+  }
+
+  clickOnOk(): void {
+    if (!this.title.trim()) return;
+    this.dialogRef.close({ title: this.title, description: this.description, dueDate: this.dueDate, status: this.status });
+  }
+
+  clickOnCancel(): void {
+    this.dialogRef.close();
+  }
+}
