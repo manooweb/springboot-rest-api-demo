@@ -1,4 +1,4 @@
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,11 +20,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RouterLink, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
+  imports: [MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
 export class Projects {
+  router = inject(Router);
   private projectsService = inject(ProjectsService);
   private snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
@@ -73,6 +74,11 @@ export class Projects {
         this.notify(this.error);
       },
     });
+  }
+
+  showProjectDetail(projectId: string) {
+    // navigate to project detail page
+    this.router.navigateByUrl(`/projects/${projectId}`);
   }
 
   private notify(message: string) {
