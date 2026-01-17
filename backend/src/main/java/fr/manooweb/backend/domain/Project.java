@@ -58,4 +58,10 @@ public class Project {
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public void update(String name, String description, OffsetDateTime updatedAt) {
+        this.name = name;
+        this.description = description;
+        this.updatedAt = updatedAt;
+    }
 }

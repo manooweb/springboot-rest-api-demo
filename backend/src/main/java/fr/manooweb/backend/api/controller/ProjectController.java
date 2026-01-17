@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 import fr.manooweb.backend.api.dto.ProjectCreateRequest;
 import fr.manooweb.backend.api.dto.ProjectResponse;
+import fr.manooweb.backend.api.dto.ProjectUpdateRequest;
 import fr.manooweb.backend.domain.Project;
 import fr.manooweb.backend.service.ProjectService;
 
@@ -27,6 +28,18 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectResponse create(@Valid @RequestBody ProjectCreateRequest request) {
         Project project = projectService.create(
+                request.name(),
+                request.description()
+        );
+
+        return ProjectResponse.from(project);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectResponse update(@PathVariable UUID id, @Valid @RequestBody ProjectUpdateRequest request) {
+        Project project = projectService.update(
+                id,
                 request.name(),
                 request.description()
         );
