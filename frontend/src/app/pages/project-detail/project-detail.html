@@ -28,6 +28,9 @@
 <ul>
   @for (task of tasks; track task.id) {
   <li>
+    <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)">
+      <mat-icon>edit</mat-icon>
+    </button>
     <strong>{{ task.title }}</strong>
     <div>{{ task.description }}</div>
     <div>Due date: {{ task.dueDate | date }}</div>
