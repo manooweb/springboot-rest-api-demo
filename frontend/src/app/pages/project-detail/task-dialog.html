@@ -1,6 +1,6 @@
 
 <div class="dialog-title">
-  <h2 mat-dialog-title>Add new task</h2>
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 
   <button mat-icon-button (click)="clickOnCancel()" aria-label="Close dialog">
     <mat-icon>close</mat-icon>
@@ -46,9 +46,9 @@
   <button
   mat-button
   (click)="clickOnOk()"
-    [disabled]="!isValid()"
+    [disabled]="!isValid"
     cdkFocusInitial
   >
-    Create
+    {{ primaryButtonLabel }}
   </button>
 </mat-dialog-actions>

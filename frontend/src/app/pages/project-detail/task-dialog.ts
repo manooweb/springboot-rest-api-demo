@@ -2,14 +2,15 @@ import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { TaskStatus } from "../../services/tasks";
+import { TaskDialogData } from './task-dialog.types';
 
-@Component ({
+@Component({
   selector: 'task-dialog',
   templateUrl: 'task-dialog.html',
   styleUrl: 'task-dialog.scss',
@@ -29,13 +30,26 @@ import { TaskStatus } from "../../services/tasks";
 })
 export class TaskDialog {
   readonly dialogRef = inject(MatDialogRef<TaskDialog>);
+  readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
 
   title = '';
   description = '';
   dueDate: string = new Date().toISOString().split('T')[0];
   status: TaskStatus = 'TODO';
 
-  isValid(): boolean {
+  get isEdit(): boolean {
+    return this.data.mode === 'edit';
+  }
+
+  get dialogTitle(): string {
+    return this.isEdit ? 'Edit task' : 'Add new task';
+  }
+
+  get primaryButtonLabel(): string {
+    return this.isEdit ? 'Save' : 'Create';
+  }
+
+  get isValid(): boolean {
     return this.title.trim().length > 0;
   }
 

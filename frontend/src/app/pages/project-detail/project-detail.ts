@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CreateTaskRequest, Task, TasksService, TaskStatus } from '../../services/tasks';
 import { DatePipe } from '@angular/common';
 import { TaskDialog } from './task-dialog';
+import { TaskDialogData } from './task-dialog.types';
 
 @Component({
   selector: 'app-project-detail',
@@ -44,6 +45,7 @@ export class ProjectDetail {
     const dialogRef = this.dialog.open(TaskDialog, {
       width: '600px',
       maxWidth: '80vw',
+      data: { mode: 'create' } satisfies TaskDialogData,
     });
 
     dialogRef.afterClosed().subscribe((result?: CreateTaskRequest) => {
@@ -63,6 +65,14 @@ export class ProjectDetail {
           this.notify(this.errorTasks);
         },
       });
+    });
+  }
+
+  openEditTaskDialog(task: Task) {
+    const dialogRef = this.dialog.open(TaskDialog, {
+      width: '600px',
+      maxWidth: '80vw',
+      data: { mode: 'edit', task } satisfies TaskDialogData,
     });
   }
 
