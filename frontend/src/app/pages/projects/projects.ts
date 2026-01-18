@@ -10,6 +10,8 @@ import {
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProjectDialog } from './project-dialog';
 import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
+import { ConfirmDialog } from '../../shared/dialogs/confirm-dialog';
+import { ConfirmDialogData } from '../../shared/dialogs/confirm-dialog.types';
 
 @Component({
   selector: 'app-projects',
@@ -25,7 +27,7 @@ export class Projects {
   readonly dialog = inject(MatDialog);
 
   projects: Project[] = [];
-  loading = true;
+  loading = false;
   error: string | null = null;
 
   openAddNewProjectDialog() {
@@ -41,7 +43,6 @@ export class Projects {
       this.projectsService.create(result.payload).subscribe({
         next: () => {
           // refresh list
-          this.loading = true;
           this.loadProjects();
           this.notify('Project created');
         },
@@ -61,19 +62,44 @@ export class Projects {
     });
 
     dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
-      if (!result || result.mode !== 'edit'  || !result.id) return; // Only edit expected here
+      if (!result || result.mode !== 'edit' || !result.id) return; // Only edit expected here
 
-      this.loading = true;
-      this.error = null;
       this.projectsService.update(result.id, result.payload).subscribe({
         next: () => {
           // refresh list
-          this.loading = true;
           this.loadProjects();
           this.notify('Project updated');
         },
         error: () => {
           this.error = 'Failed to update project';
+          this.notify(this.error);
+        },
+      });
+    });
+  }
+
+  openDeleteProjectConfirmDialog(project: Project) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '600px',
+      maxWidth: '80vw',
+      data: {
+        title: `Delete project "${project.name}"`,
+        message: `Are you sure you want to delete the project "${project.name}"? This action cannot be undone.`,
+        confirmButtonLabel: 'Delete',
+      } satisfies ConfirmDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: boolean) => {
+      if (result !== true) return; // Cancelled
+
+      this.projectsService.delete(project.id).subscribe({
+        next: () => {
+          // refresh list
+          this.loadProjects();
+          this.notify('Project deleted');
+        },
+        error: () => {
+          this.error = 'Failed to delete project';
           this.notify(this.error);
         },
       });
