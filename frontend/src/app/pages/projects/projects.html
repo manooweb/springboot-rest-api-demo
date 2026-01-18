@@ -1,30 +1,29 @@
 <h2>Projects</h2>
 
-<button
-  matButton="outlined"
-  color="primary"
-  (click)="openAddNewProjectDialog()"
->
+<button matButton="outlined" color="primary" (click)="openAddNewProjectDialog()">
   <mat-icon>add</mat-icon>
   Add new project
 </button>
 
 @if (loading) {
-  <p>Loading projects…</p>
+<p>Loading projects…</p>
 }
 
 @if (error) {
-  <p class="error">{{ error }}</p>
+<p class="error">{{ error }}</p>
 }
 
 <ul>
   @for (project of projects; track project.id) {
-    <li>
-      <button matIconButton class="edit-project-btn" (click)="showProjectDetail(project.id)">
-        <mat-icon>visibility</mat-icon>
-      </button>
-      <strong>{{ project.name }}</strong>
-      <div>{{ project.description }}</div>
-    </li>
+  <li>
+    <button matIconButton class="edit-project-btn" (click)="openEditProjectDialog(project)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button matIconButton class="show-project-btn" (click)="showProjectDetail(project.id)">
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <strong>{{ project.name }}</strong>
+    <div>{{ project.description }}</div>
+  </li>
   }
 </ul>
