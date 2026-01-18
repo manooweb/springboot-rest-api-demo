@@ -8,7 +8,7 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { CreateTaskRequest, Task, TasksService, TaskStatus } from '../../services/tasks';
+import { Task, TasksService, TaskStatus } from '../../services/tasks';
 import { DatePipe } from '@angular/common';
 import { TaskDialog } from './task-dialog';
 import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
