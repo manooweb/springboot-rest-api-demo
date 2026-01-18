@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TaskDialog } from './task-dialog';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { TaskDialogData } from './task-dialog.types';
 
 describe('TaskDialog', () => {
   let dialogRefSpy: jasmine.SpyObj<MatDialogRef<TaskDialog>>;
@@ -25,7 +26,8 @@ describe('TaskDialog', () => {
       ],
       providers: [
         provideNativeDateAdapter(),
-        { provide: MatDialogRef, useValue: dialogRefSpy }
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: { mode: 'create' } satisfies TaskDialogData },
       ],
     }).compileComponents();
   });
@@ -44,10 +46,13 @@ describe('TaskDialog', () => {
 
     expect(dialogRefSpy.close).toHaveBeenCalledTimes(1);
     expect(dialogRefSpy.close).toHaveBeenCalledWith({
-      title: 'My task',
-      description: 'Desc',
-      dueDate: '2026-01-15',
-      status: 'IN_PROGRESS',
+      mode: 'create',
+      payload: {
+        title: 'My task',
+        description: 'Desc',
+        dueDate: '2026-01-15',
+        status: 'IN_PROGRESS',
+      }
     });
   });
 
