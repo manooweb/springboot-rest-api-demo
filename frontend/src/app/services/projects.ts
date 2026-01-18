@@ -28,4 +28,8 @@ export class ProjectsService {
   create(payload: CreateProjectRequest) {
     return this.http.post<Project>(`${API_BASE_URL}/api/v1/projects`, payload);
   }
+
+  update(id: string, payload: CreateProjectRequest) {
+    return this.http.put<Project>(`${API_BASE_URL}/api/v1/projects/${id}`, payload);
+  }
 }

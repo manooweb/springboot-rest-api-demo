@@ -1,5 +1,5 @@
 <div class="dialog-title">
-  <h2 mat-dialog-title>Add new project</h2>
+  <h2 mat-dialog-title>{{dialogTitle}}</h2>
 
   <button mat-icon-button (click)="clickOnCancel()" aria-label="Close dialog">
     <mat-icon>close</mat-icon>
@@ -31,9 +31,9 @@
   <button matButton (click)="clickOnCancel()">Cancel</button>
   <button
     matButton (click)="clickOnOk()"
-    [disabled]="!isValid()"
+    [disabled]="!isValid"
     cdkFocusInitial
   >
-    Create
+    {{primaryButtonLabel}}
   </button>
 </mat-dialog-actions>

@@ -7,9 +7,9 @@ import {
   MatDialog,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { CreateProjectRequest } from '../../services/projects';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProjectDialog } from './project-dialog';
+import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
 
 @Component({
   selector: 'app-projects',
@@ -32,13 +32,13 @@ export class Projects {
     const dialogRef = this.dialog.open(ProjectDialog, {
       width: '600px',
       maxWidth: '80vw',
-      data: { name: '', description: '' },
+      data: { mode: 'create' } satisfies ProjectDialogData,
     });
 
-    dialogRef.afterClosed().subscribe((result?: CreateProjectRequest) => {
-      if (!result) return; // cancel
+    dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
+      if (!result || result.mode !== 'create') return; // cancel or not create
 
-      this.projectsService.create(result).subscribe({
+      this.projectsService.create(result.payload).subscribe({
         next: () => {
           // refresh list
           this.loading = true;
@@ -47,6 +47,33 @@ export class Projects {
         },
         error: () => {
           this.error = 'Failed to create project';
+          this.notify(this.error);
+        },
+      });
+    });
+  }
+
+  openEditProjectDialog(project: Project) {
+    const dialogRef = this.dialog.open(ProjectDialog, {
+      width: '600px',
+      maxWidth: '80vw',
+      data: { mode: 'edit', project } satisfies ProjectDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
+      if (!result || result.mode !== 'edit'  || !result.id) return; // Only edit expected here
+
+      this.loading = true;
+      this.error = null;
+      this.projectsService.update(result.id, result.payload).subscribe({
+        next: () => {
+          // refresh list
+          this.loading = true;
+          this.loadProjects();
+          this.notify('Project updated');
+        },
+        error: () => {
+          this.error = 'Failed to update project';
           this.notify(this.error);
         },
       });
