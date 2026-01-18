@@ -4,18 +4,12 @@ import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  MatDialogRef,
   MatDialog,
   MatDialogModule,
-  MatDialogActions,
-  MatDialogContent,
-  MatDialogTitle
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { CreateProjectRequest } from '../../services/projects';
-import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProjectDialog } from './project-dialog';
 
 @Component({
   selector: 'app-projects',
@@ -35,7 +29,7 @@ export class Projects {
   error: string | null = null;
 
   openAddNewProjectDialog() {
-    const dialogRef = this.dialog.open(AddNewProjectDialog, {
+    const dialogRef = this.dialog.open(ProjectDialog, {
       width: '600px',
       maxWidth: '80vw',
       data: { name: '', description: '' },
@@ -87,42 +81,6 @@ export class Projects {
 
   ngOnInit() {
     this.loadProjects();
-  }
-}
-
-@Component({
-  selector: 'add-new-project-dialog',
-  templateUrl: 'add-new-project.html',
-  styleUrl: 'add-new-project.scss',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-  ],
-})
-export class AddNewProjectDialog {
-  readonly dialogRef = inject(MatDialogRef<AddNewProjectDialog>);
-
-  name = '';
-  description = '';
-
-  isValid(): boolean {
-    return this.name.trim().length > 0;
-  }
-
-  clickOnOk(): void {
-    if (!this.name.trim()) return;
-    this.dialogRef.close({ name: this.name, description: this.description });
-  }
-
-  clickOnCancel(): void {
-    this.dialogRef.close();
   }
 }
 
