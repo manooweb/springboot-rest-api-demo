@@ -33,6 +33,6 @@ export class ProjectsService {
     return this.http.put<Project>(`${API_BASE_URL}/api/v1/projects/${id}`, payload);
   }
   delete(id: string) {
-    return this.http.delete(`${API_BASE_URL}/api/v1/projects/${id}`);
+    return this.http.delete<void>(`${API_BASE_URL}/api/v1/projects/${id}`);
   }
 }
