@@ -12,6 +12,8 @@ import { Task, TasksService, TaskStatus } from '../../services/tasks';
 import { DatePipe } from '@angular/common';
 import { TaskDialog } from './task-dialog';
 import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
+import { ConfirmDialog } from '../../shared/dialogs/confirm-dialog';
+import { ConfirmDialogData } from '../../shared/dialogs/confirm-dialog.types';
 
 @Component({
   selector: 'app-project-detail',
@@ -91,6 +93,37 @@ export class ProjectDetail {
         },
         error: () => {
           this.errorTasks = 'Failed to update task';
+          this.notify(this.errorTasks);
+        },
+      });
+    });
+  }
+
+  openDeleteTaskConfirmDialog(task: Task) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '600px',
+      maxWidth: '80vw',
+      data: {
+        title: `Delete Task "${task.title}"`,
+        message: `Are you sure you want to delete the task "${task.title}"? This action cannot be undone.`,
+        confirmButtonLabel: 'Delete',
+      } satisfies ConfirmDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: boolean) => {
+      if (result !== true) return; // Cancelled
+
+      this.loadingTasks = true;
+      this.errorTasks = null;
+      this.tasksService.delete(task.id).subscribe({
+        next: () => {
+          // refresh list
+          this.loadingTasks = true;
+          this.loadTasks();
+          this.notify('Task deleted');
+        },
+        error: () => {
+          this.errorTasks = 'Failed to delete task';
           this.notify(this.errorTasks);
         },
       });
