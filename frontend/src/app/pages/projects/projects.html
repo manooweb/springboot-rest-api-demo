@@ -13,20 +13,31 @@
 <p class="error">{{ error }}</p>
 }
 
-<ul>
-  @for (project of projects; track project.id) {
-  <li>
-    <button matIconButton class="edit-project-btn" (click)="openEditProjectDialog(project)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button matIconButton class="show-project-btn" (click)="showProjectDetail(project.id)">
-      <mat-icon>visibility</mat-icon>
-    </button>
-    <button matIconButton class="show-project-btn" (click)="openDeleteProjectConfirmDialog(project)">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
-    <strong>{{ project.name }}</strong>
-    <div>{{ project.description }}</div>
-  </li>
+<mat-list>
+  @for (project of projects; track project.id; let odd = $odd; let last = $last) {
+  <mat-list-item [class.alt-row]="odd">
+    <span matListItemTitle>{{ project.name }}</span>
+    <span matListItemLine>{{ project.description }}</span>
+
+    <span matListItemMeta>
+      <button mat-icon-button class="edit-project-btn" (click)="openEditProjectDialog(project)"
+        aria-label="Edit project">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button class="show-project-btn" (click)="showProjectDetail(project.id)"
+        aria-label="Open project">
+        <mat-icon>visibility</mat-icon>
+      </button>
+
+      <button mat-icon-button class="delete-project-btn" (click)="openDeleteProjectConfirmDialog(project)"
+        aria-label="Delete project">
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </span>
+  </mat-list-item>
+    @if (!last) {
+    <mat-divider></mat-divider>
+    }
   }
-</ul>
+</mat-list>
