@@ -14,11 +14,12 @@ import { TaskDialog } from './task-dialog';
 import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
 import { ConfirmDialog } from '../../shared/dialogs/confirm-dialog';
 import { ConfirmDialogData } from '../../shared/dialogs/confirm-dialog.types';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [DatePipe, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
+  imports: [DatePipe, MatListModule, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',
 })

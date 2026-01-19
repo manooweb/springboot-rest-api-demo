@@ -25,24 +25,44 @@
 <p class="error">{{ errorTasks }}</p>
 }
 
-<ul>
-  @for (task of tasks; track task.id) {
-  <li>
-    <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button matIconButton class="delete-task-btn" (click)="openDeleteTaskConfirmDialog(task)">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
-    <strong>{{ task.title }}</strong>
-    <div>{{ task.description }}</div>
-    <div>Due date: {{ task.dueDate | date }}</div>
-    <div>
-      <button matButton="tonal" class="status-btn" (click)="onStatusClick(task)" [disabled]="updatingTaskId === task.id">
-        <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
-        <span class="status-label">{{ statusLabel(task.status) }}</span>
-      </button>
-    </div>
-  </li>
+<mat-list>
+  @for (task of tasks; track task.id; let odd = $odd; let last = $last) {
+    <mat-list-item [class.alt-row]="odd">
+      <span matListItemTitle>{{ task.title }}</span>
+
+      @if (task.description) {
+        <span matListItemLine>{{ task.description }}</span>
+      }
+
+      <span matListItemLine class="task-subline">
+        Due: {{ task.dueDate | date }}
+      </span>
+
+      <span matListItemMeta class="task-meta-right">
+        <button
+          matButton="tonal"
+          class="status-btn"
+          (click)="onStatusClick(task)"
+          [disabled]="updatingTaskId === task.id"
+        >
+          <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
+          <span class="status-label">{{ statusLabel(task.status) }}</span>
+        </button>
+
+        <span class="task-actions">
+          <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)" aria-label="Edit task">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button matIconButton class="delete-task-btn" (click)="openDeleteTaskConfirmDialog(task)" aria-label="Delete task">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </span>
+      </span>
+    </mat-list-item>
+
+    @if (!last) {
+      <mat-divider></mat-divider>
+    }
   }
-</ul>
+</mat-list>
