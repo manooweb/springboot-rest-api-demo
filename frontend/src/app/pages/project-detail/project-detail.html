@@ -31,6 +31,9 @@
     <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)">
       <mat-icon>edit</mat-icon>
     </button>
+    <button matIconButton class="delete-task-btn" (click)="openDeleteTaskConfirmDialog(task)">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
     <strong>{{ task.title }}</strong>
     <div>{{ task.description }}</div>
     <div>Due date: {{ task.dueDate | date }}</div>

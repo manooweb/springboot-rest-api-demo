@@ -39,6 +39,10 @@ export class TasksService {
     return this.http.put<Task>(`${API_BASE_URL}/api/v1/tasks/${taskId}`, payload);
   }
 
+  delete(taskId: string) {
+    return this.http.delete<void>(`${API_BASE_URL}/api/v1/tasks/${taskId}`);
+  }
+
   updateStatus(taskId: string, status: TaskStatus) {
     return this.http.patch<Task>(`${API_BASE_URL}/api/v1/tasks/${taskId}/status`, { status });
   }
