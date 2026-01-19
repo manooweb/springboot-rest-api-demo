@@ -1,43 +1,62 @@
-<h2>Projects</h2>
+<section class="page">
+  <header class="page-header">
+    <h2 class="page-title">Projects</h2>
+  </header>
 
-<button matButton="outlined" color="primary" (click)="openAddNewProjectDialog()">
-  <mat-icon>add</mat-icon>
-  Add new project
-</button>
-
-@if (loading) {
-<p>Loading projects…</p>
-}
-
-@if (error) {
-<p class="error">{{ error }}</p>
-}
-
-<mat-list>
-  @for (project of projects; track project.id; let odd = $odd; let last = $last) {
-  <mat-list-item [class.alt-row]="odd">
-    <span matListItemTitle>{{ project.name }}</span>
-    <span matListItemLine>{{ project.description }}</span>
-
-    <span matListItemMeta>
-      <button mat-icon-button class="edit-project-btn" (click)="openEditProjectDialog(project)"
-        aria-label="Edit project">
-        <mat-icon>edit</mat-icon>
-      </button>
-
-      <button mat-icon-button class="show-project-btn" (click)="showProjectDetail(project.id)"
-        aria-label="Open project">
-        <mat-icon>visibility</mat-icon>
-      </button>
-
-      <button mat-icon-button class="delete-project-btn" (click)="openDeleteProjectConfirmDialog(project)"
-        aria-label="Delete project">
-        <mat-icon>delete_forever</mat-icon>
-      </button>
-    </span>
-  </mat-list-item>
-    @if (!last) {
-    <mat-divider></mat-divider>
+  <div class="page-status">
+    @if (loading) {
+      <mat-card class="status-card status-info">
+        <mat-card-content>
+          Loading projects…
+        </mat-card-content>
+      </mat-card>
     }
-  }
-</mat-list>
+
+    @if (error) {
+    <mat-card class="status-card status-error">
+      <mat-card-content>
+        {{ error }}
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+
+
+  <div class="page-actions">
+    <button matButton="outlined" color="primary" (click)="openAddNewProjectDialog()">
+      <mat-icon>add</mat-icon>
+      Add new project
+    </button>
+  </div>
+
+  <div class="page-content">
+    <mat-list>
+      @for (project of projects; track project.id; let odd = $odd; let last = $last) {
+      <mat-list-item [class.alt-row]="odd">
+        <span matListItemTitle>{{ project.name }}</span>
+        <span matListItemLine>{{ project.description }}</span>
+
+        <span matListItemMeta>
+          <button mat-icon-button class="edit-project-btn" (click)="openEditProjectDialog(project)"
+            aria-label="Edit project">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button class="show-project-btn" (click)="showProjectDetail(project.id)"
+            aria-label="Open project">
+            <mat-icon>visibility</mat-icon>
+          </button>
+
+          <button mat-icon-button class="delete-project-btn" (click)="openDeleteProjectConfirmDialog(project)"
+            aria-label="Delete project">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </span>
+      </mat-list-item>
+        @if (!last) {
+        <mat-divider></mat-divider>
+        }
+      }
+    </mat-list>
+  </div>
+</section>

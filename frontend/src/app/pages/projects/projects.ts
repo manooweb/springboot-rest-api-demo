@@ -14,11 +14,12 @@ import { ConfirmDialog } from '../../shared/dialogs/confirm-dialog';
 import { ConfirmDialogData } from '../../shared/dialogs/confirm-dialog.types';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [MatListModule, MatDividerModule, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
+  imports: [MatListModule, MatDividerModule, MatButtonModule, MatCardModule, MatIconModule, MatDialogModule, MatSnackBarModule],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
