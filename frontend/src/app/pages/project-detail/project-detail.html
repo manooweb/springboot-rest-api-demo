@@ -1,68 +1,99 @@
-@if (loadingProject) {
-<p>Loading project…</p>
-}
 
-@if (errorProject) {
-<p class="error">{{ errorProject }}</p>
-}
+<section class="page">
 
-<h2>{{ project?.name }} project detail</h2>
-<p>{{ project?.description }}</p>
-
-
-<button matButton="outlined" color="primary" (click)="openAddNewTaskDialog()">
-  <mat-icon>add</mat-icon>
-  Add new task
-</button>
-
-<h3>Tasks</h3>
-
-@if (loadingTasks) {
-<p>Loading tasks…</p>
-}
-
-@if (errorTasks) {
-<p class="error">{{ errorTasks }}</p>
-}
-
-<mat-list>
-  @for (task of tasks; track task.id; let odd = $odd; let last = $last) {
-    <mat-list-item [class.alt-row]="odd">
-      <span matListItemTitle>{{ task.title }}</span>
-
-      @if (task.description) {
-        <span matListItemLine>{{ task.description }}</span>
-      }
-
-      <span matListItemLine class="task-subline">
-        Due: {{ task.dueDate | date }}
-      </span>
-
-      <span matListItemMeta class="task-meta-right">
-        <button
-          matButton="tonal"
-          class="status-btn"
-          (click)="onStatusClick(task)"
-          [disabled]="updatingTaskId === task.id"
-        >
-          <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
-          <span class="status-label">{{ statusLabel(task.status) }}</span>
-        </button>
-
-        <span class="task-actions">
-          <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)" aria-label="Edit task">
-            <mat-icon>edit</mat-icon>
-          </button>
-
-          <button matIconButton class="delete-task-btn" (click)="openDeleteTaskConfirmDialog(task)" aria-label="Delete task">
-            <mat-icon>delete_forever</mat-icon>
-          </button>
-        </span>
-      </span>
-    </mat-list-item>
-
-    @if (!last) {
-      <mat-divider></mat-divider>
+  <div class="page-status">
+    @if (loadingProject) {
+      <mat-card class="status-card status-info">
+        <mat-card-content>
+          Loading project…
+        </mat-card-content>
+      </mat-card>
     }
-  }
-</mat-list>
+
+    @if (errorProject) {
+      <mat-card class="status-card status-error">
+        <mat-card-content>
+          {{ errorProject }}
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (loadingTasks) {
+      <mat-card class="status-card status-info">
+        <mat-card-content>
+          Loading tasks…
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (errorTasks) {
+      <mat-card class="status-card status-error">
+        <mat-card-content>
+          {{ errorTasks }}
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ project?.name }} project detail</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ project?.description }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <header class="page-header">
+    <h2>Tasks</h2>
+  </header>
+
+  <div class="page-actions">
+    <button matButton="outlined" color="primary" (click)="openAddNewTaskDialog()">
+      <mat-icon>add</mat-icon>
+      Add new task
+    </button>
+  </div>
+
+  <mat-list>
+    @for (task of tasks; track task.id; let odd = $odd; let last = $last) {
+      <mat-list-item [class.alt-row]="odd">
+        <span matListItemTitle>{{ task.title }}</span>
+
+        @if (task.description) {
+          <span matListItemLine>{{ task.description }}</span>
+        }
+
+        <span matListItemLine class="task-subline">
+          Due: {{ task.dueDate | date }}
+        </span>
+
+        <span matListItemMeta class="task-meta-right">
+          <button
+            matButton="tonal"
+            class="status-btn"
+            (click)="onStatusClick(task)"
+            [disabled]="updatingTaskId === task.id"
+          >
+            <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
+            <span class="status-label">{{ statusLabel(task.status) }}</span>
+          </button>
+
+          <span class="task-actions">
+            <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)" aria-label="Edit task">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button matIconButton class="delete-task-btn" (click)="openDeleteTaskConfirmDialog(task)" aria-label="Delete task">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </span>
+        </span>
+      </mat-list-item>
+
+      @if (!last) {
+        <mat-divider></mat-divider>
+      }
+    }
+  </mat-list>
+</section>
