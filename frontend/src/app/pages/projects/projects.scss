@@ -1,3 +1,42 @@
+.page {
+  display: block;
+  padding: 16px;
+}
+
+.page-header {
+  margin-bottom: 8px;
+}
+
+.page-status {
+  margin-bottom: 20px;
+}
+
+.page-actions {
+  margin-bottom: 0;
+}
+
+.page-content {
+  display: block;
+}
+
 mat-list-item.alt-row {
   background-color: var(--mat-sys-surface-variant, rgba(0, 0, 0, 0.02));
+}
+
+.status-card {
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+.status-card mat-card-content {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.status-error {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+.status-info {
+  background-color: rgba(33, 150, 243, 0.08);
 }
