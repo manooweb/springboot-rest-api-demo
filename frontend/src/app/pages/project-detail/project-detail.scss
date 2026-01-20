@@ -1,3 +1,9 @@
+:host ::ng-deep .item-list .mdc-list-item--with-trailing-meta .mdc-list-item__end {
+  align-self: center;
+  display: flex;
+  align-items: center;
+}
+
 .page {
   display: block;
   padding: 16px;
@@ -48,4 +54,27 @@ mat-list-item.alt-row {
 
 .status-emoji {
   margin-right: 4px;
+}
+
+.item-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-action {
+  width: 40px;
+  height: 40px;
+}
+
+.icon-action:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 999px;
 }

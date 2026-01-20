@@ -55,7 +55,7 @@
     </button>
   </div>
 
-  <mat-list>
+  <mat-list class="item-list">
     @for (task of tasks; track task.id; let odd = $odd; let last = $last) {
       <mat-list-item [class.alt-row]="odd">
         <span matListItemTitle>{{ task.title }}</span>
@@ -68,23 +68,24 @@
           Due: {{ task.dueDate | date }}
         </span>
 
-        <span matListItemMeta class="task-meta-right">
+        <span matListItemMeta class="item-meta">
           <button
-            matButton="tonal"
+            matButton="outlined"
             class="status-btn"
             (click)="onStatusClick(task)"
             [disabled]="updatingTaskId === task.id"
+            aria-label="Change task status"
           >
             <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
             <span class="status-label">{{ statusLabel(task.status) }}</span>
           </button>
 
-          <span class="task-actions">
-            <button matIconButton class="edit-task-btn" (click)="openEditTaskDialog(task)" aria-label="Edit task">
+          <span class="item-actions">
+            <button matIconButton class="icon-action" (click)="openEditTaskDialog(task)" aria-label="Edit task">
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button matIconButton class="delete-task-btn" (click)="openDeleteTaskConfirmDialog(task)" aria-label="Delete task">
+            <button matIconButton class="icon-action" (click)="openDeleteTaskConfirmDialog(task)" aria-label="Delete task">
               <mat-icon>delete_forever</mat-icon>
             </button>
           </span>
