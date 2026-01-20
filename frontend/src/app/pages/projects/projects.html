@@ -30,24 +30,24 @@
   </div>
 
   <div class="page-content">
-    <mat-list>
+    <mat-list class="item-list">
       @for (project of projects; track project.id; let odd = $odd; let last = $last) {
       <mat-list-item [class.alt-row]="odd">
         <span matListItemTitle>{{ project.name }}</span>
         <span matListItemLine>{{ project.description }}</span>
 
-        <span matListItemMeta>
-          <button mat-icon-button class="edit-project-btn" (click)="openEditProjectDialog(project)"
+        <span matListItemMeta class="item-meta">
+          <button mat-icon-button class="icon-action" (click)="openEditProjectDialog(project)"
             aria-label="Edit project">
             <mat-icon>edit</mat-icon>
           </button>
 
-          <button mat-icon-button class="show-project-btn" (click)="showProjectDetail(project.id)"
+          <button mat-icon-button class="icon-action" (click)="showProjectDetail(project.id)"
             aria-label="Open project">
             <mat-icon>visibility</mat-icon>
           </button>
 
-          <button mat-icon-button class="delete-project-btn" (click)="openDeleteProjectConfirmDialog(project)"
+          <button mat-icon-button class="icon-action" (click)="openDeleteProjectConfirmDialog(project)"
             aria-label="Delete project">
             <mat-icon>delete_forever</mat-icon>
           </button>
