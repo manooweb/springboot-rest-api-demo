@@ -78,3 +78,39 @@ mat-list-item.alt-row {
   outline-offset: 2px;
   border-radius: 999px;
 }
+
+/* Handset: stack content and meta vertically */
+@media (max-width: 600px) {
+  :host ::ng-deep .item-list .mdc-list-item__content {
+    padding: 0 8px;
+  }
+
+  :host ::ng-deep .item-list .mdc-list-item--with-trailing-meta {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding: 8px 0;
+  }
+
+  :host ::ng-deep .item-list .mdc-list-item--with-trailing-meta .mdc-list-item__end {
+    align-self: stretch;
+    margin: 0;
+  }
+
+  .item-meta {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .status-btn {
+    flex: 1 1 100%;
+    margin: 0 8px;
+  }
+
+  .item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+

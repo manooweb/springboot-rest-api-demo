@@ -63,3 +63,22 @@ mat-list-item.alt-row {
   outline-offset: 2px;
   border-radius: 999px;
 }
+
+/* Handset: stack content and meta vertically */
+@media (max-width: 600px) {
+  :host ::ng-deep .item-list .mdc-list-item--with-trailing-meta {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  :host ::ng-deep .item-list .mdc-list-item--with-trailing-meta .mdc-list-item__end {
+    align-self: stretch;
+  }
+
+  .item-meta {
+    justify-content: flex-end;
+  }
+}
