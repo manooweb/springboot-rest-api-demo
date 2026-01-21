@@ -1,17 +1,18 @@
-<mat-toolbar color="primary">
-  <h1>{{ title() }}</h1>
+<mat-toolbar color="primary" class="app-toolbar">
+  <h1 class="app-toolbar__title">{{ title() }}</h1>
 
-  <span style="flex: 1 1 auto"></span>
 
-  @if (auth.isLoggedIn()) {
-  <a mat-button routerLink="/projects" routerLinkActive="active-link">
-    Projects
-  </a>
-  }
+  <div class="app-toolbar__actions">
+    @if (auth.isLoggedIn()) {
+    <a mat-button routerLink="/projects" routerLinkActive="active-link">
+      Projects
+    </a>
+    }
 
-  <button matButton="outlined" (click)="onAuthAction()">
-    {{ auth.isLoggedIn() ? 'Logout' : 'Login' }}
-  </button>
+    <button matButton="outlined" (click)="onAuthAction()">
+      {{ auth.isLoggedIn() ? 'Logout' : 'Login' }}
+    </button>
+  </div>
 </mat-toolbar>
 
 <div class="app-container">
