@@ -37,3 +37,25 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* App dialogs: responsive behavior on handset */
+@media (max-width: 600px) {
+  /* The panelClass is applied to the overlay pane */
+  .cdk-overlay-pane.app-dialog {
+    width: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  /* Make the dialog surface fill the pane */
+  .cdk-overlay-pane.app-dialog .mat-mdc-dialog-surface {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 32px);
+  }
+
+  /* Internal scroll stays inside the dialog */
+  .cdk-overlay-pane.app-dialog .mat-mdc-dialog-content {
+    max-height: calc(100dvh - 220px);
+    overflow: auto;
+  }
+}
