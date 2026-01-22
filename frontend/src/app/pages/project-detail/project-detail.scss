@@ -101,6 +101,7 @@ mat-list-item.alt-row {
     justify-content: flex-end;
     flex-wrap: wrap;
     align-items: stretch;
+    gap: 12px;
   }
 
   .status-btn {
@@ -111,6 +112,12 @@ mat-list-item.alt-row {
   .item-actions {
     width: 100%;
     justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .icon-action {
+    width: 48px;
+    height: 48px;
   }
 }
 

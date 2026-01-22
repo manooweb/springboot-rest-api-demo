@@ -80,5 +80,11 @@ mat-list-item.alt-row {
 
   .item-meta {
     justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .icon-action {
+    width: 48px;
+    height: 48px;
   }
 }
