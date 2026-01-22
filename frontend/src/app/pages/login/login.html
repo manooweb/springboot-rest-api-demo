@@ -1,27 +1,49 @@
 <div class="login-container">
-  <h2>Login</h2>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Username</mat-label>
-    <input matInput [(ngModel)]="username" data-testid="username" />
-  </mat-form-field>
+  <div class="page-status">
+    @if (error) {
+      <mat-card class="status-card status-error">
+        <mat-card-content>
+          {{ error }}
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" [(ngModel)]="password" data-testid="password" />
-  </mat-form-field>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+    <h2>Login</h2>
 
-  <button
-    data-testid="login-submit"
-    matButton="outlined"
-    color="primary"
-    (click)="submit()"
-    [disabled]="loading"
-  >
-    Login
-  </button>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
 
-  @if (error) {
-    <p class="error">{{ error }}</p>
-  }
+      <input matInput type="email" formControlName="email"/>
+
+      @if (shouldShowError(emailCtrl)) {
+        <mat-error>
+          @if (emailCtrl.hasError('required')) {
+            <span>Email is required.</span>
+          }
+          @if (emailCtrl.hasError('email')) {
+            <span>Please enter a valid email address.</span>
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+
+      <input matInput type="password" formControlName="password"/>
+
+      @if (shouldShowError(passwordCtrl)) {
+        <mat-error>
+          Password is required.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <button matButton="outlined" color="primary" [disabled]="form.invalid || loading" type="submit">
+      Login
+    </button>
+  </form>
 </div>

@@ -6,6 +6,34 @@
   gap: 1rem;
 }
 
-.error {
-  color: #c62828;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.page-status {
+  margin-bottom: 0.5rem;
+}
+
+.status-card {
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+.status-card mat-card-content {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.status-error {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+.status-info {
+  background-color: rgba(33, 150, 243, 0.08);
 }
