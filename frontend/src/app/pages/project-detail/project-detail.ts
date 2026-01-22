@@ -49,6 +49,7 @@ export class ProjectDetail {
     const dialogRef = this.dialog.open(TaskDialog, {
       width: '600px',
       maxWidth: '80vw',
+      panelClass: 'app-dialog',
       data: { mode: 'create' } satisfies TaskDialogData,
     });
 
@@ -77,6 +78,7 @@ export class ProjectDetail {
     const dialogRef = this.dialog.open(TaskDialog, {
       width: '600px',
       maxWidth: '80vw',
+      panelClass: 'app-dialog',
       data: { mode: 'edit', task } satisfies TaskDialogData,
     });
 
@@ -105,6 +107,7 @@ export class ProjectDetail {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '600px',
       maxWidth: '80vw',
+      panelClass: 'app-dialog',
       data: {
         title: `Delete Task "${task.title}"`,
         message: `Are you sure you want to delete the task "${task.title}"? This action cannot be undone.`,

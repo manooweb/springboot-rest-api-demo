@@ -37,6 +37,7 @@ export class Projects {
     const dialogRef = this.dialog.open(ProjectDialog, {
       width: '600px',
       maxWidth: '80vw',
+      panelClass: 'app-dialog',
       data: { mode: 'create' } satisfies ProjectDialogData,
     });
 
@@ -61,6 +62,7 @@ export class Projects {
     const dialogRef = this.dialog.open(ProjectDialog, {
       width: '600px',
       maxWidth: '80vw',
+      panelClass: 'app-dialog',
       data: { mode: 'edit', project } satisfies ProjectDialogData,
     });
 
@@ -85,6 +87,7 @@ export class Projects {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '600px',
       maxWidth: '80vw',
+      panelClass: 'app-dialog',
       data: {
         title: `Delete project "${project.name}"`,
         message: `Are you sure you want to delete the project "${project.name}"? This action cannot be undone.`,
