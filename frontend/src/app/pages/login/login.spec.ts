@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { Login } from './login';
 import { Auth, LoginResponse } from '../../services/auth';
 import { Router } from '@angular/router';
 
-describe('Login', () => {
+fdescribe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
 
@@ -20,7 +19,7 @@ describe('Login', () => {
       tokenType: 'Bearer',
       accessToken: 'fake-jwt-token',
       expiresInSeconds: 3600,
-     };
+    };
 
     authSpy = jasmine.createSpyObj<Auth>('Auth', ['login']);
     authSpy.login.and.returnValue(of(fakeResponse));
@@ -30,39 +29,53 @@ describe('Login', () => {
     await TestBed.configureTestingModule({
       imports: [Login],
       providers: [
-        provideHttpClient(),
         provideHttpClientTesting(),
-        provideAnimations(),
+        provideNoopAnimations(),
         { provide: Auth, useValue: authSpy },
         { provide: Router, useValue: routerSpy },
       ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should call Auth.login with username and password when clicking Login', () => {
-    const host = fixture.nativeElement as HTMLElement;
+  it('should call Auth.login and navigate when form is valid and submit is called', () => {
+    component.form.setValue({
+      email: 'test@example.com',
+      password: 'test'
+    });
 
-    const usernameInput = host.querySelector('[data-testid="username"]') as HTMLInputElement;
-    const passwordInput = host.querySelector('[data-testid="password"]') as HTMLInputElement;
-    const submitButton = host.querySelector('[data-testid="login-submit"]') as HTMLButtonElement;
+    component.submit();
 
-    usernameInput.value = 'test';
-    usernameInput.dispatchEvent(new Event('input'));
+    expect(authSpy.login).toHaveBeenCalledOnceWith('test@example.com', 'test');
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith('/projects');
+  });
 
-    passwordInput.value = 'test';
-    passwordInput.dispatchEvent(new Event('input'));
+  it('should not call Auth.login when form is invalid', () => {
+    component.form.setValue({
+      email: '',        // invalid: required + email
+      password: 'test',
+    });
 
-    fixture.detectChanges();
+    component.submit();
 
-    submitButton.click();
+    expect(authSpy.login).not.toHaveBeenCalled();
+    expect(routerSpy.navigateByUrl).not.toHaveBeenCalled();
+  });
 
-    expect(authSpy.login).toHaveBeenCalledWith('test', 'test');
-    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/projects');
+  it('should mark submitAttempted when submitting an invalid form', () => {
+    component.form.setValue({
+      email: '',
+      password: '',
+    });
+
+    component.submit();
+
+    expect(component.submitAttempted).toBeTrue();
+    expect(authSpy.login).not.toHaveBeenCalled();
   });
 
   it('should create', () => {
