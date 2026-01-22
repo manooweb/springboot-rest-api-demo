@@ -3,6 +3,11 @@ import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/rou
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Auth } from './services/auth';
+import { environment } from '../environments/environment';
+
+if (!environment.production) {
+  console.info('[DEV] API base URL:', environment.apiBaseUrl);
+}
 
 @Component({
   selector: 'app-root',
