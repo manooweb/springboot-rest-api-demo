@@ -16,7 +16,7 @@ headers {
 
 body:json {
   {
-  "username": "demo",
+  "username": "demo@example.com",
   "password": "demo"
   }
 }
@@ -25,11 +25,11 @@ tests {
   test("status is 200", function () {
     expect(res.status).to.equal(200);
   });
-  
+
   test("response has accessToken", function () {
     expect(res.body).to.have.property("accessToken");
   });
-  
+
   test("save token", function () {
     bru.setVar("token", res.body.accessToken);
   });
