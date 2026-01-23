@@ -11,7 +11,7 @@
 
     <mat-form-field class="full-width">
       <mat-label>Project name</mat-label>
-      <input matInput formControlName="name"/>
+      <input matInput formControlName="name" cdkFocusInitial/>
       @if (submitAttempted && form.controls.name.invalid) {
         <mat-error>Name is required.</mat-error>
       }
