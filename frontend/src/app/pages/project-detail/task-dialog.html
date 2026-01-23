@@ -11,7 +11,7 @@
   <mat-dialog-content class="dialog-content">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Title</mat-label>
-      <input matInput formControlName="title" />
+      <input matInput formControlName="title" cdkFocusInitial/>
       @if (submitAttempted && form.controls.title.invalid) {
         <mat-error>Title is required.</mat-error>
       }
@@ -45,7 +45,7 @@
 
   <mat-dialog-actions>
     <button mat-button type="button" (click)="clickOnCancel()">Cancel</button>
-    <button mat-button type="submit" [disabled]="form.invalid" cdkFocusInitial>
+    <button mat-button type="submit" [disabled]="form.invalid">
       {{ primaryButtonLabel }}
     </button>
   </mat-dialog-actions>
