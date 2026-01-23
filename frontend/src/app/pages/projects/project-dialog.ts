@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -11,7 +11,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateProjectRequest, Project } from '../../services/projects';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
 @Component({
   selector: 'project-dialog',
@@ -21,7 +21,7 @@ import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
   imports: [
     MatButtonModule,
     MatIconModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogTitle,
@@ -29,12 +29,17 @@ import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
     MatDialogActions,
   ],
 })
-export class ProjectDialog {
-  readonly dialogRef = inject(MatDialogRef<ProjectDialog>);
-  readonly data = inject<ProjectDialogData>(MAT_DIALOG_DATA);
+export class ProjectDialog implements OnInit {
+  private readonly dialogRef = inject(MatDialogRef<ProjectDialog>);
+  private readonly data = inject<ProjectDialogData>(MAT_DIALOG_DATA);
+  private readonly formBuilder = inject(FormBuilder);
 
-  name = '';
-  description = '';
+  submitAttempted = false;
+
+  readonly form = this.formBuilder.group({
+    name: this.formBuilder.control('', { validators: [Validators.required], nonNullable: true }),
+    description: this.formBuilder.control('', { nonNullable: true }),
+  });
 
   get isEdit(): boolean {
     return this.data.mode === 'edit';
@@ -48,10 +53,6 @@ export class ProjectDialog {
     return this.isEdit ? 'Save' : 'Create';
   }
 
-  get isValid(): boolean {
-    return this.name.trim().length > 0;
-  }
-
   ngOnInit() {
     if (this.isEdit && this.data.project) {
       this.prefillFromProject(this.data.project);
@@ -59,11 +60,15 @@ export class ProjectDialog {
   }
 
   clickOnOk(): void {
-    if (!this.isValid) return;
+    this.submitAttempted = true;
+
+    if (this.form.invalid) return;
+
+    const formValues = this.form.getRawValue();
 
     const payload: CreateProjectRequest = {
-      name: this.name.trim(),
-      description: this.description?.trim() || undefined,
+      name: formValues.name.trim(),
+      description: formValues.description.trim(),
     };
 
     const result: ProjectDialogResult = this.isEdit
@@ -78,8 +83,10 @@ export class ProjectDialog {
   }
 
   private prefillFromProject(project: Project) {
-    this.name = project.name;
-    this.description = project.description ?? '';
+    this.form.patchValue({
+      name: project.name,
+      description: project.description ?? '',
+    });
   }
 }
 

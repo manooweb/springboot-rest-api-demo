@@ -1,12 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProjectDialog } from './project-dialog';
-import { FormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { ProjectDialogData } from './project-dialog.types';
 
 describe('ProjectDialog', () => {
@@ -18,14 +12,8 @@ describe('ProjectDialog', () => {
     await TestBed.configureTestingModule({
       imports: [
         ProjectDialog,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        FormsModule
       ],
       providers: [
-        provideNativeDateAdapter(),
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { mode: 'create' } satisfies ProjectDialogData },
       ],
@@ -37,8 +25,10 @@ describe('ProjectDialog', () => {
       mode: 'create',
     } satisfies ProjectDialogData);
 
-    component.name = 'My project';
-    component.description = 'Desc';
+    component.form.setValue({
+      name: 'My project',
+      description: 'Desc',
+    });
 
     component.clickOnOk();
 
@@ -52,14 +42,16 @@ describe('ProjectDialog', () => {
     });
   });
 
-  it('should close with expected payload and taskId in edit mode', () => {
+  it('should close with expected payload and id in edit mode', () => {
     const { component } = createComponent({
       mode: 'edit',
       project: { id: 'p1', name: 'Old', description: 'Old desc' },
     } satisfies ProjectDialogData);
 
-    component.name = ' Updated name ';
-    component.description = '   '; // should become undefined
+    component.form.setValue({
+      name: 'Updated name',
+      description: '   ', // should become empty string
+    });
 
     component.clickOnOk();
 
@@ -68,7 +60,7 @@ describe('ProjectDialog', () => {
       id: 'p1',
       payload: {
         name: 'Updated name', // trimmed
-        description: undefined, // trimmed -> empty -> undefined
+        description: '', // defined as nonNullable control
       },
     });
   });
@@ -83,8 +75,10 @@ describe('ProjectDialog', () => {
       },
     } satisfies ProjectDialogData);
 
-    expect(component.name).toBe('Old name');
-    expect(component.description).toBe('Old desc');
+    const formValues = component.form.getRawValue();
+
+    expect(formValues.name).toBe('Old name');
+    expect(formValues.description).toBe('Old desc');
   });
 
   it('should not close when name is blank', () => {
@@ -104,7 +98,7 @@ describe('ProjectDialog', () => {
   it('should expose correct title and primary label in edit mode', () => {
     const { component } = createComponent({
       mode: 'edit',
-      project: { id: 't1', name: 'p1', description: 'desc' },
+      project: { id: 'p1', name: 'Old', description: 'desc' },
     });
     expect(component.dialogTitle).toBe('Edit project');
     expect(component.primaryButtonLabel).toBe('Save');
