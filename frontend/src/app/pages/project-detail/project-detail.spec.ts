@@ -21,7 +21,7 @@ describe('ProjectDetail', () => {
     id: 't1',
     title: 'Task 1',
     description: 'Description 1',
-    dueDate: '2026-01-19',
+    dueDate: new Date('2026-01-19'),
     status: 'TODO',
   };
 

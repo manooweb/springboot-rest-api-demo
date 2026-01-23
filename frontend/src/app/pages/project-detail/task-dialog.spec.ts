@@ -37,10 +37,12 @@ describe('TaskDialog', () => {
       mode: 'create',
     } satisfies TaskDialogData);
 
-    component.title = 'My task';
-    component.description = 'Desc';
-    component.dueDate = '2026-01-15';
-    component.status = 'IN_PROGRESS';
+    component.form.setValue({
+      title: 'My task',
+      description: 'Desc',
+      dueDate: new Date('2026-01-15'),
+      status: 'IN_PROGRESS',
+    });
 
     component.clickOnOk();
 
@@ -62,10 +64,12 @@ describe('TaskDialog', () => {
       task: { id: 't1', projectId: 'p1', title: 'Old', status: 'TODO' },
     } satisfies TaskDialogData);
 
-    component.title = ' Updated title ';
-    component.description = '   '; // should become undefined
-    component.dueDate = '2026-01-15';
-    component.status = 'IN_PROGRESS';
+    component.form.setValue({
+      title: ' Updated title ',
+      description: '   ', // should become undefined
+      dueDate: new Date('2026-01-15'),
+      status: 'IN_PROGRESS',
+    });
 
     component.clickOnOk();
 
@@ -74,7 +78,7 @@ describe('TaskDialog', () => {
       taskId: 't1',
       payload: {
         title: 'Updated title', // trimmed
-        description: undefined, // trimmed -> empty -> undefined
+        description: '', // defined as nonNullable control
         dueDate: '2026-01-15',
         status: 'IN_PROGRESS',
       },
@@ -90,14 +94,16 @@ describe('TaskDialog', () => {
         title: 'Old title',
         description: 'Old desc',
         status: 'DONE',
-        dueDate: '2026-02-01',
+        dueDate: new Date('2026-02-01'),
       },
     } satisfies TaskDialogData);
 
-    expect(component.title).toBe('Old title');
-    expect(component.description).toBe('Old desc');
-    expect(component.status).toBe('DONE');
-    expect(component.dueDate).toBe('2026-02-01');
+    const formValues = component.form.getRawValue();
+
+    expect(formValues.title).toBe('Old title');
+    expect(formValues.description).toBe('Old desc');
+    expect(formValues.status).toBe('DONE');
+    expect(formValues.dueDate).toEqual(new Date('2026-02-01'));
   });
 
   it('should not close when title is blank', () => {

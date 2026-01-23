@@ -10,7 +10,7 @@ export interface Task {
   title: string;
   description?: string;
   status: TaskStatus;
-  dueDate?: string;
+  dueDate?: Date;
 }
 
 export interface CreateTaskRequest {
