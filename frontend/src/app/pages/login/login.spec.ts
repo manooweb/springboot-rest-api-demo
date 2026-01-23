@@ -7,7 +7,7 @@ import { Login } from './login';
 import { Auth, LoginResponse } from '../../services/auth';
 import { Router } from '@angular/router';
 
-fdescribe('Login', () => {
+describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
 
