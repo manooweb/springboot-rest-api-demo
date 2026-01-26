@@ -11,39 +11,38 @@
   </div>
 
   <form #formEl [formGroup]="form" (ngSubmit)="submit()" class="login-form">
-    <h2>Login</h2>
+    <h2>{{ 'auth.login.title' | translate }}</h2>
 
     <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
+      <mat-label>{{ 'auth.login.label.email' | translate }}</mat-label>
 
       <input matInput type="email" formControlName="email"/>
 
       @if (emailCtrl.invalid && (emailCtrl.touched || submitAttempted)) {
         <mat-error>
           @if (emailCtrl.hasError('required')) {
-            <span>Email is required.</span>
+            <span>{{ 'auth.login.validation.emailRequired' | translate }}</span>
           }
           @if (emailCtrl.hasError('email')) {
-            <span>Please enter a valid email address.</span>
+            <span>{{ 'auth.login.validation.emailInvalid' | translate }}</span>
           }
         </mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-
+      <mat-label>{{ 'auth.login.label.password' | translate }}</mat-label>
       <input matInput type="password" formControlName="password"/>
 
       @if (passwordCtrl.invalid && (passwordCtrl.touched || submitAttempted)) {
         <mat-error>
-          Password is required.
+          {{ 'auth.login.validation.passwordRequired' | translate }}
         </mat-error>
       }
     </mat-form-field>
 
     <button matButton="outlined" color="primary" [disabled]="loading" type="submit">
-      Login
+      {{ 'auth.login.action.submit' | translate }}
     </button>
   </form>
 </div>

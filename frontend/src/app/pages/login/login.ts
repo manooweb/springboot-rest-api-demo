@@ -6,10 +6,12 @@ import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { UiTextService } from '../../shared/i18n/ui-text.service';
+import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 
 @Component({
   selector: 'app-login',
-  imports: [MatCardModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [MatCardModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, TranslatePipe],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -17,9 +19,10 @@ export class Login {
   @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
   error: string | null = null;
   loading = false;
-  router = inject(Router);
-  auth = inject(Auth);
-  formBuilder = inject(FormBuilder);
+  readonly router = inject(Router);
+  readonly auth = inject(Auth);
+  readonly formBuilder = inject(FormBuilder);
+  readonly translate = inject(UiTextService);
 
   submitAttempted = false;
 
@@ -57,7 +60,7 @@ export class Login {
       },
       error: () => {
         this.loading = false;
-        this.error = 'Invalid credentials';
+        this.error = this.translate.t('auth.login.error.invalidCredentials');
       },
     });
   }

@@ -1,16 +1,16 @@
 <mat-toolbar color="primary" class="app-toolbar">
-  <h1 class="app-toolbar__title">{{ title() }}</h1>
+  <h1 class="app-toolbar__title">{{ 'app.title' | translate }}</h1>
 
 
   <div class="app-toolbar__actions">
     @if (auth.isLoggedIn()) {
     <a mat-button routerLink="/projects" routerLinkActive="active-link">
-      Projects
+      {{ 'app.nav.projects' | translate }}
     </a>
     }
 
     <button matButton="outlined" (click)="onAuthAction()">
-      {{ auth.isLoggedIn() ? 'Logout' : 'Login' }}
+      {{ authActionLabel | translate }}
     </button>
   </div>
 </mat-toolbar>
