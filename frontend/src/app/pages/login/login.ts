@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,17 +14,18 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './login.scss',
 })
 export class Login {
+  @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
   error: string | null = null;
   loading = false;
   router = inject(Router);
   auth = inject(Auth);
-  fb = inject(FormBuilder);
+  formBuilder = inject(FormBuilder);
 
   submitAttempted = false;
 
-  form = this.fb.group({
-    email: ['demo@example.com', [Validators.required, Validators.email]],
-    password: ['demo', [Validators.required]],
+  form = this.formBuilder.group({
+    email: this.formBuilder.control('demo@example.com', { validators: [Validators.required, Validators.email], nonNullable: true }),
+    password: this.formBuilder.control('demo', { validators: [Validators.required], nonNullable: true }),
   });
 
   get emailCtrl() {
@@ -35,25 +36,21 @@ export class Login {
     return this.form.controls.password;
   }
 
-  shouldShowError(control: { invalid: boolean }) {
-    // Show errors only after the first submit attempt
-    return this.submitAttempted && control.invalid;
-  }
-
   submit() {
     this.error = null;
     this.submitAttempted = true;
+    this.form.markAllAsTouched();
 
     if (this.form.invalid) {
+      this.focusFirstInvalidControl();
       return;
     }
 
     this.loading = true;
 
-    const email = this.form.controls.email.value ?? '';
-    const password = this.form.controls.password.value ?? '';
+    const { email, password } = this.form.getRawValue();
 
-    this.auth.login(email, password).subscribe({
+    this.auth.login(email.trim(), password.trim()).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigateByUrl('/projects');
@@ -63,5 +60,15 @@ export class Login {
         this.error = 'Invalid credentials';
       },
     });
+  }
+
+  private focusFirstInvalidControl(): void {
+    const invalidControlName = Object.keys(this.form.controls)
+      .find((name) => this.form.controls[name as keyof typeof this.form.controls].invalid);
+
+    if (!invalidControlName) return;
+
+    const el = this.formEl?.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalidControlName}"]`);
+    el?.focus();
   }
 }

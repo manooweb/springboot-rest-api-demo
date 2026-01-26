@@ -6,13 +6,13 @@
   </button>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="clickOnOk()">
+<form #formEl [formGroup]="form" (ngSubmit)="clickOnOk()">
   <mat-dialog-content class="dialog-content">
 
     <mat-form-field class="full-width">
       <mat-label>Project name</mat-label>
       <input matInput formControlName="name" cdkFocusInitial/>
-      @if (submitAttempted && form.controls.name.invalid) {
+      @if (nameCtrl.invalid && (nameCtrl.touched || submitAttempted)) {
         <mat-error>Name is required.</mat-error>
       }
     </mat-form-field>
@@ -33,11 +33,7 @@
 
   <mat-dialog-actions>
     <button matButton type="button" (click)="clickOnCancel()">Cancel</button>
-    <button
-      matButton type="submit"
-      [disabled]="form.invalid"
-      cdkFocusInitial
-    >
+    <button matButton type="submit">
       {{primaryButtonLabel}}
     </button>
   </mat-dialog-actions>

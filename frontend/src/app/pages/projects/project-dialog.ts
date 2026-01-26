@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -30,6 +30,7 @@ import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
   ],
 })
 export class ProjectDialog implements OnInit {
+  @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
   private readonly dialogRef = inject(MatDialogRef<ProjectDialog>);
   private readonly data = inject<ProjectDialogData>(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);
@@ -40,6 +41,10 @@ export class ProjectDialog implements OnInit {
     name: this.formBuilder.control('', { validators: [Validators.required], nonNullable: true }),
     description: this.formBuilder.control('', { nonNullable: true }),
   });
+
+  get nameCtrl() {
+    return this.form.controls.name;
+  }
 
   get isEdit(): boolean {
     return this.data.mode === 'edit';
@@ -61,8 +66,12 @@ export class ProjectDialog implements OnInit {
 
   clickOnOk(): void {
     this.submitAttempted = true;
+    this.form.markAllAsTouched();
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.focusFirstInvalidControl();
+      return;
+    }
 
     const formValues = this.form.getRawValue();
 
@@ -87,6 +96,16 @@ export class ProjectDialog implements OnInit {
       name: project.name,
       description: project.description ?? '',
     });
+  }
+
+  private focusFirstInvalidControl(): void {
+    const invalidControlName = Object.keys(this.form.controls)
+      .find((name) => this.form.controls[name as keyof typeof this.form.controls].invalid);
+
+    if (!invalidControlName) return;
+
+    const el = this.formEl?.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalidControlName}"]`);
+    el?.focus();
   }
 }
 
