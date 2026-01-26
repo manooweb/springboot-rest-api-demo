@@ -10,7 +10,7 @@
     }
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+  <form #formEl [formGroup]="form" (ngSubmit)="submit()" class="login-form">
     <h2>Login</h2>
 
     <mat-form-field appearance="outline">
@@ -18,7 +18,7 @@
 
       <input matInput type="email" formControlName="email"/>
 
-      @if (shouldShowError(emailCtrl)) {
+      @if (emailCtrl.invalid && (emailCtrl.touched || submitAttempted)) {
         <mat-error>
           @if (emailCtrl.hasError('required')) {
             <span>Email is required.</span>
@@ -35,14 +35,14 @@
 
       <input matInput type="password" formControlName="password"/>
 
-      @if (shouldShowError(passwordCtrl)) {
+      @if (passwordCtrl.invalid && (passwordCtrl.touched || submitAttempted)) {
         <mat-error>
           Password is required.
         </mat-error>
       }
     </mat-form-field>
 
-    <button matButton="outlined" color="primary" [disabled]="form.invalid || loading" type="submit">
+    <button matButton="outlined" color="primary" [disabled]="loading" type="submit">
       Login
     </button>
   </form>

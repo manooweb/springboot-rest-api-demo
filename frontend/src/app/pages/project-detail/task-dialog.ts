@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, ElementRef, inject, OnInit, ViewChild, viewChild } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -29,6 +29,7 @@ import { toIsoLocalDateString } from "../../shared/functions/date";
   ],
 })
 export class TaskDialog implements OnInit {
+  @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
   readonly dialogRef = inject(MatDialogRef<TaskDialog>);
   readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
   readonly formBuilder = inject(FormBuilder);
@@ -41,6 +42,10 @@ export class TaskDialog implements OnInit {
     dueDate: this.formBuilder.control<Date>(new Date(), { nonNullable: true }),
     status: this.formBuilder.control<TaskStatus>('TODO', {validators: [Validators.required], nonNullable: true }),
   });
+
+  get titleCtrl() {
+    return this.form.controls.title;
+  }
 
   get isEdit(): boolean {
     return this.data.mode === 'edit';
@@ -62,8 +67,10 @@ export class TaskDialog implements OnInit {
 
   clickOnOk(): void {
     this.submitAttempted = true;
+    this.form.markAllAsTouched();
 
     if (this.form.invalid) {
+      this.focusFirstInvalidControl();
       return;
     }
 
@@ -94,6 +101,16 @@ export class TaskDialog implements OnInit {
       status: task.status,
       dueDate: task.dueDate ?? new Date(),
     });
+  }
+
+  private focusFirstInvalidControl(): void {
+    const invalidControlName = Object.keys(this.form.controls)
+      .find((name) => this.form.controls[name as keyof typeof this.form.controls].invalid);
+
+    if (!invalidControlName) return;
+
+    const el = this.formEl?.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalidControlName}"]`);
+    el?.focus();
   }
 }
 
