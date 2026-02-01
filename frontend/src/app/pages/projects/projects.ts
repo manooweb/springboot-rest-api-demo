@@ -15,19 +15,21 @@ import { ConfirmDialogData } from '../../shared/dialogs/confirm-dialog.types';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-
+import { UiTextService } from '../../shared/i18n/ui-text.service';
+import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [MatListModule, MatDividerModule, MatButtonModule, MatCardModule, MatIconModule, MatDialogModule, MatSnackBarModule],
+  imports: [MatListModule, MatDividerModule, MatButtonModule, MatCardModule, MatIconModule, MatDialogModule, MatSnackBarModule, TranslatePipe],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
 export class Projects {
-  router = inject(Router);
-  private projectsService = inject(ProjectsService);
-  private snackBar = inject(MatSnackBar);
+  readonly router = inject(Router);
   readonly dialog = inject(MatDialog);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly translate = inject(UiTextService);
 
   projects: Project[] = [];
   loading = false;
@@ -48,10 +50,10 @@ export class Projects {
         next: () => {
           // refresh list
           this.loadProjects();
-          this.notify('Project created');
+          this.notify(this.translate.t('projects.message.created'));
         },
         error: () => {
-          this.error = 'Failed to create project';
+          this.error = this.translate.t('projects.message.createFailed');
           this.notify(this.error);
         },
       });
@@ -73,10 +75,10 @@ export class Projects {
         next: () => {
           // refresh list
           this.loadProjects();
-          this.notify('Project updated');
+          this.notify(this.translate.t('projects.message.updated'));
         },
         error: () => {
-          this.error = 'Failed to update project';
+          this.error = this.translate.t('projects.message.updateFailed');
           this.notify(this.error);
         },
       });
@@ -89,9 +91,11 @@ export class Projects {
       maxWidth: '80vw',
       panelClass: 'app-dialog',
       data: {
-        title: `Delete project "${project.name}"`,
-        message: `Are you sure you want to delete the project "${project.name}"? This action cannot be undone.`,
-        confirmButtonLabel: 'Delete',
+        titleKey: 'projects.confirmDelete.title',
+        titleParams: { projectName: project.name },
+        messageKey: 'projects.confirmDelete.message',
+        messageParams: { projectName: project.name },
+        confirmButtonLabel: 'shared.action.delete',
       } satisfies ConfirmDialogData,
     });
 
@@ -102,10 +106,10 @@ export class Projects {
         next: () => {
           // refresh list
           this.loadProjects();
-          this.notify('Project deleted');
+          this.notify(this.translate.t('projects.message.deleted'));
         },
         error: () => {
-          this.error = 'Failed to delete project';
+          this.error = this.translate.t('projects.message.deleteFailed');
           this.notify(this.error);
         },
       });
@@ -122,7 +126,7 @@ export class Projects {
         this.loading = false;
       },
       error: () => {
-        this.error = 'Failed to load projects';
+        this.error = this.translate.t('projects.message.loadFailed');
         this.loading = false;
         this.notify(this.error);
       },
@@ -135,7 +139,7 @@ export class Projects {
   }
 
   private notify(message: string) {
-    this.snackBar.open(message, 'Close', { duration: 3000 });
+    this.snackBar.open(message, this.translate.t('shared.action.close'), { duration: 3000 });
   }
 
   ngOnInit() {

@@ -1,21 +1,21 @@
 <div  class="dialog-titlebar">
-  <h2 mat-dialog-title class="dialog-title">{{title}}</h2>
+  <h2 mat-dialog-title class="dialog-title">{{titleKey | translate:titleParams }}</h2>
 
-  <button mat-icon-button (click)="clickOnCancel()" aria-label="Close dialog" class="dialog-close-btn">
+  <button mat-icon-button (click)="clickOnCancel()" aria-label="{{'shared.aria.closeDialog' | translate}}" class="dialog-close-btn">
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
 <mat-dialog-content class="dialog-content">
-  <p>{{message}}</p>
+  <p>{{messageKey | translate:messageParams }}</p>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button matButton (click)="clickOnCancel()">{{cancelButtonLabel}}</button>
+  <button matButton (click)="clickOnCancel()">{{cancelButtonLabel | translate}}</button>
   <button
     matButton (click)="clickOnConfirm()"
     cdkFocusInitial
   >
-    {{confirmButtonLabel}}
+    {{confirmButtonLabel | translate}}
   </button>
 </mat-dialog-actions>

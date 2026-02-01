@@ -109,8 +109,8 @@ export class ProjectDetail {
       maxWidth: '80vw',
       panelClass: 'app-dialog',
       data: {
-        title: `Delete Task "${task.title}"`,
-        message: `Are you sure you want to delete the task "${task.title}"? This action cannot be undone.`,
+        titleKey: `Delete Task "${task.title}"`,
+        messageKey: `Are you sure you want to delete the task "${task.title}"? This action cannot be undone.`,
         confirmButtonLabel: 'Delete',
       } satisfies ConfirmDialogData,
     });

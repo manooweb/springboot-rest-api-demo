@@ -1,13 +1,13 @@
 <section class="page">
   <header class="page-header">
-    <h2 class="page-title">Projects</h2>
+    <h2 class="page-title">{{ 'projects.title.list' | translate }}</h2>
   </header>
 
   <div class="page-status">
     @if (loading) {
       <mat-card class="status-card status-info">
         <mat-card-content>
-          Loading projects…
+          {{ 'projects.state.loading' | translate }}
         </mat-card-content>
       </mat-card>
     }
@@ -25,7 +25,7 @@
   <div class="page-actions">
     <button matButton="outlined" color="primary" (click)="openAddNewProjectDialog()">
       <mat-icon>add</mat-icon>
-      Add new project
+      {{ 'projects.action.add' | translate }}
     </button>
   </div>
 
@@ -38,17 +38,17 @@
 
         <span matListItemMeta class="item-meta">
           <button mat-icon-button class="icon-action" (click)="openEditProjectDialog(project)"
-            aria-label="Edit project">
+            aria-label="{{ 'projects.action.editAria' | translate }}">
             <mat-icon>edit</mat-icon>
           </button>
 
           <button mat-icon-button class="icon-action" (click)="showProjectDetail(project.id)"
-            aria-label="Open project">
+            aria-label="{{ 'projects.action.openAria' | translate }}">
             <mat-icon>visibility</mat-icon>
           </button>
 
           <button mat-icon-button class="icon-action" (click)="openDeleteProjectConfirmDialog(project)"
-            aria-label="Delete project">
+            aria-label="{{ 'projects.action.deleteAria' | translate }}">
             <mat-icon>delete_forever</mat-icon>
           </button>
         </span>

@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { CreateProjectRequest, Project } from '../../services/projects';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
+import { TranslatePipe } from '../../shared/i18n/translate.pipe';
+
 @Component({
   selector: 'project-dialog',
   templateUrl: 'project-dialog.html',
@@ -27,6 +29,7 @@ import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
+    TranslatePipe,
   ],
 })
 export class ProjectDialog implements OnInit {
@@ -51,11 +54,11 @@ export class ProjectDialog implements OnInit {
   }
 
   get dialogTitle(): string {
-    return this.isEdit ? 'Edit project' : 'Add new project';
+    return this.isEdit ? 'projects.dialog.title.edit' : 'projects.dialog.title.create';
   }
 
   get primaryButtonLabel(): string {
-    return this.isEdit ? 'Save' : 'Create';
+    return this.isEdit ? 'shared.action.save' : 'shared.action.create';
   }
 
   ngOnInit() {

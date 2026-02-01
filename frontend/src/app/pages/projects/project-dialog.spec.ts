@@ -91,8 +91,8 @@ describe('ProjectDialog', () => {
 
   it('should expose correct title and primary label in create mode', () => {
     const { component } = createComponent({ mode: 'create' });
-    expect(component.dialogTitle).toBe('Add new project');
-    expect(component.primaryButtonLabel).toBe('Create');
+    expect(component.dialogTitle).toBe('projects.dialog.title.create');
+    expect(component.primaryButtonLabel).toBe('shared.action.create');
   });
 
   it('should expose correct title and primary label in edit mode', () => {
@@ -100,8 +100,8 @@ describe('ProjectDialog', () => {
       mode: 'edit',
       project: { id: 'p1', name: 'Old', description: 'desc' },
     });
-    expect(component.dialogTitle).toBe('Edit project');
-    expect(component.primaryButtonLabel).toBe('Save');
+    expect(component.dialogTitle).toBe('projects.dialog.title.edit');
+    expect(component.primaryButtonLabel).toBe('shared.action.save');
   });
 
   function createComponent(data?: ProjectDialogData) {
