@@ -17,32 +17,32 @@ describe('ConfirmDialog', () => {
       providers: [
         provideNativeDateAdapter(),
         { provide: MatDialogRef, useValue: dialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: { title: 'Dialog title', message: 'Dialog message' } satisfies ConfirmDialogData },
+        { provide: MAT_DIALOG_DATA, useValue: { titleKey: 'Dialog title', messageKey: 'Dialog message' } satisfies ConfirmDialogData },
       ],
     }).compileComponents();
   });
 
   it('should default button labels display when they are not provided', () => {
     const { component } = createComponent({
-      title: 'Dialog title',
-      message: 'Dialog message',
+      titleKey: 'Dialog title',
+      messageKey: 'Dialog message',
     } satisfies ConfirmDialogData);
 
-    expect(component.cancelButtonLabel).toBe('Cancel');
-    expect(component.confirmButtonLabel).toBe('OK');
+    expect(component.cancelButtonLabel).toBe('shared.action.cancel');
+    expect(component.confirmButtonLabel).toBe('shared.action.ok');
   });
 
   it('should title and message empty when they are not provided', () => {
     const { component } = createComponent({} as unknown as ConfirmDialogData);
 
-    expect(component.title).toBe('');
-    expect(component.message).toBe('');
+    expect(component.titleKey).toBe('');
+    expect(component.messageKey).toBe('');
   });
 
   it('should click on confirm button return true', () => {
     const { component } = createComponent({
-      title: 'Dialog title',
-      message: 'Dialog message',
+      titleKey: 'Dialog title',
+      messageKey: 'Dialog message',
     } satisfies ConfirmDialogData);
 
     component.clickOnConfirm();
@@ -53,8 +53,8 @@ describe('ConfirmDialog', () => {
 
   it('should click on cancel button return undefined', () => {
     const { component } = createComponent({
-      title: 'Dialog title',
-      message: 'Dialog message',
+      titleKey: 'Dialog title',
+      messageKey: 'Dialog message',
     } satisfies ConfirmDialogData);
 
     component.clickOnCancel();

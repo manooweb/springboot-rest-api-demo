@@ -3,6 +3,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { ConfirmDialogData } from "./confirm-dialog.types";
+import { TranslatePipe } from "../i18n/translate.pipe";
 
 @Component({
   selector: 'confirm-dialog',
@@ -15,6 +16,7 @@ import { ConfirmDialogData } from "./confirm-dialog.types";
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
+    TranslatePipe,
   ],
 })
 export class ConfirmDialog {
@@ -22,13 +24,17 @@ export class ConfirmDialog {
   readonly data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
 
 
-  get title(): string { return this.data.title ?? '';}
+  get titleKey(): string { return this.data.titleKey ?? '';}
 
-  get message(): string { return this.data.message ?? ''; }
+  get titleParams(): Record<string, unknown> | undefined { return this.data.titleParams; }
 
-  get cancelButtonLabel(): string { return this.data.cancelButtonLabel || 'Cancel'; }
+  get messageKey(): string { return this.data.messageKey ?? ''; }
 
-  get confirmButtonLabel(): string { return this.data.confirmButtonLabel || 'OK'; }
+  get messageParams(): Record<string, unknown> | undefined { return this.data.messageParams; }
+
+  get cancelButtonLabel(): string { return this.data.cancelButtonLabel || 'shared.action.cancel'; }
+
+  get confirmButtonLabel(): string { return this.data.confirmButtonLabel || 'shared.action.ok'; }
 
   clickOnConfirm(): void {
     this.dialogRef.close(true);

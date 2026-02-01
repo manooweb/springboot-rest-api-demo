@@ -1,7 +1,7 @@
 <div class="dialog-title">
-  <h2 mat-dialog-title>{{dialogTitle}}</h2>
+  <h2 mat-dialog-title>{{dialogTitle | translate}}</h2>
 
-  <button mat-icon-button (click)="clickOnCancel()" aria-label="Close dialog">
+  <button mat-icon-button (click)="clickOnCancel()" aria-label="{{ 'shared.aria.closeDialog' | translate  }}">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -10,15 +10,15 @@
   <mat-dialog-content class="dialog-content">
 
     <mat-form-field class="full-width">
-      <mat-label>Project name</mat-label>
+      <mat-label>{{ 'projects.dialog.field.name' | translate }}</mat-label>
       <input matInput formControlName="name" cdkFocusInitial/>
       @if (nameCtrl.invalid && (nameCtrl.touched || submitAttempted)) {
-        <mat-error>Name is required.</mat-error>
+        <mat-error>{{ 'projects.validation.nameRequired' | translate }}</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Project description</mat-label>
+      <mat-label>{{ 'projects.dialog.field.description' | translate }}</mat-label>
       <textarea
         matInput
         formControlName="description"
@@ -32,9 +32,9 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button matButton type="button" (click)="clickOnCancel()">Cancel</button>
+    <button matButton type="button" (click)="clickOnCancel()">{{ 'shared.action.cancel' | translate }}</button>
     <button matButton type="submit">
-      {{primaryButtonLabel}}
+      {{primaryButtonLabel | translate}}
     </button>
   </mat-dialog-actions>
 </form>
