@@ -116,8 +116,8 @@ describe('TaskDialog', () => {
 
   it('should expose correct title and primary label in create mode', () => {
     const { component } = createComponent({ mode: 'create' });
-    expect(component.dialogTitle).toBe('Add new task');
-    expect(component.primaryButtonLabel).toBe('Create');
+    expect(component.dialogTitle).toBe('tasks.dialog.title.create');
+    expect(component.primaryButtonLabel).toBe('shared.action.create');
   });
 
   it('should expose correct title and primary label in edit mode', () => {
@@ -125,8 +125,8 @@ describe('TaskDialog', () => {
       mode: 'edit',
       task: { id: 't1', projectId: 'p1', title: 'x', status: 'TODO' },
     });
-    expect(component.dialogTitle).toBe('Edit task');
-    expect(component.primaryButtonLabel).toBe('Save');
+    expect(component.dialogTitle).toBe('tasks.dialog.title.edit');
+    expect(component.primaryButtonLabel).toBe('shared.action.save');
   });
 
   function createComponent(data?: TaskDialogData) {

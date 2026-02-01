@@ -16,18 +16,21 @@ import { ConfirmDialog } from '../../shared/dialogs/confirm-dialog';
 import { ConfirmDialogData } from '../../shared/dialogs/confirm-dialog.types';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { UiTextService } from '../../shared/i18n/ui-text.service';
+import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [DatePipe, MatListModule, MatCardModule, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule],
+  imports: [DatePipe, MatListModule, MatCardModule, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule, TranslatePipe],
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',
 })
 export class ProjectDetail {
-  private projectsService = inject(ProjectsService);
-  private tasksService = inject(TasksService);
-  private route = inject(ActivatedRoute);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly tasksService = inject(TasksService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly translate = inject(UiTextService);
   readonly dialog = inject(MatDialog);
 
   id: string | null = this.route.snapshot.paramMap.get('id');
@@ -42,7 +45,7 @@ export class ProjectDetail {
   updatingTaskId: string | null = null;
 
   private notify(message: string) {
-    this.snackBar.open(message, 'Close', { duration: 3000 });
+    this.snackBar.open(message, this.translate.t('shared.action.close'), { duration: 3000 });
   }
 
   openAddNewTaskDialog() {
@@ -64,10 +67,10 @@ export class ProjectDetail {
           // refresh list
           this.loadingTasks = true;
           this.loadTasks();
-          this.notify('Task created');
+          this.notify(this.translate.t('tasks.message.created'));
         },
         error: () => {
-          this.errorTasks = 'Failed to create task';
+          this.errorTasks = this.translate.t('tasks.message.createFailed');
           this.notify(this.errorTasks);
         },
       });
@@ -93,10 +96,10 @@ export class ProjectDetail {
           // refresh list
           this.loadingTasks = true;
           this.loadTasks();
-          this.notify('Task updated');
+          this.notify(this.translate.t('tasks.message.updated'));
         },
         error: () => {
-          this.errorTasks = 'Failed to update task';
+          this.errorTasks = this.translate.t('tasks.message.updateFailed');
           this.notify(this.errorTasks);
         },
       });
@@ -109,9 +112,11 @@ export class ProjectDetail {
       maxWidth: '80vw',
       panelClass: 'app-dialog',
       data: {
-        titleKey: `Delete Task "${task.title}"`,
-        messageKey: `Are you sure you want to delete the task "${task.title}"? This action cannot be undone.`,
-        confirmButtonLabel: 'Delete',
+        titleKey: 'tasks.confirmDelete.title',
+        titleParams: { taskTitle: task.title },
+        messageKey: 'tasks.confirmDelete.message',
+        messageParams: { taskTitle: task.title },
+        confirmButtonLabel: 'shared.action.delete',
       } satisfies ConfirmDialogData,
     });
 
@@ -125,10 +130,10 @@ export class ProjectDetail {
           // refresh list
           this.loadingTasks = true;
           this.loadTasks();
-          this.notify('Task deleted');
+          this.notify(this.translate.t('tasks.message.deleted'));
         },
         error: () => {
-          this.errorTasks = 'Failed to delete task';
+          this.errorTasks = this.translate.t('tasks.message.deleteFailed');
           this.notify(this.errorTasks);
         },
       });
@@ -147,7 +152,7 @@ export class ProjectDetail {
         this.loadingProject = false;
       },
       error: () => {
-        this.errorProject = 'Failed to load project';
+        this.errorProject = this.translate.t('tasks.message.loadProjectFailed');
         this.loadingProject = false;
         this.notify(this.errorProject);
       },
@@ -166,7 +171,7 @@ export class ProjectDetail {
         this.loadingTasks = false;
       },
       error: () => {
-        this.errorTasks = 'Failed to load tasks for this project';
+        this.errorTasks = this.translate.t('tasks.message.loadTasksFailed');
         this.loadingTasks = false;
         this.notify(this.errorTasks);
       },
@@ -189,13 +194,13 @@ export class ProjectDetail {
     this.tasksService.updateStatus(task.id, next).subscribe({
       next: () => {
         this.updatingTaskId = null;
-        this.notify('Status updated');
+        this.notify(this.translate.t('tasks.message.statusUpdated'));
       },
       error: () => {
         // rollback
         task.status = previous;
         this.updatingTaskId = null;
-        this.notify('Failed to update status');
+        this.notify(this.translate.t('tasks.message.statusUpdateFailed'));
       }
     });
   }
@@ -210,9 +215,9 @@ export class ProjectDetail {
 
   statusLabel(status: TaskStatus): string {
     switch (status) {
-      case 'TODO': return 'To do';
-      case 'IN_PROGRESS': return 'In progress';
-      case 'DONE': return 'Done';
+      case 'TODO': return 'tasks.status.todo';
+      case 'IN_PROGRESS': return 'tasks.status.inProgress';
+      case 'DONE': return 'tasks.status.done';
     }
   }
 

@@ -5,7 +5,7 @@
     @if (loadingProject) {
       <mat-card class="status-card status-info">
         <mat-card-content>
-          Loading project…
+          {{ 'tasks.state.loadingProject' | translate }}
         </mat-card-content>
       </mat-card>
     }
@@ -21,7 +21,7 @@
     @if (loadingTasks) {
       <mat-card class="status-card status-info">
         <mat-card-content>
-          Loading tasks…
+          {{ 'tasks.state.loadingTasks' | translate }}
         </mat-card-content>
       </mat-card>
     }
@@ -37,7 +37,7 @@
 
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
-      <mat-card-title><strong>{{ project?.name }}</strong> project detail</mat-card-title>
+      <mat-card-title><strong>{{ project?.name }}</strong> {{ 'tasks.title.projectDetail' | translate }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>{{ project?.description }}</p>
@@ -45,13 +45,13 @@
   </mat-card>
 
   <header class="page-header">
-    <h2>Tasks</h2>
+    <h2>{{ 'tasks.title.section' | translate }}</h2>
   </header>
 
   <div class="page-actions">
     <button matButton="outlined" color="primary" (click)="openAddNewTaskDialog()">
       <mat-icon>add</mat-icon>
-      Add new task
+      {{ 'tasks.action.add' | translate }}
     </button>
   </div>
 
@@ -65,7 +65,7 @@
         }
 
         <span matListItemLine class="task-subline">
-          Due: {{ task.dueDate | date }}
+          {{ 'tasks.label.due' | translate }} {{ task.dueDate | date }}
         </span>
 
         <span matListItemMeta class="item-meta">
@@ -74,18 +74,18 @@
             class="status-btn"
             (click)="onStatusClick(task)"
             [disabled]="updatingTaskId === task.id"
-            aria-label="Change task status"
+            aria-label="{{ 'tasks.action.changeStatusAria' | translate }}"
           >
             <span class="status-emoji">{{ statusEmoji(task.status) }}</span>
-            <span class="status-label">{{ statusLabel(task.status) }}</span>
+            <span class="status-label">{{ statusLabel(task.status) | translate }}</span>
           </button>
 
           <span class="item-actions">
-            <button matIconButton class="icon-action" (click)="openEditTaskDialog(task)" aria-label="Edit task">
+            <button matIconButton class="icon-action" (click)="openEditTaskDialog(task)" aria-label="{{ 'tasks.action.editAria' | translate }}">
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button matIconButton class="icon-action" (click)="openDeleteTaskConfirmDialog(task)" aria-label="Delete task">
+            <button matIconButton class="icon-action" (click)="openDeleteTaskConfirmDialog(task)" aria-label="{{ 'tasks.action.deleteAria' | translate }}">
               <mat-icon>delete_forever</mat-icon>
             </button>
           </span>

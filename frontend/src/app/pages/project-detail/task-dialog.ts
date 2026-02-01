@@ -10,6 +10,9 @@ import { MatSelectModule } from "@angular/material/select";
 import { CreateTaskRequest, Task, TaskStatus } from "../../services/tasks";
 import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
 import { toIsoLocalDateString } from "../../shared/functions/date";
+import { UiTextService } from "../../shared/i18n/ui-text.service";
+import { TranslatePipe } from "../../shared/i18n/translate.pipe";
+
 @Component({
   selector: 'task-dialog',
   templateUrl: 'task-dialog.html',
@@ -26,13 +29,15 @@ import { toIsoLocalDateString } from "../../shared/functions/date";
     MatDialogActions,
     MatDatepickerModule,
     MatSelectModule,
+    TranslatePipe,
   ],
 })
 export class TaskDialog implements OnInit {
   @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
-  readonly dialogRef = inject(MatDialogRef<TaskDialog>);
-  readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
-  readonly formBuilder = inject(FormBuilder);
+  private readonly dialogRef = inject(MatDialogRef<TaskDialog>);
+  private readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly translate = inject(UiTextService);
 
   submitAttempted = false;
 
@@ -52,11 +57,11 @@ export class TaskDialog implements OnInit {
   }
 
   get dialogTitle(): string {
-    return this.isEdit ? 'Edit task' : 'Add new task';
+    return this.isEdit ? 'tasks.dialog.title.edit' : 'tasks.dialog.title.create';
   }
 
   get primaryButtonLabel(): string {
-    return this.isEdit ? 'Save' : 'Create';
+    return this.isEdit ? 'shared.action.save' : 'shared.action.create';
   }
 
   ngOnInit() {
