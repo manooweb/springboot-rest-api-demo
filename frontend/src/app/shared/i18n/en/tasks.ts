@@ -3,7 +3,7 @@ import type { UiDictionary } from './index';
 export const TASKS_EN: UiDictionary = {
   // Titles / Sections
   'tasks.title.section': 'Tasks',
-  'tasks.title.projectDetail': 'Project detail',
+  'tasks.title.projectDetail': 'project detail',
 
   // States
   'tasks.state.loadingProject': 'Loading project…',

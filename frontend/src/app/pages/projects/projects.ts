@@ -17,6 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
+
 @Component({
   selector: 'app-projects',
   standalone: true,
