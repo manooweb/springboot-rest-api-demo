@@ -1,17 +1,1 @@
-.dialog-titlebar {
-  position: relative;
-}
-
-/* Keep Material title styling, just reserve space for the close button */
-.dialog-title {
-  padding-right: 56px; // space for close button + margin
-  margin: 0;           // optional: depends on Material defaults
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.dialog-close-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-}
+@use './common' as *;

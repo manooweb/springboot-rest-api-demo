@@ -1,7 +1,7 @@
 <div  class="dialog-titlebar">
   <h2 mat-dialog-title class="dialog-title">{{titleKey | translate:titleParams }}</h2>
 
-  <button mat-icon-button (click)="clickOnCancel()" aria-label="{{'shared.aria.closeDialog' | translate}}" class="dialog-close-btn">
+  <button type="button" mat-icon-button mat-dialog-close aria-label="{{'shared.aria.closeDialog' | translate}}" class="dialog-close-btn">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -11,7 +11,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button matButton (click)="clickOnCancel()">{{cancelButtonLabel | translate}}</button>
+  <button matButton type="button" mat-dialog-close>{{cancelButtonLabel | translate}}</button>
   <button
     matButton (click)="clickOnConfirm()"
     cdkFocusInitial

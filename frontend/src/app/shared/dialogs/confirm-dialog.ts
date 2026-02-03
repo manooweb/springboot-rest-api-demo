@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { ConfirmDialogData } from "./confirm-dialog.types";
 import { TranslatePipe } from "../i18n/translate.pipe";
@@ -11,6 +11,7 @@ import { TranslatePipe } from "../i18n/translate.pipe";
   styleUrl: 'confirm-dialog.scss',
   standalone: true,
   imports: [
+    MatDialogModule,
     MatButtonModule,
     MatIconModule,
     MatDialogTitle,
@@ -38,9 +39,5 @@ export class ConfirmDialog {
 
   clickOnConfirm(): void {
     this.dialogRef.close(true);
-  }
-
-  clickOnCancel(): void {
-    this.dialogRef.close();
   }
 }

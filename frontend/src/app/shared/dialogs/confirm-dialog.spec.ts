@@ -51,16 +51,20 @@ describe('ConfirmDialog', () => {
     expect(dialogRefSpy.close).toHaveBeenCalledWith(true);
   });
 
-  it('should click on cancel button return undefined', () => {
-    const { component } = createComponent({
+  it('should click on cancel button return empty string', () => {
+    const { fixture } = createComponent({
       titleKey: 'Dialog title',
       messageKey: 'Dialog message',
     } satisfies ConfirmDialogData);
 
-    component.clickOnCancel();
+    const cancelButton = fixture.nativeElement.querySelector(
+      'mat-dialog-actions button[mat-dialog-close]'
+    ) as HTMLButtonElement | null;
+
+    cancelButton?.click();
 
     expect(dialogRefSpy.close).toHaveBeenCalledTimes(1);
-    expect(dialogRefSpy.close).toHaveBeenCalledWith();
+    expect(dialogRefSpy.close).toHaveBeenCalledWith('');
   });
 
   function createComponent(data?: ConfirmDialogData) {

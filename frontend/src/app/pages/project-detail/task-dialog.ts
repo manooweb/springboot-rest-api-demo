@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, OnInit, ViewChild, viewChild } from "@an
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
@@ -19,6 +19,7 @@ import { TranslatePipe } from "../../shared/i18n/translate.pipe";
   styleUrl: 'task-dialog.scss',
   standalone: true,
   imports: [
+    MatDialogModule,
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
@@ -93,10 +94,6 @@ export class TaskDialog implements OnInit {
       : { mode: 'create', payload };
 
     this.dialogRef.close(result);
-  }
-
-  clickOnCancel(): void {
-    this.dialogRef.close();
   }
 
   private prefillFromTask(task: Task) {
