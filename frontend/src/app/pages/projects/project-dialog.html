@@ -1,7 +1,7 @@
-<div class="dialog-title">
-  <h2 mat-dialog-title>{{dialogTitle | translate}}</h2>
+<div class="dialog-titlebar">
+  <h2 mat-dialog-title class="dialog-title">{{dialogTitle | translate}}</h2>
 
-  <button mat-icon-button (click)="clickOnCancel()" aria-label="{{ 'shared.aria.closeDialog' | translate  }}">
+  <button type="button" mat-icon-button mat-dialog-close aria-label="{{ 'shared.aria.closeDialog' | translate  }}" class="dialog-close-btn">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -32,7 +32,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button matButton type="button" (click)="clickOnCancel()">{{ 'shared.action.cancel' | translate }}</button>
+    <button matButton type="button" mat-dialog-close>{{ 'shared.action.cancel' | translate }}</button>
     <button matButton type="submit">
       {{primaryButtonLabel | translate}}
     </button>

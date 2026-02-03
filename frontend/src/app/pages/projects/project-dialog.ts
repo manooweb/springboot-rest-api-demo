@@ -6,7 +6,8 @@ import {
   MatDialogActions,
   MatDialogContent,
   MatDialogTitle,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
+  MatDialogModule
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +25,7 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogTitle,
@@ -88,10 +90,6 @@ export class ProjectDialog implements OnInit {
       : { mode: 'create', payload };
 
     this.dialogRef.close(result);
-  }
-
-  clickOnCancel(): void {
-    this.dialogRef.close();
   }
 
   private prefillFromProject(project: Project) {
