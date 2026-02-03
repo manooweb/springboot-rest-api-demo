@@ -18,7 +18,7 @@
 
       <input matInput type="email" formControlName="email"/>
 
-      @if (emailCtrl.invalid && (emailCtrl.touched || submitAttempted)) {
+      @if ( shouldShowError(emailCtrl, submitAttempted) ) {
         <mat-error>
           @if (emailCtrl.hasError('required')) {
             <span>{{ 'auth.login.validation.emailRequired' | translate }}</span>
@@ -34,7 +34,7 @@
       <mat-label>{{ 'auth.login.label.password' | translate }}</mat-label>
       <input matInput type="password" formControlName="password"/>
 
-      @if (passwordCtrl.invalid && (passwordCtrl.touched || submitAttempted)) {
+      @if ( shouldShowError(passwordCtrl, submitAttempted) ) {
         <mat-error>
           {{ 'auth.login.validation.passwordRequired' | translate }}
         </mat-error>

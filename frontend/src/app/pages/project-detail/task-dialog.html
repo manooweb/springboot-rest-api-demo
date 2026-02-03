@@ -12,7 +12,7 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>{{ 'tasks.dialog.field.title' | translate }}</mat-label>
       <input matInput formControlName="title" cdkFocusInitial/>
-      @if (titleCtrl.invalid && (titleCtrl.touched || submitAttempted)) {
+      @if ( shouldShowError(titleCtrl, submitAttempted) ) {
         <mat-error>{{ 'tasks.validation.titleRequired' | translate }}</mat-error>
       }
     </mat-form-field>

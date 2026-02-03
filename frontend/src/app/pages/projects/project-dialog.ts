@@ -15,6 +15,7 @@ import { CreateProjectRequest, Project } from '../../services/projects';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
+import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/form-helpers';
 
 @Component({
   selector: 'project-dialog',
@@ -39,6 +40,7 @@ export class ProjectDialog implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<ProjectDialog>);
   private readonly data = inject<ProjectDialogData>(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);
+  readonly shouldShowError = shouldShowError;
 
   submitAttempted = false;
 
@@ -74,7 +76,7 @@ export class ProjectDialog implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
-      this.focusFirstInvalidControl();
+      focusFirstInvalidControl(this.form, this.formEl?.nativeElement);
       return;
     }
 
@@ -97,16 +99,6 @@ export class ProjectDialog implements OnInit {
       name: project.name,
       description: project.description ?? '',
     });
-  }
-
-  private focusFirstInvalidControl(): void {
-    const invalidControlName = Object.keys(this.form.controls)
-      .find((name) => this.form.controls[name as keyof typeof this.form.controls].invalid);
-
-    if (!invalidControlName) return;
-
-    const el = this.formEl?.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalidControlName}"]`);
-    el?.focus();
   }
 }
 
