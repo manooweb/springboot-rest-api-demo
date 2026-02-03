@@ -12,6 +12,7 @@ import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
 import { toIsoLocalDateString } from "../../shared/functions/date";
 import { UiTextService } from "../../shared/i18n/ui-text.service";
 import { TranslatePipe } from "../../shared/i18n/translate.pipe";
+import { shouldShowError, focusFirstInvalidControl } from "../../shared/forms/form-helpers";
 
 @Component({
   selector: 'task-dialog',
@@ -39,6 +40,7 @@ export class TaskDialog implements OnInit {
   private readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);
   private readonly translate = inject(UiTextService);
+  readonly shouldShowError = shouldShowError;
 
   submitAttempted = false;
 
@@ -76,7 +78,7 @@ export class TaskDialog implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
-      this.focusFirstInvalidControl();
+      focusFirstInvalidControl(this.form, this.formEl?.nativeElement);
       return;
     }
 
@@ -103,16 +105,6 @@ export class TaskDialog implements OnInit {
       status: task.status,
       dueDate: task.dueDate ?? new Date(),
     });
-  }
-
-  private focusFirstInvalidControl(): void {
-    const invalidControlName = Object.keys(this.form.controls)
-      .find((name) => this.form.controls[name as keyof typeof this.form.controls].invalid);
-
-    if (!invalidControlName) return;
-
-    const el = this.formEl?.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalidControlName}"]`);
-    el?.focus();
   }
 }
 

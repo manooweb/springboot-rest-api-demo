@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Auth } from '../../services/auth';
@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
+import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/form-helpers';
 
 @Component({
   selector: 'app-login',
@@ -19,10 +20,11 @@ export class Login {
   @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
   error: string | null = null;
   loading = false;
-  readonly router = inject(Router);
-  readonly auth = inject(Auth);
-  readonly formBuilder = inject(FormBuilder);
-  readonly translate = inject(UiTextService);
+  private readonly router = inject(Router);
+  private readonly auth = inject(Auth);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly translate = inject(UiTextService);
+  readonly shouldShowError = shouldShowError;
 
   submitAttempted = false;
 
@@ -45,7 +47,7 @@ export class Login {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
-      this.focusFirstInvalidControl();
+      focusFirstInvalidControl(this.form, this.formEl?.nativeElement);
       return;
     }
 
@@ -63,15 +65,5 @@ export class Login {
         this.error = this.translate.t('auth.login.error.invalidCredentials');
       },
     });
-  }
-
-  private focusFirstInvalidControl(): void {
-    const invalidControlName = Object.keys(this.form.controls)
-      .find((name) => this.form.controls[name as keyof typeof this.form.controls].invalid);
-
-    if (!invalidControlName) return;
-
-    const el = this.formEl?.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalidControlName}"]`);
-    el?.focus();
   }
 }
