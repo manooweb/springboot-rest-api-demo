@@ -25,7 +25,7 @@
 
 The currently deployed public MVP corresponds to the following GitHub release:
 
-- **v0.18.0** — Public MVP deployed (Vercel + Railway)
+- **v0.20.0** — UI i18n-ready foundation
 
 See full release notes:
 https://github.com/manooweb/springboot-rest-api-demo/releases/tag/v0.18.0
