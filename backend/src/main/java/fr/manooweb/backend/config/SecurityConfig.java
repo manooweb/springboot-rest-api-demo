@@ -109,6 +109,8 @@ public class SecurityConfig {
                         // (planned in step 7.3) JWT login endpoint: keep it public
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
 
+                        .requestMatchers("/matomo-swagger.js").permitAll()
+
                         // Everything else requires authentication
                         .anyRequest().authenticated());
 
