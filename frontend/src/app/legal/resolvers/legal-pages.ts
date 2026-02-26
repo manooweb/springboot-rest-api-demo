@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, catchError, of } from 'rxjs';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 
-export type LegalDoc = 'legal-notice' | 'privacy-policy';
+export type LegalDoc = 'legalNotice' | 'privacyPolicy';
 
 export const legalHtmlResolver = (doc: LegalDoc): ResolveFn<string> => {
   return () => {

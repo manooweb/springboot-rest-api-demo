@@ -20,12 +20,12 @@ export const routes: Routes = [
   {
     path: 'legal-notice',
     component: LegalPageComponent,
-    resolve: { html: legalHtmlResolver('legal-notice') },
+    resolve: { html: legalHtmlResolver('legalNotice') },
   },
   {
     path: 'privacy-policy',
     component: LegalPageComponent,
-    resolve: { html: legalHtmlResolver('privacy-policy') },
+    resolve: { html: legalHtmlResolver('privacyPolicy') },
   },
   { path: '**', redirectTo: 'projects' },
 ];
