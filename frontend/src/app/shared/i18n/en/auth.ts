@@ -1,4 +1,4 @@
-import type { UiDictionary } from './index';
+import type { UiDictionary } from '../';
 
 export const AUTH_EN: UiDictionary = {
     // Titles
@@ -15,7 +15,7 @@ export const AUTH_EN: UiDictionary = {
 
   // Actions / Buttons
   'auth.login.action.submit': 'Login',
-  
+
   // Error messages
   'auth.login.error.invalidCredentials': 'Invalid credentials',
 };

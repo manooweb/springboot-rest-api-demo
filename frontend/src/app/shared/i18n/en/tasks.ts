@@ -1,4 +1,4 @@
-import type { UiDictionary } from './index';
+import type { UiDictionary } from '../';
 
 export const TASKS_EN: UiDictionary = {
   // Titles / Sections

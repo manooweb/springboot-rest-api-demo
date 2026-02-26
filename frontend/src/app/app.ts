@@ -22,6 +22,8 @@ export class App implements OnInit {
   readonly router = inject(Router);
   readonly auth = inject(Auth);
   readonly matomo = inject(MatomoService);
+  protected readonly copyrightStartYear = 2025;
+  protected readonly copyrightEndYear = new Date().getFullYear();
 
   get authActionLabel() {
     return this.auth.isLoggedIn()
