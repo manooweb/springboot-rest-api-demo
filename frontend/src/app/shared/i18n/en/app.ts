@@ -1,4 +1,4 @@
-import type { UiDictionary } from './index';
+import type { UiDictionary } from '../';
 
 export const APP_EN: UiDictionary = {
   'app.title': 'Project Management App',

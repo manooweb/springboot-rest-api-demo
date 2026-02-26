@@ -18,3 +18,16 @@
 <div class="app-container">
   <router-outlet></router-outlet>
 </div>
+
+<footer class="app-footer">
+  <div class="app-footer__inner">
+    <span class="app-footer__muted">
+      © {{ copyrightStartYear }} - {{ copyrightEndYear }} Manooweb
+    </span>
+    <nav class="app-footer__links" aria-label="Legal links">
+      <a routerLink="/legal-notice">{{ 'legal.legal-notice.link.label' | translate }}</a>
+      <span class="app-footer__muted">•</span>
+      <a routerLink="/privacy-policy">{{ 'legal.privacy-policy.link.label' | translate }}</a>
+    </nav>
+  </div>
+</footer>
