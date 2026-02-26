@@ -36,7 +36,7 @@ function assertAllStringsNonEmpty(dict: Dict, lang: string): void {
 }
 
 function assertValidKeys(dict: Dict, lang: string): void {
-  const allowedPrefixes = ['app', 'auth', 'projects', 'tasks', 'shared'];
+  const allowedPrefixes = ['app', 'auth', 'legal', 'projects', 'tasks', 'shared'];
 
   for (const key of Object.keys(dict)) {
     if (key.trim() !== key) {

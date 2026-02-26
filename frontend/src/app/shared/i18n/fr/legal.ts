@@ -2,8 +2,8 @@ import type { UiDictionary } from '../';
 
 export const LEGAL_FR: UiDictionary = {
   'legal.content.unavailable': 'Aucun contenu disponible.',
-  'legal.legal-notice.filename': 'mentions-legales.html',
-  'legal.privacy-policy.filename': 'politique-confidentialite.html',
-  'legal.legal-notice.link.label': 'Mentions légales',
-  'legal.privacy-policy.link.label': 'Politique de confidentialité',
+  'legal.legalNotice.filename': 'mentions-legales.html',
+  'legal.privacyPolicy.filename': 'politique-confidentialite.html',
+  'legal.legalNotice.link.label': 'Mentions légales',
+  'legal.privacyPolicy.link.label': 'Politique de confidentialité',
 };
