@@ -71,3 +71,37 @@
 .legal-content a:focus-visible {
   text-decoration: underline;
 }
+
+/* Matomo opt-out */
+#matomo-opt-out {
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #2a7ae2;
+  border-radius: 6px;
+
+  p {
+    margin: 0.5rem 0;
+    line-height: 1.55;
+    font-size: 1rem;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  input[type='checkbox'] {
+    accent-color: #2a7ae2;
+    transform: scale(1.15);
+    transform-origin: left center;
+  }
+
+  #matomo-opt-out form {
+    margin-top: 0.75rem;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+}

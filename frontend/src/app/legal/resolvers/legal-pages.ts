@@ -1,7 +1,7 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, catchError, of } from 'rxjs';
+import { map } from 'rxjs';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 
 export type LegalDoc = 'legalNotice' | 'privacyPolicy';
