@@ -26,8 +26,14 @@ jobs:
           echo "${{ secrets.VPS_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Run deployment script on VPS
+      - name: Run backend deployment script on VPS
         run: |
           ssh -p "${{ secrets.VPS_PORT }}" \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
             "cd /opt/docker/apps/demo-mvp && ./scripts/deploy.sh"
+
+      - name: Run frontend deployment script on VPS
+        run: |
+          ssh -p "${{ secrets.VPS_PORT }}" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "cd /opt/docker/apps/demo-mvp-frontend && ./scripts/deploy.sh"
