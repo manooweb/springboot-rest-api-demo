@@ -17,7 +17,7 @@ import org.springframework.web.servlet.resource.TransformedResource;
 @Configuration
 public class SwaggerUiMatomoConfig {
 
-    private static final String CUSTOM_JS_PATH = "/matomo-swagger.js";
+    private static final String CUSTOM_JS_PATH = "/js/matomo-swagger.js";
 
     @Bean
     public static BeanPostProcessor swaggerIndexTransformerMatomoWrapper() {

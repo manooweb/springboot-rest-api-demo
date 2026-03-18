@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -20,12 +19,12 @@ public class OpenApiConfig {
                 return new OpenAPI()
                                 .info(new Info()
                                                 .title("Spring Boot REST API Demo")
-                                                .description("MVP REST API for projects and tasks (Spring Boot + Postgres + JWT).")
-                                                .version("v0")
-                                                .termsOfService("https://projects.manooweb.fr/legal-notice")
-                                                .contact(new Contact()
-                                                                .name("Privacy Policy")
-                                                                .url("https://projects.manooweb.fr/privacy-policy")))
+                                                .description("""
+                                                                Demo API.
+
+                                                                <a href="/" target="_self">🏠 API home</a>
+                                                                """)
+                                                .version("v0"))
                                 // Register the Bearer JWT scheme so Swagger UI can show the "Authorize" button.
                                 .components(new Components().addSecuritySchemes(
                                                 SECURITY_SCHEME_NAME,

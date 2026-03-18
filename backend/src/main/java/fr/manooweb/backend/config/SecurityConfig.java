@@ -103,7 +103,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Public endpoints (Swagger + health)
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(
+                                        "/",
+                                        "/css/**",
+                                        "/js/**",
+                                        "/images/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html"
+                                    ).permitAll()
                         .requestMatchers("/api/v1/health").permitAll()
 
                         // (planned in step 7.3) JWT login endpoint: keep it public
