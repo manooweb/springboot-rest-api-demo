@@ -25,142 +25,93 @@
 
 <h3>Données saisies par les utilisateurs</h3>
 <p>
-  L’application contient des champs de saisie libre (tels que les noms et descriptions
-  de projets, les titres ou descriptions de tâches).
+  L’application contient des champs de saisie libre.
 </p>
 <p>
-  Les utilisateurs peuvent, de leur propre initiative, saisir des données personnelles
-  dans ces champs. Ces données :
+  Les utilisateurs peuvent saisir des données personnelles, mais celles-ci :
 </p>
 <ul>
-  <li>ne sont pas nécessaires à l’utilisation du service,</li>
-  <li>ne sont pas demandées par l’éditeur,</li>
-  <li>ne sont ni analysées ni réutilisées à d’autres fins que la démonstration elle-même.</li>
+  <li>ne sont pas nécessaires,</li>
+  <li>ne sont pas demandées,</li>
+  <li>ne sont pas exploitées en dehors de la démonstration.</li>
 </ul>
 <p>
-  L’environnement de démonstration reposant sur un compte partagé et une base de données
-  persistante, les données saisies peuvent être visibles par d’autres utilisateurs de
-  l’environnement de démonstration.
+  Ces données peuvent être visibles par d’autres utilisateurs.
 </p>
 <p>
-  Il est donc fortement recommandé de <strong>ne pas saisir de données personnelles ou
-  sensibles</strong> dans l’application.
+  Il est fortement recommandé de <strong>ne pas saisir de données sensibles</strong>.
 </p>
 
 <h3>Persistance des données</h3>
 <p>
-  Les données saisies dans l’environnement de démonstration sont stockées dans une base
-  de données associée au MVP.
+  Les données sont stockées dans la base de données du MVP.
 </p>
 <p>
-  À ce stade du projet, aucun mécanisme de réinitialisation automatique des données
-  n’est garanti. Les données peuvent rester stockées tant que l’environnement de
-  démonstration est actif.
+  Elles peuvent être conservées sans durée définie.
 </p>
 <p>
-  L’environnement peut être réinitialisé, modifié ou supprimé à tout moment, sans préavis.
+  L’environnement peut être réinitialisé à tout moment.
 </p>
 
 <h3>Données d’authentification</h3>
 <p>
-  L’authentification repose sur un mécanisme d’accès technique basé sur un
-  JSON Web Token (JWT).
+  L’authentification repose sur un JWT stocké dans le
+  <strong>local storage</strong>.
 </p>
 <p>
-  Ce jeton est stocké dans le <strong>local storage</strong> du navigateur dans le seul
-  but de maintenir la session authentifiée.
-</p>
-<p>
-  Aucune donnée d’authentification n’est stockée dans des cookies.
+  Aucun cookie d’authentification n’est utilisé.
 </p>
 
 <h3>Mesure d’audience</h3>
 <p>
-  Ce site utilise <strong>Matomo Analytics</strong> à des fins de mesure d’audience.
+  Ce site utilise <strong>Matomo</strong> sans cookies.
 </p>
 <p>
-  Matomo est configuré en <strong>mode sans cookies</strong>, conformément aux
-  recommandations applicables, et n’utilise pas de cookies de traçage.
-</p>
-<p>
-  Les données collectées sont utilisées exclusivement à des fins statistiques et
-  pour améliorer la qualité technique du projet.
-</p>
-<p>
-  Les utilisateurs peuvent s’opposer à cette mesure d’audience à tout moment via le
-  mécanisme d’opt-out fourni par Matomo.
+  Les données sont utilisées uniquement à des fins statistiques.
 </p>
 
 <h3>Opposition au suivi Matomo</h3>
-<p>
-  Vous pouvez vous opposer au suivi Matomo via le mécanisme d’opt-out mis à disposition ci-dessous :
-</p>
 <div id="matomo-opt-out">
-  <p>Chargement des préférences de confidentialité…</p>
+  <p>Chargement…</p>
 </div>
 
 <h3>Logs techniques et hébergement</h3>
 <p>
-  Des données techniques telles que les adresses IP, les métadonnées de requêtes ou
-  les journaux d’erreurs peuvent être traitées par les hébergeurs dans le cadre du
-  fonctionnement, de la sécurité et de la maintenance du service.
-</p>
-<p>
-  Ces données ne sont pas traitées directement par la logique applicative.
+  Des données techniques peuvent être traitées pour assurer le fonctionnement et la sécurité du service.
 </p>
 
-<h4>Hébergement du backend et de la base de données</h4>
 <p>
-  Les services backend et la base de données sont hébergés par
-  <strong>Railway Corp.</strong> et déployés au sein de
-  <strong>l’Union européenne (Amsterdam, Pays-Bas)</strong>.
+  Le site, l’API et la base de données sont hébergés par :
+</p>
+<p>
+  <strong>OVHcloud</strong><br />
+  2 rue Kellermann<br />
+  59100 Roubaix<br />
+  France<br />
+  <a href="https://www.ovhcloud.com/fr/" target="_blank" rel="noopener noreferrer">https://www.ovhcloud.com/fr/</a>
+</p>
+<p>
+  Les services sont hébergés sur un serveur situé à
+  <strong>Strasbourg, France</strong>.
 </p>
 
-<h4>Hébergement du frontend</h4>
+<h3>Base légale</h3>
 <p>
-  L’application frontend est hébergée par <strong>Vercel Inc.</strong>, qui exploite
-  un réseau mondial de diffusion de contenu (CDN).
-</p>
-<p>
-  À ce titre, des données techniques peuvent être traitées dans plusieurs régions,
-  y compris en dehors de l’Union européenne.
-</p>
-
-<h3>Base légale du traitement</h3>
-<p>
-  Les traitements décrits dans la présente politique reposent sur l’intérêt légitime
-  de l’éditeur à exploiter, sécuriser et améliorer un projet de démonstration technique.
+  Les traitements reposent sur l’intérêt légitime de l’éditeur.
 </p>
 
 <h3>Droits des utilisateurs</h3>
 <p>
-  Conformément à la réglementation applicable en matière de protection des données,
-  les utilisateurs disposent notamment des droits suivants :
-</p>
-<ul>
-  <li>droit d’accès à leurs données personnelles,</li>
-  <li>droit de rectification ou de suppression,</li>
-  <li>droit d’opposition à certains traitements.</li>
-</ul>
-<p>
-  Compte tenu du caractère partagé et anonyme de l’environnement de démonstration,
-  la capacité à identifier des données spécifiques liées à une personne donnée
-  peut être limitée.
+  Les utilisateurs disposent de droits d’accès, de rectification et d’opposition.
 </p>
 
 <h3>Contact</h3>
-<p>
-  Pour toute question relative à la présente politique de confidentialité ou à la
-  protection des données, vous pouvez contacter :
-</p>
 <p>
   <strong>Emmanuel Hesry</strong><br />
   contact@manooweb.fr
 </p>
 
-<h3>Modification de la politique</h3>
+<h3>Modification</h3>
 <p>
-  La présente politique de confidentialité peut être modifiée à tout moment afin de
-  refléter les évolutions du projet, de son implémentation technique ou du cadre
-  réglementaire applicable.
+  Cette politique peut être mise à jour à tout moment.
 </p>
