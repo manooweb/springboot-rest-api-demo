@@ -5,5 +5,6 @@ export const APP_EN: UiDictionary = {
   'app.nav.projects': 'Projects',
   'app.nav.login': 'Login',
   'app.nav.logout': 'Logout',
-  'app.footer.note': '🌱 Demo backend automatically pauses outside working hours to reduce unnecessary cloud usage (08:00-20:00 Paris time).',
+  'app.footer.hostingPrefix': 'Built with love in France 🇫🇷 and hosted by',
+  'app.footer.hostingSuffix': 'since {year}',
 };

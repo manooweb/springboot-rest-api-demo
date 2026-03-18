@@ -32,7 +32,11 @@
   </div>
   <div class="app-footer__inner">
     <span class="app-footer_note">
-      {{ 'app.footer.note' | translate }}
+      {{ 'app.footer.hostingPrefix' | translate }}
+      <a href="https://www.ovhcloud.com/{{ lang }}/vps/" target="_blank" rel="noopener noreferrer">
+        <img src="/images/logos/ovhcloud-logo.png" alt="OVHcloud" class="app-footer__provider-logo" />
+      </a>
+      {{ 'app.footer.hostingSuffix' | translate : { year: 2026 } }}
     </span>
   </div>
 </footer>
