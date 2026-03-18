@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${appName}">Projects API</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+
+<body>
+    <main class="page">
+        <section class="hero-card">
+            <p class="eyebrow">Spring Boot backend</p>
+            <h1 th:text="${appName}">Projects API</h1>
+            <p class="lead">
+                Public entry point for the demo backend.
+            </p>
+
+            <div class="status-block" id="api-status" aria-live="polite">
+                <span class="status-dot" id="api-status-dot" aria-hidden="true"></span>
+                <span>
+                    API status:
+                    <strong id="api-status-text">Checking...</strong>
+                </span>
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-primary" th:href="${swaggerUrl}">Open Swagger UI</a>
+                <a class="btn" href="/api/v1/health" target="_blank" rel="noopener noreferrer">View health endpoint</a>
+            </div>
+
+            <script src="/js/home.js"></script>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <a th:href="${legalNoticeUrl}">Legal notice</a>
+        <span class="footer-separator">•</span>
+        <a th:href="${privacyPolicyUrl}">Privacy policy</a>
+    </footer>
+</body>
+
+</html>
