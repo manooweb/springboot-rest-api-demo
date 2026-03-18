@@ -7,6 +7,7 @@ import { environment } from '../environments/environment';
 import { TranslatePipe } from './shared/i18n/translate.pipe';
 import { MatomoService } from './services/matomo';
 import { filter } from 'rxjs';
+import { UiTextService } from './shared/i18n/ui-text.service';
 
 if (!environment.production) {
   console.info('[DEV] API base URL:', environment.apiBaseUrl);
@@ -22,8 +23,11 @@ export class App implements OnInit {
   readonly router = inject(Router);
   readonly auth = inject(Auth);
   readonly matomo = inject(MatomoService);
+  readonly translate = inject(UiTextService);
+
   protected readonly copyrightStartYear = 2025;
   protected readonly copyrightEndYear = new Date().getFullYear();
+  protected readonly lang = this.translate.getLanguage();
 
   get authActionLabel() {
     return this.auth.isLoggedIn()
