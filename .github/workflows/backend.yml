@@ -20,5 +20,5 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Run unit tests
-        run: ./backend/mvnw -f backend test
+      - name: Build & verify backend
+        run: ./backend/mvnw -f backend verify
