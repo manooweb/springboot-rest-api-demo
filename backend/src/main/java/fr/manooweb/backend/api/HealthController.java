@@ -1,16 +1,15 @@
 package fr.manooweb.backend.api;
 
 import java.util.Map;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthController {
 
-    @GetMapping("/api/v1/health")
-    public Map<String, String> health() {
-        // Keep it minimal for the MVP bootstrap.
-        return Map.of("status", "OK");
-    }
+  @GetMapping("/api/v1/health")
+  public Map<String, String> health() {
+    // Keep it minimal for the MVP bootstrap.
+    return Map.of("status", "OK");
+  }
 }
