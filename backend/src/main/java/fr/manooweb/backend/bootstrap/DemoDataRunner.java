@@ -18,6 +18,10 @@ import org.springframework.stereotype.Component;
 @Profile("docker")
 public class DemoDataRunner implements CommandLineRunner {
 
+
+
+  
+
   private static final Logger log = LoggerFactory.getLogger(DemoDataRunner.class);
 
   private final ProjectRepository projectRepository;
