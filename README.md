@@ -197,6 +197,26 @@ Run locally:
 
 ---
 
+## 🔍 Code quality
+
+### Formatting
+
+Java code formatting is enforced using Spotless.
+
+Verify formatting:
+
+```bash
+./backend/mvnw verify
+```
+
+Fix formatting:
+
+```bash
+./backend/mvnw spotless:apply
+```
+
+---
+
 ## 🧠 Project philosophy
 
 - Angular standalone components only
