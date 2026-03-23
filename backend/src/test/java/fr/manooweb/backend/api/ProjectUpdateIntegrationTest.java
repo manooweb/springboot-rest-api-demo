@@ -4,9 +4,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import fr.manooweb.backend.domain.Project;
+import fr.manooweb.backend.repository.ProjectRepository;
 import java.time.OffsetDateTime;
 import java.util.UUID;
-
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,104 +18,112 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.manooweb.backend.domain.Project;
-import fr.manooweb.backend.repository.ProjectRepository;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
 class ProjectUpdateIntegrationTest {
 
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    ProjectRepository projectRepository;
+  @Autowired MockMvc mockMvc;
+  @Autowired ProjectRepository projectRepository;
 
-    @Test
-    @WithMockUser(username = "test")
-    void updateProject_ShouldReturnUpdatedProject() throws Exception {
-        // Given
-        Project project = new Project(
-                UUID.randomUUID(),
-                "Project for updating task",
-                "Project Description",
-                OffsetDateTime.now(),
-                OffsetDateTime.now());
-        projectRepository.save(project);
+  @Test
+  @WithMockUser(username = "test")
+  void updateProject_ShouldReturnUpdatedProject() throws Exception {
+    // Given
+    Project project =
+        new Project(
+            UUID.randomUUID(),
+            "Project for updating task",
+            "Project Description",
+            OffsetDateTime.now(),
+            OffsetDateTime.now());
+    projectRepository.save(project);
 
-        // When & Then
-        mockMvc.perform(put("/api/v1/projects/{id}", project.getId())
+    // When & Then
+    mockMvc
+        .perform(
+            put("/api/v1/projects/{id}", project.getId())
                 .contentType("application/json")
-                .content("""
+                .content(
+                    """
                         {
                             "name": "Updated Project Name",
                             "description": "Updated Project Description"
                         }
                         """))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(project.getId().toString()))
-                .andExpect(jsonPath("$.name").value("Updated Project Name"))
-                .andExpect(jsonPath("$.description").value("Updated Project Description"));
-    }
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(project.getId().toString()))
+        .andExpect(jsonPath("$.name").value("Updated Project Name"))
+        .andExpect(jsonPath("$.description").value("Updated Project Description"));
+  }
 
-    @Test
-    @WithMockUser(username = "test")
-    @SuppressWarnings("null")
-    void updateProject_withWrongId_ShouldReturnNotFound() throws Exception {
-        // Given
-        UUID projectId = UUID.randomUUID();
-        // When & Then
-        mockMvc.perform(put("/api/v1/projects/{id}", projectId)
+  @Test
+  @WithMockUser(username = "test")
+  @SuppressWarnings("null")
+  void updateProject_withWrongId_ShouldReturnNotFound() throws Exception {
+    // Given
+    UUID projectId = UUID.randomUUID();
+    // When & Then
+    mockMvc
+        .perform(
+            put("/api/v1/projects/{id}", projectId)
                 .contentType("application/json")
-                .content("""
+                .content(
+                    """
                         {
                             "name": "Updated Project Name",
                             "description": "Updated Project Description"
                         }
                         """))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Not Found"))
-                .andExpect(jsonPath("$.message").value(Matchers.containsString(projectId.toString())));
-    }
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.error").value("Not Found"))
+        .andExpect(jsonPath("$.message").value(Matchers.containsString(projectId.toString())));
+  }
 
-    @Test
-    @WithMockUser(username = "test")
-    void updateProject_withEmptyName_ShouldReturnBadRequest() throws Exception {
-        // Given
-        UUID projectId = UUID.randomUUID();
-        // When & Then
-        mockMvc.perform(put("/api/v1/projects/{id}", projectId)
+  @Test
+  @WithMockUser(username = "test")
+  void updateProject_withEmptyName_ShouldReturnBadRequest() throws Exception {
+    // Given
+    UUID projectId = UUID.randomUUID();
+    // When & Then
+    mockMvc
+        .perform(
+            put("/api/v1/projects/{id}", projectId)
                 .contentType("application/json")
-                .content("""
+                .content(
+                    """
                         {
                             "name": "",
                             "description": "Updated Project Description"
                         }
                         """))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").exists());
-    }
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message").value("Validation failed"))
+        .andExpect(jsonPath("$.fieldErrors[0].field").exists());
+  }
 
-    @Test
-    @WithMockUser(username = "test")
-    void updateProject_withMalformedJson_ShouldReturnBadRequest() throws Exception {
-        // Given
-        UUID projectId = UUID.randomUUID();
-        // When & Then
-        mockMvc.perform(put("/api/v1/projects/{id}", projectId)
+  @Test
+  @WithMockUser(username = "test")
+  void updateProject_withMalformedJson_ShouldReturnBadRequest() throws Exception {
+    // Given
+    UUID projectId = UUID.randomUUID();
+    // When & Then
+    mockMvc
+        .perform(
+            put("/api/v1/projects/{id}", projectId)
                 .contentType("application/json")
                 // Trailing comma causes malformed JSON
-                .content("""
+                .content(
+                    """
                         {
                             "name": "Updated Project Name",
                             "description": "Updated Project Description",
                         }
                         """))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Malformed JSON request"))
-                .andExpect(jsonPath("$.fieldErrors").isArray())
-                .andExpect(jsonPath("$.fieldErrors").isEmpty());
-    }
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message").value("Malformed JSON request"))
+        .andExpect(jsonPath("$.fieldErrors").isArray())
+        .andExpect(jsonPath("$.fieldErrors").isEmpty());
+  }
 }
