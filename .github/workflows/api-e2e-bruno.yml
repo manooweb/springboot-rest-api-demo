@@ -26,8 +26,22 @@ jobs:
           node-version: "20"
           cache: npm
 
+      - name: Pull PostgreSQL image
+        run: |
+          for i in 1 2 3; do
+            echo "Pulling postgres:17 (attempt $i/3)..."
+            if docker pull postgres:17; then
+              echo "Image pulled successfully"
+              exit 0
+            fi
+            echo "docker pull failed, retrying in 10s..."
+            sleep 10
+          done
+          echo "Failed to pull postgres:17 after 3 attempts"
+          exit 1
+
       - name: Start PostgreSQL (Docker Compose)
-        run: docker compose up -d db
+        run: docker compose up -d --pull never db
 
       - name: Wait for PostgreSQL healthcheck
         run: |
