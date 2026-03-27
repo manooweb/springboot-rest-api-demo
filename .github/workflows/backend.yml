@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -20,5 +22,11 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Build & verify backend
-        run: ./backend/mvnw -f backend verify
+      - name: Build, verify & analyze backend
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          ./backend/mvnw -f backend verify sonar:sonar
+          -Dsonar.projectKey=manooweb_springboot-rest-api-demo  
+          -Dsonar.organization=manooweb
+          -Dsonar.host.url=https://sonarcloud.io
