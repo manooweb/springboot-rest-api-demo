@@ -1,4 +1,4 @@
-name: Frontend - Tests
+name: Frontend - QA
 
 on:
   push:
@@ -24,6 +24,14 @@ jobs:
       - name: Install dependencies
         working-directory: frontend
         run: npm ci
+
+      - name: Check formatting
+        working-directory: frontend
+        run: npm run format:check
+
+      - name: Run lint
+        working-directory: frontend
+        run: npm run lint
 
       - name: Run unit tests
         working-directory: frontend
