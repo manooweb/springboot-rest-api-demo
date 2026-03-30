@@ -15,9 +15,16 @@ if (!environment.production) {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatToolbarModule, TranslatePipe],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    MatButtonModule,
+    MatToolbarModule,
+    TranslatePipe,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App implements OnInit {
   readonly router = inject(Router);
@@ -30,22 +37,19 @@ export class App implements OnInit {
   protected readonly lang = this.translate.getLanguage();
 
   get authActionLabel() {
-    return this.auth.isLoggedIn()
-      ? 'app.nav.logout'
-      : 'app.nav.login';
+    return this.auth.isLoggedIn() ? 'app.nav.logout' : 'app.nav.login';
   }
 
   ngOnInit() {
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe(
-        (event) => {
-          const path = event.urlAfterRedirects; // ex: /projects/123
-          const fullUrl = window.location.origin + path;
+      .subscribe((event) => {
+        const path = event.urlAfterRedirects; // ex: /projects/123
+        const fullUrl = window.location.origin + path;
 
-          const title = this.getPageTitle(path);
-          this.matomo.trackPageView(fullUrl, title);
-        });
+        const title = this.getPageTitle(path);
+        this.matomo.trackPageView(fullUrl, title);
+      });
   }
 
   onAuthAction() {

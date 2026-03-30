@@ -1,26 +1,36 @@
 <div class="dialog-titlebar">
   <h2 mat-dialog-title class="dialog-title">{{ dialogTitle | translate }}</h2>
 
-  <button type="button" mat-icon-button mat-dialog-close aria-label="{{'shared.aria.closeDialog' | translate}}" class="dialog-close-btn">
+  <button
+    type="button"
+    mat-icon-button
+    mat-dialog-close
+    aria-label="{{ 'shared.aria.closeDialog' | translate }}"
+    class="dialog-close-btn"
+  >
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
 <form #formEl [formGroup]="form" (ngSubmit)="clickOnOk()">
-
   <mat-dialog-content class="dialog-content">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>{{ 'tasks.dialog.field.title' | translate }}</mat-label>
-      <input matInput formControlName="title" cdkFocusInitial/>
-      @if ( shouldShowError(titleCtrl, submitAttempted) ) {
+      <input matInput formControlName="title" cdkFocusInitial />
+      @if (shouldShowError(titleCtrl, submitAttempted)) {
         <mat-error>{{ 'tasks.validation.titleRequired' | translate }}</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>{{ 'tasks.dialog.field.description' | translate }}</mat-label>
-      <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="3"
-        cdkAutosizeMaxRows="8">
+      <textarea
+        matInput
+        formControlName="description"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="3"
+        cdkAutosizeMaxRows="8"
+      >
       </textarea>
     </mat-form-field>
 
@@ -40,11 +50,12 @@
         <mat-option value="DONE">{{ 'tasks.status.done' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
-
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button matButton type="button" mat-dialog-close>{{'shared.action.cancel' | translate}}</button>
+    <button matButton type="button" mat-dialog-close>
+      {{ 'shared.action.cancel' | translate }}
+    </button>
     <button matButton type="submit">
       {{ primaryButtonLabel | translate }}
     </button>

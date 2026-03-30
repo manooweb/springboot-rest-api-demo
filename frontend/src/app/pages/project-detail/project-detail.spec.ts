@@ -26,9 +26,7 @@ describe('ProjectDetail', () => {
   };
 
   beforeEach(async () => {
-    projectsServiceSpy = jasmine.createSpyObj<ProjectsService>('ProjectsService', [
-      'getById',
-    ]);
+    projectsServiceSpy = jasmine.createSpyObj<ProjectsService>('ProjectsService', ['getById']);
 
     tasksServiceSpy = jasmine.createSpyObj<TasksService>('TasksService', [
       'getAll',
@@ -55,8 +53,8 @@ describe('ProjectDetail', () => {
         { provide: Router, useValue: routerSpy },
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: convertToParamMap({ id: 'p1' }) } }
-        }
+          useValue: { snapshot: { paramMap: convertToParamMap({ id: 'p1' }) } },
+        },
       ],
     });
 
@@ -97,11 +95,7 @@ describe('ProjectDetail', () => {
     component.openDeleteTaskConfirmDialog(task);
 
     expect(tasksServiceSpy.delete).toHaveBeenCalledWith(task.id);
-    expect(snackBarSpy.open).toHaveBeenCalledWith(
-      'Task deleted',
-      'Close',
-      jasmine.anything()
-    );
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Task deleted', 'Close', jasmine.anything());
     expect(component.loadTasks).toHaveBeenCalled();
   });
 
@@ -109,9 +103,7 @@ describe('ProjectDetail', () => {
     dialogSpy.open.and.returnValue({
       afterClosed: () => of(true),
     } as any);
-    tasksServiceSpy.delete.and.returnValue(
-      throwError(() => new Error('crash'))
-    );
+    tasksServiceSpy.delete.and.returnValue(throwError(() => new Error('crash')));
     const { component } = createComponent();
 
     spyOn(component, 'loadTasks');
@@ -122,7 +114,7 @@ describe('ProjectDetail', () => {
     expect(snackBarSpy.open).toHaveBeenCalledWith(
       'Failed to delete task',
       'Close',
-      jasmine.anything()
+      jasmine.anything(),
     );
     expect(component.loadTasks).not.toHaveBeenCalled();
   });

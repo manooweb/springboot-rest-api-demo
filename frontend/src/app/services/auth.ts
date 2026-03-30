@@ -10,7 +10,7 @@ export interface LoginResponse {
 }
 
 @Injectable({ providedIn: 'root' })
-export class Auth{
+export class Auth {
   private readonly TOKEN_KEY = 'auth_token';
 
   constructor(private http: HttpClient) {}
@@ -24,7 +24,7 @@ export class Auth{
       .pipe(
         tap((response) => {
           localStorage.setItem(this.TOKEN_KEY, response.accessToken);
-        })
+        }),
       );
   }
 

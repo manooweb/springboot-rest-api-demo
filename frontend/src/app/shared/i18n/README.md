@@ -46,11 +46,11 @@ feature.category.name
 
 Allowed feature prefixes:
 
-- app.*
-- auth.*
-- projects.*
-- tasks.*
-- shared.*
+- app.\*
+- auth.\*
+- projects.\*
+- tasks.\*
+- shared.\*
 
 Examples:
 
@@ -77,7 +77,7 @@ Delete project "{projectName}"
 Usage:
 
 translate.t('projects.confirmDelete.title', {
-  projectName: project.name,
+projectName: project.name,
 });
 
 Missing params keep the placeholder visible.
@@ -134,8 +134,8 @@ frontend/src/app/shared/i18n/index.ts
 Then UI_DICTIONARIES becomes:
 
 {
-  en: EN_DICTIONARY,
-  fr: FR_DICTIONARY
+en: EN_DICTIONARY,
+fr: FR_DICTIONARY
 }
 
 No lazy-loading is implemented yet (languages are bundled at build time).

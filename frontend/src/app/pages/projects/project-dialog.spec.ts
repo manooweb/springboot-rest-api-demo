@@ -10,9 +10,7 @@ describe('ProjectDialog', () => {
     dialogRefSpy = jasmine.createSpyObj<MatDialogRef<ProjectDialog>>('MatDialogRef', ['close']);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ProjectDialog,
-      ],
+      imports: [ProjectDialog],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { mode: 'create' } satisfies ProjectDialogData },
@@ -38,7 +36,7 @@ describe('ProjectDialog', () => {
       payload: {
         name: 'My project',
         description: 'Desc',
-      }
+      },
     });
   });
 
@@ -82,7 +80,7 @@ describe('ProjectDialog', () => {
   });
 
   it('should not close when name is blank', () => {
-    const { component } = createComponent({mode: 'create'} satisfies ProjectDialogData);
+    const { component } = createComponent({ mode: 'create' } satisfies ProjectDialogData);
 
     component.clickOnOk();
 

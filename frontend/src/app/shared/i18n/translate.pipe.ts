@@ -1,11 +1,4 @@
-import {
-  ChangeDetectorRef,
-  inject,
-  OnDestroy,
-  OnInit,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
+import { ChangeDetectorRef, inject, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { UiTextService } from './ui-text.service';

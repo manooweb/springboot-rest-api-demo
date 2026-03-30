@@ -1,6 +1,4 @@
-
 <section class="page">
-
   <div class="page-status">
     @if (loadingProject) {
       <mat-card class="status-card status-info">
@@ -37,7 +35,10 @@
 
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
-      <mat-card-title><strong>{{ project?.name }}</strong> {{ 'tasks.title.projectDetail' | translate }}</mat-card-title>
+      <mat-card-title
+        ><strong>{{ project?.name }}</strong>
+        {{ 'tasks.title.projectDetail' | translate }}</mat-card-title
+      >
     </mat-card-header>
     <mat-card-content>
       <p>{{ project?.description }}</p>
@@ -81,11 +82,21 @@
           </button>
 
           <span class="item-actions">
-            <button matIconButton class="icon-action" (click)="openEditTaskDialog(task)" aria-label="{{ 'tasks.action.editAria' | translate }}">
+            <button
+              matIconButton
+              class="icon-action"
+              (click)="openEditTaskDialog(task)"
+              aria-label="{{ 'tasks.action.editAria' | translate }}"
+            >
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button matIconButton class="icon-action" (click)="openDeleteTaskConfirmDialog(task)" aria-label="{{ 'tasks.action.deleteAria' | translate }}">
+            <button
+              matIconButton
+              class="icon-action"
+              (click)="openDeleteTaskConfirmDialog(task)"
+              aria-label="{{ 'tasks.action.deleteAria' | translate }}"
+            >
               <mat-icon>delete_forever</mat-icon>
             </button>
           </span>

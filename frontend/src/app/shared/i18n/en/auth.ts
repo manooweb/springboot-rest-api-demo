@@ -1,7 +1,7 @@
 import type { UiDictionary } from '../';
 
 export const AUTH_EN: UiDictionary = {
-    // Titles
+  // Titles
   'auth.login.title': 'Login',
 
   // Form fields

@@ -11,13 +11,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = auth.getToken();
   const isLoginCall = req.url.includes('/api/v1/auth/login');
 
-  const authReq = (!token || isLoginCall)
-    ? req
-    : req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-    },
-  });
+  const authReq =
+    !token || isLoginCall
+      ? req
+      : req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
   return next(authReq).pipe(
     catchError((err) => {
@@ -26,6 +27,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         router.navigateByUrl('/login');
       }
       return throwError(() => err);
-    })
+    }),
   );
 };

@@ -1,5 +1,4 @@
 <div class="login-container">
-
   <div class="page-status">
     @if (error) {
       <mat-card class="status-card status-error">
@@ -16,9 +15,9 @@
     <mat-form-field appearance="outline">
       <mat-label>{{ 'auth.login.label.email' | translate }}</mat-label>
 
-      <input matInput type="email" formControlName="email"/>
+      <input matInput type="email" formControlName="email" />
 
-      @if ( shouldShowError(emailCtrl, submitAttempted) ) {
+      @if (shouldShowError(emailCtrl, submitAttempted)) {
         <mat-error>
           @if (emailCtrl.hasError('required')) {
             <span>{{ 'auth.login.validation.emailRequired' | translate }}</span>
@@ -32,9 +31,9 @@
 
     <mat-form-field appearance="outline">
       <mat-label>{{ 'auth.login.label.password' | translate }}</mat-label>
-      <input matInput type="password" formControlName="password"/>
+      <input matInput type="password" formControlName="password" />
 
-      @if ( shouldShowError(passwordCtrl, submitAttempted) ) {
+      @if (shouldShowError(passwordCtrl, submitAttempted)) {
         <mat-error>
           {{ 'auth.login.validation.passwordRequired' | translate }}
         </mat-error>

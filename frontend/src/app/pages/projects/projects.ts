@@ -3,10 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatDialog,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProjectDialog } from './project-dialog';
 import { ProjectDialogData, ProjectDialogResult } from './project-dialog.types';
@@ -21,7 +18,16 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [MatListModule, MatDividerModule, MatButtonModule, MatCardModule, MatIconModule, MatDialogModule, MatSnackBarModule, TranslatePipe],
+  imports: [
+    MatListModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    TranslatePipe,
+  ],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
@@ -147,4 +153,3 @@ export class Projects {
     this.loadProjects();
   }
 }
-

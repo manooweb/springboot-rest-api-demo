@@ -10,12 +10,13 @@ export const routes: Routes = [
   {
     path: 'projects',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/projects/projects').then(m => m.Projects)
+    loadComponent: () => import('./pages/projects/projects').then((m) => m.Projects),
   },
   {
     path: 'projects/:id',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/project-detail/project-detail').then(m => m.ProjectDetail)
+    loadComponent: () =>
+      import('./pages/project-detail/project-detail').then((m) => m.ProjectDetail),
   },
   {
     path: 'legal-notice',

@@ -2,10 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatDialog,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Task, TasksService, TaskStatus } from '../../services/tasks';
@@ -22,7 +19,16 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [DatePipe, MatListModule, MatCardModule, MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule, TranslatePipe],
+  imports: [
+    DatePipe,
+    MatListModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    TranslatePipe,
+  ],
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',
 })
@@ -87,7 +93,7 @@ export class ProjectDetail {
 
     dialogRef.afterClosed().subscribe((result?: TaskDialogResult) => {
       if (!result || !this.id) return; // cancel
-      if (result.mode !== 'edit'  || !result.taskId) return; // Only edit expected here
+      if (result.mode !== 'edit' || !result.taskId) return; // Only edit expected here
 
       this.loadingTasks = true;
       this.errorTasks = null;
@@ -201,31 +207,40 @@ export class ProjectDetail {
         task.status = previous;
         this.updatingTaskId = null;
         this.notify(this.translate.t('tasks.message.statusUpdateFailed'));
-      }
+      },
     });
   }
 
   nextStatus(current: TaskStatus): TaskStatus {
     switch (current) {
-      case 'TODO': return 'IN_PROGRESS';
-      case 'IN_PROGRESS': return 'DONE';
-      case 'DONE': return 'TODO';
+      case 'TODO':
+        return 'IN_PROGRESS';
+      case 'IN_PROGRESS':
+        return 'DONE';
+      case 'DONE':
+        return 'TODO';
     }
   }
 
   statusLabel(status: TaskStatus): string {
     switch (status) {
-      case 'TODO': return 'tasks.status.todo';
-      case 'IN_PROGRESS': return 'tasks.status.inProgress';
-      case 'DONE': return 'tasks.status.done';
+      case 'TODO':
+        return 'tasks.status.todo';
+      case 'IN_PROGRESS':
+        return 'tasks.status.inProgress';
+      case 'DONE':
+        return 'tasks.status.done';
     }
   }
 
   statusEmoji(status: TaskStatus): string {
     switch (status) {
-      case 'TODO': return '📝';
-      case 'IN_PROGRESS': return '⏳';
-      case 'DONE': return '✅';
+      case 'TODO':
+        return '📝';
+      case 'IN_PROGRESS':
+        return '⏳';
+      case 'DONE':
+        return '✅';
     }
   }
 }
