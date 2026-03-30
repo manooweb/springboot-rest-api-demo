@@ -9,7 +9,7 @@ describe('UiTextService (smoke)', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(UiTextService);
   });
-  
+
   it('should return the expected value for a known key', () => {
     expect(service.t('shared.action.cancel')).toBe('Cancel');
   });
@@ -39,5 +39,4 @@ describe('UiTextService (smoke)', () => {
     service.setLanguage('xx' as any);
     expect(service.getLanguage()).toBe('en');
   });
-
 });

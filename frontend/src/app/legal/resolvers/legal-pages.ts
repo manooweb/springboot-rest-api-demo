@@ -23,7 +23,7 @@ export const legalHtmlResolver = (doc: LegalDoc): ResolveFn<string> => {
         }
 
         return content;
-      })
+      }),
     );
   };
 };

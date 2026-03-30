@@ -24,8 +24,7 @@ export interface CreateTaskRequest {
   providedIn: 'root',
 })
 export class TasksService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(projectId: string) {
     return this.http.get<Task[]>(`${API_BASE_URL}/api/v1/projects/${projectId}/tasks`);

@@ -22,7 +22,7 @@ describe('TaskDialog', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        FormsModule
+        FormsModule,
       ],
       providers: [
         provideNativeDateAdapter(),
@@ -54,7 +54,7 @@ describe('TaskDialog', () => {
         description: 'Desc',
         dueDate: '2026-01-15',
         status: 'IN_PROGRESS',
-      }
+      },
     });
   });
 
@@ -107,7 +107,7 @@ describe('TaskDialog', () => {
   });
 
   it('should not close when title is blank', () => {
-    const { component } = createComponent({mode: 'create'} satisfies TaskDialogData);
+    const { component } = createComponent({ mode: 'create' } satisfies TaskDialogData);
 
     component.clickOnOk();
 

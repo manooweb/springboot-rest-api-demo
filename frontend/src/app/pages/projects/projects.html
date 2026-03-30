@@ -13,14 +13,13 @@
     }
 
     @if (error) {
-    <mat-card class="status-card status-error">
-      <mat-card-content>
-        {{ error }}
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="status-card status-error">
+        <mat-card-content>
+          {{ error }}
+        </mat-card-content>
+      </mat-card>
     }
   </div>
-
 
   <div class="page-actions">
     <button matButton="outlined" color="primary" (click)="openAddNewProjectDialog()">
@@ -32,29 +31,41 @@
   <div class="page-content">
     <mat-list class="item-list">
       @for (project of projects; track project.id; let odd = $odd; let last = $last) {
-      <mat-list-item [class.alt-row]="odd">
-        <span matListItemTitle>{{ project.name }}</span>
-        <span matListItemLine>{{ project.description }}</span>
+        <mat-list-item [class.alt-row]="odd">
+          <span matListItemTitle>{{ project.name }}</span>
+          <span matListItemLine>{{ project.description }}</span>
 
-        <span matListItemMeta class="item-meta">
-          <button mat-icon-button class="icon-action" (click)="openEditProjectDialog(project)"
-            aria-label="{{ 'projects.action.editAria' | translate }}">
-            <mat-icon>edit</mat-icon>
-          </button>
+          <span matListItemMeta class="item-meta">
+            <button
+              mat-icon-button
+              class="icon-action"
+              (click)="openEditProjectDialog(project)"
+              aria-label="{{ 'projects.action.editAria' | translate }}"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
 
-          <button mat-icon-button class="icon-action" (click)="showProjectDetail(project.id)"
-            aria-label="{{ 'projects.action.openAria' | translate }}">
-            <mat-icon>visibility</mat-icon>
-          </button>
+            <button
+              mat-icon-button
+              class="icon-action"
+              (click)="showProjectDetail(project.id)"
+              aria-label="{{ 'projects.action.openAria' | translate }}"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
 
-          <button mat-icon-button class="icon-action" (click)="openDeleteProjectConfirmDialog(project)"
-            aria-label="{{ 'projects.action.deleteAria' | translate }}">
-            <mat-icon>delete_forever</mat-icon>
-          </button>
-        </span>
-      </mat-list-item>
+            <button
+              mat-icon-button
+              class="icon-action"
+              (click)="openDeleteProjectConfirmDialog(project)"
+              aria-label="{{ 'projects.action.deleteAria' | translate }}"
+            >
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </span>
+        </mat-list-item>
         @if (!last) {
-        <mat-divider></mat-divider>
+          <mat-divider></mat-divider>
         }
       }
     </mat-list>

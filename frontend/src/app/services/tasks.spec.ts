@@ -10,11 +10,7 @@ describe('TasksService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        provideAnimations()
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideAnimations()],
     });
     service = TestBed.inject(TasksService);
   });

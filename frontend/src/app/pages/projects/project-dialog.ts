@@ -7,7 +7,7 @@ import {
   MatDialogContent,
   MatDialogTitle,
   MAT_DIALOG_DATA,
-  MatDialogModule
+  MatDialogModule,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -101,4 +101,3 @@ export class ProjectDialog implements OnInit {
     });
   }
 }
-

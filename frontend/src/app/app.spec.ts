@@ -14,7 +14,7 @@ describe('App', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideAnimations()
+        provideAnimations(),
       ],
     }).compileComponents();
   });

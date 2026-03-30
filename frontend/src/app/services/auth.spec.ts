@@ -13,12 +13,7 @@ describe('Auth', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        provideAnimations(),
-        Auth,
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideAnimations(), Auth],
     });
     service = TestBed.inject(Auth);
     httpMock = TestBed.inject(HttpTestingController);
@@ -39,7 +34,9 @@ describe('Auth', () => {
       expect(localStorage.getItem(TOKEN_STORAGE_KEY)).toBe(fakeToken);
     });
 
-    const req = httpMock.expectOne((r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'));
+    const req = httpMock.expectOne(
+      (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'),
+    );
     expect(req.request.body).toEqual({ username, password });
 
     req.flush({ accessToken: fakeToken });

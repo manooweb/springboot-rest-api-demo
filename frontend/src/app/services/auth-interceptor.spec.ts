@@ -1,5 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpInterceptorFn,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 
 import { authInterceptor } from './auth-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -16,9 +21,7 @@ describe('authInterceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(
-          withInterceptors([authInterceptor])
-        ),
+        provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting(),
         provideAnimations(),
       ],
@@ -53,7 +56,7 @@ describe('authInterceptor', () => {
 
     req.flush({});
   });
-  
+
   it('should be created', () => {
     expect(interceptor).toBeTruthy();
   });

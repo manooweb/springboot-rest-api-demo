@@ -76,11 +76,7 @@ describe('Projects', () => {
     component.openDeleteProjectConfirmDialog(project);
 
     expect(projectsServiceSpy.delete).toHaveBeenCalledWith(project.id);
-    expect(snackBarSpy.open).toHaveBeenCalledWith(
-      'Project deleted',
-      'Close',
-      jasmine.anything()
-    );
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Project deleted', 'Close', jasmine.anything());
     expect(component.loadProjects).toHaveBeenCalled();
   });
 
@@ -88,9 +84,7 @@ describe('Projects', () => {
     dialogSpy.open.and.returnValue({
       afterClosed: () => of(true),
     } as any);
-    projectsServiceSpy.delete.and.returnValue(
-      throwError(() => new Error('crash'))
-    );
+    projectsServiceSpy.delete.and.returnValue(throwError(() => new Error('crash')));
     const { component } = createComponent();
 
     spyOn(component, 'loadProjects');
@@ -101,7 +95,7 @@ describe('Projects', () => {
     expect(snackBarSpy.open).toHaveBeenCalledWith(
       'Failed to delete project',
       'Close',
-      jasmine.anything()
+      jasmine.anything(),
     );
     expect(component.loadProjects).not.toHaveBeenCalled();
   });

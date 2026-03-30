@@ -12,7 +12,14 @@ import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/fo
 
 @Component({
   selector: 'app-login',
-  imports: [MatCardModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, TranslatePipe],
+  imports: [
+    MatCardModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    TranslatePipe,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -29,8 +36,14 @@ export class Login {
   submitAttempted = false;
 
   form = this.formBuilder.group({
-    email: this.formBuilder.control('demo@example.com', { validators: [Validators.required, Validators.email], nonNullable: true }),
-    password: this.formBuilder.control('demo', { validators: [Validators.required], nonNullable: true }),
+    email: this.formBuilder.control('demo@example.com', {
+      validators: [Validators.required, Validators.email],
+      nonNullable: true,
+    }),
+    password: this.formBuilder.control('demo', {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
   });
 
   get emailCtrl() {

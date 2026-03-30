@@ -63,7 +63,7 @@ function assertValidKeys(dict: Dict, lang: string): void {
 
     if (!allowedPrefixes.includes(prefix)) {
       fail(
-        `[${lang}] Invalid prefix "${prefix}" for key "${key}". Allowed: ${allowedPrefixes.join(', ')}`
+        `[${lang}] Invalid prefix "${prefix}" for key "${key}". Allowed: ${allowedPrefixes.join(', ')}`,
       );
     }
 
@@ -81,7 +81,7 @@ function assertValidKeys(dict: Dict, lang: string): void {
 
       if (!/^[a-z][a-zA-Z0-9_]*$/.test(segment)) {
         fail(
-          `[${lang}] Invalid segment "${segment}" in key "${key}". Segments must start with a lowercase letter and may contain letters, digits, or underscores.`
+          `[${lang}] Invalid segment "${segment}" in key "${key}". Segments must start with a lowercase letter and may contain letters, digits, or underscores.`,
         );
       }
     }

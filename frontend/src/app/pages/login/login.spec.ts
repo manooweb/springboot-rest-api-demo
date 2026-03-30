@@ -34,8 +34,7 @@ describe('Login', () => {
         { provide: Auth, useValue: authSpy },
         { provide: Router, useValue: routerSpy },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
@@ -45,7 +44,7 @@ describe('Login', () => {
   it('should call Auth.login and navigate when form is valid and submit is called', () => {
     component.form.setValue({
       email: 'test@example.com',
-      password: 'test'
+      password: 'test',
     });
 
     component.submit();
@@ -56,7 +55,7 @@ describe('Login', () => {
 
   it('should not call Auth.login when form is invalid', () => {
     component.form.setValue({
-      email: '',        // invalid: required + email
+      email: '', // invalid: required + email
       password: 'test',
     });
 

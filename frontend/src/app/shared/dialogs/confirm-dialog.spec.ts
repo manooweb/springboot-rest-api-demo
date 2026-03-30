@@ -11,13 +11,17 @@ describe('ConfirmDialog', () => {
     dialogRefSpy = jasmine.createSpyObj<MatDialogRef<ConfirmDialog>>('MatDialogRef', ['close']);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ConfirmDialog,
-      ],
+      imports: [ConfirmDialog],
       providers: [
         provideNativeDateAdapter(),
         { provide: MatDialogRef, useValue: dialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: { titleKey: 'Dialog title', messageKey: 'Dialog message' } satisfies ConfirmDialogData },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            titleKey: 'Dialog title',
+            messageKey: 'Dialog message',
+          } satisfies ConfirmDialogData,
+        },
       ],
     }).compileComponents();
   });
@@ -58,7 +62,7 @@ describe('ConfirmDialog', () => {
     } satisfies ConfirmDialogData);
 
     const cancelButton = fixture.nativeElement.querySelector(
-      'mat-dialog-actions button[mat-dialog-close]'
+      'mat-dialog-actions button[mat-dialog-close]',
     ) as HTMLButtonElement | null;
 
     cancelButton?.click();

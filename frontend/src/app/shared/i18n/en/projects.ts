@@ -38,5 +38,6 @@ export const PROJECTS_EN: UiDictionary = {
 
   // Confirm delete dialog (with interpolation)
   'projects.confirmDelete.title': 'Delete project "{projectName}"',
-  'projects.confirmDelete.message': 'Are you sure you want to delete the project "{projectName}"? This action cannot be undone.',
+  'projects.confirmDelete.message':
+    'Are you sure you want to delete the project "{projectName}"? This action cannot be undone.',
 };

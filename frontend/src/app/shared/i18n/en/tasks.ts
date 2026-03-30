@@ -51,5 +51,6 @@ export const TASKS_EN: UiDictionary = {
 
   // Confirm delete dialog (with interpolation)
   'tasks.confirmDelete.title': 'Delete Task "{taskTitle}"',
-  'tasks.confirmDelete.message': 'Are you sure you want to delete the task "{taskTitle}"? This action cannot be undone.',
+  'tasks.confirmDelete.message':
+    'Are you sure you want to delete the task "{taskTitle}"? This action cannot be undone.',
 };
