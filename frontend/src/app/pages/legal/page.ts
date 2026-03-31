@@ -21,17 +21,17 @@ import { filter, Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
 })
 export class LegalPageComponent implements AfterViewInit, OnDestroy {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private sanitizer = inject(DomSanitizer);
-  private translate = inject(UiTextService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly translate = inject(UiTextService);
 
   private sub?: Subscription;
 
-  private lang = this.translate.getLanguage();
+  private readonly lang = this.translate.getLanguage();
 
   // Router resolvers expose data synchronously once route is activated.
-  private html = computed(() => this.route.snapshot.data['html'] as string);
+  private readonly html = computed(() => this.route.snapshot.data['html'] as string);
 
   safeHtml = computed<SafeHtml>(() => {
     // Since HTML comes from your own assets (trusted), bypass is acceptable.
