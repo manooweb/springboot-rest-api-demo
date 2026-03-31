@@ -52,7 +52,7 @@ describe('Projects', () => {
   });
 
   it('should not delete project when confirm dialog is cancelled', () => {
-    const dialogRefSpy : Partial<MatDialogRef<unknown, boolean>> = {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(false),
     };
     dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
@@ -66,7 +66,7 @@ describe('Projects', () => {
   });
 
   it('should delete project, call delete project service and open snackbar when confirm dialog is confirmed', () => {
-    const dialogRefSpy : Partial<MatDialogRef<unknown, boolean>> = {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(true),
     };
     dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
@@ -83,7 +83,7 @@ describe('Projects', () => {
   });
 
   it('should open snackbar with error when confirm dialog is confirmed and project deletion fails', () => {
-    const dialogRefSpy : Partial<MatDialogRef<unknown, boolean>> = {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(true),
     };
     dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
