@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  backend:
+  sonarqube:
     runs-on: ubuntu-latest
 
     steps:
