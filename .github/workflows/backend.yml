@@ -22,11 +22,11 @@ jobs:
           java-version: "21"
           cache: maven
 
-      - name: Build, verify & analyze backend
+      - name: Build & verify backend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
           ./backend/mvnw -f backend verify sonar:sonar
-          -Dsonar.projectKey=manooweb_springboot-rest-api-demo  
+          -Dsonar.projectKey=manooweb_springboot-rest-api-demo
           -Dsonar.organization=manooweb
           -Dsonar.host.url=https://sonarcloud.io
