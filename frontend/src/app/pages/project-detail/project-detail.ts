@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,7 +32,7 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',
 })
-export class ProjectDetail {
+export class ProjectDetail implements OnInit {
   private readonly projectsService = inject(ProjectsService);
   private readonly tasksService = inject(TasksService);
   private readonly route = inject(ActivatedRoute);
@@ -40,7 +40,7 @@ export class ProjectDetail {
   readonly dialog = inject(MatDialog);
 
   id: string | null = this.route.snapshot.paramMap.get('id');
-  private snackBar = inject(MatSnackBar);
+  private readonly snackBar = inject(MatSnackBar);
 
   project: Project | null = null;
   tasks: Task[] = [];

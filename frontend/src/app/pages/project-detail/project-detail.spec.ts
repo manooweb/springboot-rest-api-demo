@@ -4,7 +4,7 @@ import { ProjectDetail } from './project-detail';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { of, throwError } from 'rxjs';
 import { Task, TasksService } from '../../services/tasks';
 import { Project, ProjectsService } from '../../services/projects';
@@ -15,8 +15,8 @@ describe('ProjectDetail', () => {
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let snackBarSpy: jasmine.SpyObj<MatSnackBar>;
   let routerSpy: jasmine.SpyObj<Router>;
-  let project: Project = { id: 'p1', name: 'Project 1', description: 'Description 1' };
-  let task: Task = {
+  const project: Project = { id: 'p1', name: 'Project 1', description: 'Description 1' };
+  const task: Task = {
     projectId: 'p1',
     id: 't1',
     title: 'Task 1',
@@ -71,9 +71,10 @@ describe('ProjectDetail', () => {
   });
 
   it('should not delete task when confirm dialog is cancelled', () => {
-    dialogSpy.open.and.returnValue({
+    const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(false),
-    } as any);
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
 
     const { component } = createComponent();
 
@@ -84,9 +85,10 @@ describe('ProjectDetail', () => {
   });
 
   it('should delete task, call delete task service and open snackbar when confirm dialog is confirmed', () => {
-    dialogSpy.open.and.returnValue({
+    const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(true),
-    } as any);
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
     tasksServiceSpy.delete.and.returnValue(of(void 0));
 
     const { component } = createComponent();
@@ -100,9 +102,10 @@ describe('ProjectDetail', () => {
   });
 
   it('should open snackbar with error when confirm dialog is confirmed and task deletion fails', () => {
-    dialogSpy.open.and.returnValue({
+    const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(true),
-    } as any);
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
     tasksServiceSpy.delete.and.returnValue(throwError(() => new Error('crash')));
     const { component } = createComponent();
 

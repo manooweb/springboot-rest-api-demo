@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -22,7 +22,7 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/form-helpers';
 
 @Component({
-  selector: 'task-dialog',
+  selector: 'app-task-dialog',
   templateUrl: 'task-dialog.html',
   styleUrl: 'task-dialog.scss',
   standalone: true,
@@ -42,7 +42,7 @@ import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/fo
   ],
 })
 export class TaskDialog implements OnInit {
-  @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
+  @ViewChild('formEl', { static: true }) private readonly formEl?: ElementRef<HTMLFormElement>;
   private readonly dialogRef = inject(MatDialogRef<TaskDialog>);
   private readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);

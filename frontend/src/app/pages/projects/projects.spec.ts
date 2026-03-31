@@ -4,7 +4,7 @@ import { Projects } from './projects';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Project, ProjectsService } from '../../services/projects';
 import { of, throwError } from 'rxjs';
 
@@ -13,7 +13,7 @@ describe('Projects', () => {
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let snackBarSpy: jasmine.SpyObj<MatSnackBar>;
   let routerSpy: jasmine.SpyObj<Router>;
-  let project: Project = { id: 'p1', name: 'Project 1', description: 'Description 1' };
+  const project: Project = { id: 'p1', name: 'Project 1', description: 'Description 1' };
 
   beforeEach(async () => {
     projectsServiceSpy = jasmine.createSpyObj<ProjectsService>('ProjectsService', [
@@ -52,9 +52,10 @@ describe('Projects', () => {
   });
 
   it('should not delete project when confirm dialog is cancelled', () => {
-    dialogSpy.open.and.returnValue({
+    const dialogRefSpy : Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(false),
-    } as any);
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
 
     const { component } = createComponent();
 
@@ -65,9 +66,10 @@ describe('Projects', () => {
   });
 
   it('should delete project, call delete project service and open snackbar when confirm dialog is confirmed', () => {
-    dialogSpy.open.and.returnValue({
+    const dialogRefSpy : Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(true),
-    } as any);
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
     projectsServiceSpy.delete.and.returnValue(of(void 0));
 
     const { component } = createComponent();
@@ -81,9 +83,10 @@ describe('Projects', () => {
   });
 
   it('should open snackbar with error when confirm dialog is confirmed and project deletion fails', () => {
-    dialogSpy.open.and.returnValue({
+    const dialogRefSpy : Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(true),
-    } as any);
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
     projectsServiceSpy.delete.and.returnValue(throwError(() => new Error('crash')));
     const { component } = createComponent();
 

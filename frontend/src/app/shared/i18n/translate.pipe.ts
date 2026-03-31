@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, inject, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { UiTextService } from './ui-text.service';
@@ -8,13 +8,13 @@ import { UiTextService } from './ui-text.service';
   standalone: true,
   pure: false,
 })
-export class TranslatePipe implements PipeTransform, OnInit, OnDestroy {
+export class TranslatePipe implements PipeTransform, OnDestroy {
   private readonly translate = inject(UiTextService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  private sub?: Subscription;
+  private readonly sub?: Subscription;
 
-  ngOnInit(): void {
+  constructor() {
     this.sub = this.translate.lang$.subscribe(() => {
       this.cdr.markForCheck();
     });

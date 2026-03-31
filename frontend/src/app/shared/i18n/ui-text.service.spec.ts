@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UiTextService } from './ui-text.service';
+import { type UiLang } from './index';
 
 describe('UiTextService (smoke)', () => {
   let service: UiTextService;
@@ -33,10 +34,10 @@ describe('UiTextService (smoke)', () => {
 
   it('should fall back to default language when setting an unsupported language', () => {
     // If UiLang is only 'en' right now, cast is fine for this smoke test
-    service.setLanguage('en' as any);
+    service.setLanguage('en' as UiLang);
     expect(service.getLanguage()).toBe('en');
 
-    service.setLanguage('xx' as any);
+    service.setLanguage('xx' as UiLang);
     expect(service.getLanguage()).toBe('en');
   });
 });

@@ -18,7 +18,7 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/form-helpers';
 
 @Component({
-  selector: 'project-dialog',
+  selector: 'app-project-dialog',
   templateUrl: 'project-dialog.html',
   styleUrl: 'project-dialog.scss',
   standalone: true,

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { API_BASE_URL } from '../app.config';
 
 export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
@@ -24,7 +24,7 @@ export interface CreateTaskRequest {
   providedIn: 'root',
 })
 export class TasksService {
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(projectId: string) {
     return this.http.get<Task[]>(`${API_BASE_URL}/api/v1/projects/${projectId}/tasks`);

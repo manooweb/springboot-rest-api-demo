@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 
 import { authGuard } from './auth-guard';
 import { Auth } from './auth';
 
 describe('authGuard', () => {
-  const executeGuard = () => TestBed.runInInjectionContext(() => authGuard({} as any, {} as any));
+  const executeGuard = () => TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
   let authSpy: jasmine.SpyObj<Auth>;
   let routerSpy: jasmine.SpyObj<Router>;
