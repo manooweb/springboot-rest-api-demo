@@ -24,7 +24,7 @@ import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/fo
   styleUrl: './login.scss',
 })
 export class Login {
-  @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
+  @ViewChild('formEl', { static: true }) private readonly formEl?: ElementRef<HTMLFormElement>;
   error: string | null = null;
   loading = false;
   private readonly router = inject(Router);
