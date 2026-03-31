@@ -44,5 +44,6 @@ jobs:
             -Dsonar.organization=manooweb
             -Dsonar.sources=backend/src/main/java,frontend/src
             -Dsonar.tests=backend/src/test/java
+            -Dsonar.java.binaries=backend/target/classes
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
