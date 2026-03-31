@@ -5,7 +5,10 @@ import { authGuard } from './auth-guard';
 import { Auth } from './auth';
 
 describe('authGuard', () => {
-  const executeGuard = () => TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
+  const executeGuard = () =>
+    TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
 
   let authSpy: jasmine.SpyObj<Auth>;
   let routerSpy: jasmine.SpyObj<Router>;

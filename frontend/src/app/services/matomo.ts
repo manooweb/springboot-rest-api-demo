@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-type MatomoCommand = [ string, ...unknown[] ];
+type MatomoCommand = [string, ...unknown[]];
 
 declare global {
   interface Window {
