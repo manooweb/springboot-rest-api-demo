@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProjectsService, Project } from '../../services/projects';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,7 +31,7 @@ import { TranslatePipe } from '../../shared/i18n/translate.pipe';
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
-export class Projects {
+export class Projects implements OnInit {
   readonly router = inject(Router);
   readonly dialog = inject(MatDialog);
   private readonly projectsService = inject(ProjectsService);

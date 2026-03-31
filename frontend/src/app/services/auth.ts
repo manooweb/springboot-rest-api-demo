@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { API_BASE_URL } from '../app.config';
@@ -12,8 +12,7 @@ export interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 export class Auth {
   private readonly TOKEN_KEY = 'auth_token';
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   login(username: string, password: string) {
     return this.http

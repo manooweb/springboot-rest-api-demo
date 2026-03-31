@@ -13,7 +13,7 @@ import { ConfirmDialogData } from './confirm-dialog.types';
 import { TranslatePipe } from '../i18n/translate.pipe';
 
 @Component({
-  selector: 'confirm-dialog',
+  selector: 'app-confirm-dialog',
   templateUrl: 'confirm-dialog.html',
   styleUrl: 'confirm-dialog.scss',
   standalone: true,
