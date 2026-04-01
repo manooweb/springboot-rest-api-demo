@@ -36,8 +36,6 @@ jobs:
       - name: Build backend (for analysis)
         run: |
           ./backend/mvnw -B -f backend clean verify
-          ls -l backend/target/site/jacoco/jacoco.xml
-          head -n 5 backend/target/site/jacoco/jacoco.xml
 
       - name: SonarQubeCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v2
@@ -45,6 +43,7 @@ jobs:
           args: >
             -Dsonar.projectKey=manooweb_springboot-rest-api-demo
             -Dsonar.organization=manooweb
+            -Dsonar.projectBaseDir=.
             -Dsonar.sources=backend/src/main/java
             -Dsonar.tests=backend/src/test/java
             -Dsonar.java.binaries=backend/target/classes
