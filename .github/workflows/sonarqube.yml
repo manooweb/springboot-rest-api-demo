@@ -59,7 +59,7 @@ jobs:
             -Dsonar.sources=backend/src/main/java
             -Dsonar.tests=backend/src/test/java
             -Dsonar.java.binaries=backend/target/classes
-            -Dsonar.java.libraries=backend/target/dependency/*.jar
+            -Dsonar.java.libraries=backend/target/dependency
             -Dsonar.coverage.jacoco.xmlReportPaths=backend/target/site/jacoco/jacoco.xml
 
         env:
