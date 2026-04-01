@@ -40,8 +40,14 @@ jobs:
       - name: Copy backend dependencies for Sonar
         run: |
           ./backend/mvnw -B -f backend dependency:copy-dependencies -DincludeScope=compile -DoutputDirectory=backend/target/dependency
-          ls -la backend/target/dependency
-
+          echo "== root =="
+          ls -la
+          echo "== backend/target =="
+          ls -la backend/target || true
+          echo "== backend/target/dependency =="
+          ls -la backend/target/dependency || true
+          echo "== target/dependency =="
+          ls -la target/dependency || true
       - name: SonarQubeCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v2
         with:
