@@ -52,6 +52,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           args: >
+            -X
             -Dsonar.projectKey=manooweb_springboot-rest-api-demo
             -Dsonar.organization=manooweb
             -Dsonar.projectBaseDir=.
@@ -60,7 +61,6 @@ jobs:
             -Dsonar.java.binaries=backend/target/classes
             -Dsonar.java.libraries=backend/target/dependency/*.jar
             -Dsonar.coverage.jacoco.xmlReportPaths=backend/target/site/jacoco/jacoco.xml
-            -Dsonar.verbose=true
 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
