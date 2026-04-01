@@ -37,6 +37,9 @@ jobs:
         run: |
           ./backend/mvnw -B -f backend clean verify
 
+      - name: Copy backend dependencies for Sonar
+        run: ./backend/mvnw -B -f backend dependency:copy-dependencies -DincludeScope=compile -DoutputDirectory=backend/target/dependency
+
       - name: SonarQubeCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v2
         with:
@@ -47,6 +50,7 @@ jobs:
             -Dsonar.sources=backend/src/main/java
             -Dsonar.tests=backend/src/test/java
             -Dsonar.java.binaries=backend/target/classes
+            -Dsonar.java.libraries=backend/target/dependency/*.jar
             -Dsonar.coverage.jacoco.xmlReportPaths=backend/target/site/jacoco/jacoco.xml
             -Dsonar.verbose=true
 
