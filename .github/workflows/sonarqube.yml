@@ -34,7 +34,10 @@ jobs:
         run: npm ci
 
       - name: Build backend (for analysis)
-        run: ./backend/mvnw -B -f backend package -DskipTests
+        run: |
+          ./backend/mvnw -B -f backend clean verify
+          ls -l backend/target/site/jacoco/jacoco.xml
+          head -n 5 backend/target/site/jacoco/jacoco.xml
 
       - name: SonarQubeCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v2
