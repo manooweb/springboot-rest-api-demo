@@ -40,8 +40,13 @@ jobs:
       - name: Copy backend dependencies for Sonar
         working-directory: backend
         run: |
-          ./mvnw -B dependency:copy-dependencies -DincludeScope=compile -DoutputDirectory=backend/target/dependency
-          ls -la target/dependency
+          ./mvnw -B dependency:copy-dependencies -DincludeScope=compile -DoutputDirectory=target/dependency
+          echo "== pwd =="
+          pwd
+          echo "== find dependency dirs =="
+          find /home/runner/work/springboot-rest-api-demo/springboot-rest-api-demo -type d -name dependency | sort
+          echo "== find one known jar =="
+          find /home/runner/work/springboot-rest-api-demo/springboot-rest-api-demo -type f -name "spring-boot-3.5.9.jar" | sort
 
       - name: SonarQubeCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v2
