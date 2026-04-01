@@ -49,6 +49,7 @@ jobs:
             -Dsonar.tests=backend/src/test/java
             -Dsonar.java.binaries=backend/target/classes
             -Dsonar.coverage.jacoco.xmlReportPaths=backend/target/site/jacoco/jacoco.xml
+            -Dsonar.verbose=true
 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
