@@ -1,0 +1,45 @@
+name: Frontend SonarQube
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  sonarqube-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run frontend tests with coverage
+        working-directory: frontend
+        run: npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
+
+      - name: SonarQube frontend analysis
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=manooweb_springboot-rest-api-demo-frontend
+            -Dsonar.organization=manooweb
+            -Dsonar.sources=frontend/src
+            -Dsonar.tests=frontend/src
+            -Dsonar.test.inclusions=frontend/src/**/*.spec.ts
+            -Dsonar.exclusions=frontend/src/**/*.spec.ts
+            -Dsonar.typescript.lcov.reportPaths=frontend/coverage/lcov.info
