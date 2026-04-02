@@ -33,7 +33,7 @@ jobs:
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=manooweb \
-            -Dsonar.projectKey=manooweb_springboot-rest-api-demo \
+            -Dsonar.projectKey=manooweb_springboot-rest-api-demo-backend \
             -Dsonar.sources=src/main/java,src/main/resources \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
             -Dsonar.exclusions=src/main/resources/db/migration/**
