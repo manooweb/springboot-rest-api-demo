@@ -35,4 +35,5 @@ jobs:
             -Dsonar.organization=manooweb \
             -Dsonar.projectKey=manooweb_springboot-rest-api-demo \
             -Dsonar.sources=src/main/java,src/main/resources \
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+            -Dsonar.exclusions=src/main/resources/db/migration/**
