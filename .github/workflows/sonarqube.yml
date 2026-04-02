@@ -48,19 +48,28 @@ jobs:
           echo "== find one known jar =="
           find /home/runner/work/springboot-rest-api-demo/springboot-rest-api-demo -type f -name "spring-boot-3.5.9.jar" | sort
 
-      - name: SonarQubeCloud Analysis
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          args: >
-            -X
+      - name: Sonar backend (Maven)
+        working-directory: backend
+        run: |
+          ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=manooweb \
             -Dsonar.projectKey=manooweb_springboot-rest-api-demo
-            -Dsonar.organization=manooweb
-            -Dsonar.projectBaseDir=.
-            -Dsonar.sources=backend/src/main/java
-            -Dsonar.tests=backend/src/test/java
-            -Dsonar.java.binaries=backend/target/classes
-            -Dsonar.java.libraries=backend/target/dependency
-            -Dsonar.coverage.jacoco.xmlReportPaths=backend/target/site/jacoco/jacoco.xml
+
+#  - name: SonarQubeCloud Analysis
+#    uses: SonarSource/sonarcloud-scan-action@v7
+#    with:
+#      args: >
+#        -X
+#        -Dsonar.projectKey=manooweb_springboot-rest-api-demo
+#        -Dsonar.organization=manooweb
+#        -Dsonar.projectBaseDir=.
+#        -Dsonar.sources=backend/src/main/java
+#        -Dsonar.tests=backend/src/test/java
+#        -Dsonar.java.binaries=backend/target/classes
+#        -Dsonar.java.libraries=backend/target/dependency
+#        -Dsonar.coverage.jacoco.xmlReportPaths=backend/target/site/jacoco/jacoco.xml
 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
