@@ -51,11 +51,12 @@ jobs:
       - name: Sonar backend (Maven)
         working-directory: backend
         run: |
-          ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=manooweb \
-            -Dsonar.projectKey=manooweb_springboot-rest-api-demo
+            -Dsonar.projectKey=manooweb_springboot-rest-api-demo \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
 #  - name: SonarQubeCloud Analysis
 #    uses: SonarSource/sonarcloud-scan-action@v7
