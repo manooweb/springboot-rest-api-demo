@@ -5,6 +5,8 @@
 [![Frontend QA](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend.yml)
 [![SonarQube](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/sonarqube.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/sonarqube.yml)
 [![Deployment](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/deploy.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/deploy-vps.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo&metric=coverage)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
 
 ---
