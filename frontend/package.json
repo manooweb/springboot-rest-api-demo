@@ -7,10 +7,11 @@
     "start:devlan": "ng serve --configuration devlan --host 0.0.0.0 --port 4200",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "qa": "npm run format:check && npm run lint && npm run test"
   },
   "prettier": {
     "printWidth": 100,
