@@ -213,18 +213,30 @@ Run locally:
 
 ### Formatting
 
+#### Backend
+
 Java code formatting is enforced using Spotless.
 
 Verify formatting:
 
 ```bash
-./backend/mvnw verify
+./backend/mvnw -f backend clean verify
 ```
 
 Fix formatting:
 
 ```bash
-./backend/mvnw spotless:apply
+./backend/mvnw -f backend spotless:apply
+```
+
+#### Frontend
+
+Frontend code formatting is enforced using prettier and esLint.
+
+```bash
+cd frontend
+npm run format:check
+npm run lint
 ```
 
 ---
