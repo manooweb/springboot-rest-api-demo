@@ -1,16 +1,22 @@
 # springboot-rest-api-demo
 
 [![Backend QA](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend.yml)
-[![API E2E (Bruno)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml)
 [![Frontend QA](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend.yml)
+[![API E2E (Bruno)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/api-e2e-bruno.yml)
 [![Backend SonarQube](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend-sonarqube.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/backend-sonarqube.yml)
 [![Frontend SonarQube](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend-sonarqube.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/frontend-sonarqube.yml)
-[![Deployment](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/deploy.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/deploy-vps.yml)
+[![Deployment](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/deploy.yml/badge.svg)](https://github.com/manooweb/springboot-rest-api-demo/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
+
+**Backend**
+
 [![Backend Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo-backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo-backend)
 [![Backend Coverage](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo-backend)
+
+**Frontend**
+
 [![Frontend Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo-frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo-frontend)
-[![Fontend Coverage](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo-frontend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo-frontend)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)
+[![Frontend Coverage](https://sonarcloud.io/api/project_badges/measure?project=manooweb_springboot-rest-api-demo-frontend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=manooweb_springboot-rest-api-demo-frontend)
 
 ---
 
