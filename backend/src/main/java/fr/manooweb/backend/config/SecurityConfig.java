@@ -87,7 +87,7 @@ public class SecurityConfig {
         // Enable CORS support and delegate configuration to CorsConfigurationSource
         .cors(Customizer.withDefaults())
 
-        // Stateless API (JWT later). CSRF disabled for simplicity in this MVP.
+        // Disable CSRF protection since we are not using cookies for authentication.
         .csrf(csrf -> csrf.disable())
 
         // Enable HTTP Basic authentication (handy for quick testing).
