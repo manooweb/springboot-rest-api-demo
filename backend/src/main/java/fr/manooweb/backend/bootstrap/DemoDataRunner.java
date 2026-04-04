@@ -51,25 +51,19 @@ public class DemoDataRunner implements CommandLineRunner {
 
     Task task1 =
         new Task(
-            UUID.randomUUID(),
             project,
             "Create initial domain model",
             "Create initial domain model",
             TaskStatus.DONE,
-            LocalDate.now().plusDays(1),
-            now,
-            now);
+            LocalDate.now().plusDays(1));
 
     Task task2 =
         new Task(
-            UUID.randomUUID(),
             project,
             "Implement REST endpoints",
             "Implement REST endpoints",
             TaskStatus.TODO,
-            LocalDate.now().plusDays(7),
-            now,
-            now);
+            LocalDate.now().plusDays(7));
 
     taskRepository.save(task1);
     taskRepository.save(task2);

@@ -47,14 +47,11 @@ class TaskUpdateIntegrationTest {
 
     Task task =
         new Task(
-            UUID.randomUUID(),
             project,
             "Initial Task Title",
             "Initial Task Description",
             TaskStatus.TODO,
-            LocalDate.of(2024, 12, 31),
-            OffsetDateTime.now(),
-            OffsetDateTime.now());
+            LocalDate.of(2024, 12, 31));
     taskRepository.save(task);
 
     // When & Then

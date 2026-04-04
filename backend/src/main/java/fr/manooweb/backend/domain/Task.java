@@ -46,22 +46,18 @@ public class Task {
   }
 
   public Task(
-      UUID id,
-      Project project,
-      String title,
-      String description,
-      TaskStatus status,
-      LocalDate dueDate,
-      OffsetDateTime createdAt,
-      OffsetDateTime updatedAt) {
-    this.id = id;
+      Project project, String title, String description, TaskStatus status, LocalDate dueDate) {
+
+    OffsetDateTime now = OffsetDateTime.now();
+
+    this.id = UUID.randomUUID();
     this.project = project;
     this.title = title;
     this.description = description;
     this.status = status;
     this.dueDate = dueDate;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.createdAt = now;
+    this.updatedAt = now;
   }
 
   public UUID getId() {
