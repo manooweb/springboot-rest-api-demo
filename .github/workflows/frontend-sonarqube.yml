@@ -41,5 +41,5 @@ jobs:
             -Dsonar.sources=frontend/src
             -Dsonar.tests=frontend/src
             -Dsonar.test.inclusions=frontend/src/**/*.spec.ts
-            -Dsonar.exclusions=frontend/src/**/*.spec.ts
+            -Dsonar.exclusions=frontend/src/**/*.spec.ts,frontend/src/environments/environment.ts,frontend/src/environments/environment.devlan.ts
             -Dsonar.typescript.lcov.reportPaths=frontend/coverage/frontend/lcov.info
