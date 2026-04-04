@@ -8,7 +8,6 @@ import fr.manooweb.backend.domain.Project;
 import fr.manooweb.backend.domain.TaskStatus;
 import fr.manooweb.backend.repository.ProjectRepository;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,12 +31,8 @@ class TaskCreateIntegrationTest {
   @WithMockUser(username = "test")
   void createTask_allowsNonTodoStatus() throws Exception {
     // Arrange
-    OffsetDateTime now = OffsetDateTime.now();
-
     Project project =
-        projectRepository.save(
-            new Project(
-                UUID.randomUUID(), "Test project", "Created by integration test", now, now));
+        projectRepository.save(new Project("Test project", "Created by integration test"));
 
     String payload =
         """
@@ -66,9 +61,7 @@ class TaskCreateIntegrationTest {
     OffsetDateTime now = OffsetDateTime.now();
 
     Project project =
-        projectRepository.save(
-            new Project(
-                UUID.randomUUID(), "Test project", "Created by integration test", now, now));
+        projectRepository.save(new Project("Test project", "Created by integration test"));
 
     String payload =
         """

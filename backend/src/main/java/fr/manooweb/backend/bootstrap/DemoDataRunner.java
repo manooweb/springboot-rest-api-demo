@@ -6,7 +6,6 @@ import fr.manooweb.backend.domain.TaskStatus;
 import fr.manooweb.backend.repository.ProjectRepository;
 import fr.manooweb.backend.repository.TaskRepository;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +40,7 @@ public class DemoDataRunner implements CommandLineRunner {
   }
 
   private Project createDemoProject(String name) {
-    UUID projectId = UUID.randomUUID();
-    OffsetDateTime now = OffsetDateTime.now();
-
-    Project project =
-        new Project(projectId, name, "Demo project created on startup (dev profile).", now, now);
+    Project project = new Project(name, "Demo project created on startup (dev profile).");
 
     projectRepository.save(project);
 
@@ -68,7 +63,7 @@ public class DemoDataRunner implements CommandLineRunner {
     taskRepository.save(task1);
     taskRepository.save(task2);
 
-    log.info("Demo data inserted: projectId={}", projectId);
+    log.info("Demo data inserted: projectId={}", project.getId());
 
     return project;
   }
