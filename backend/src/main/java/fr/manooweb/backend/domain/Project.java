@@ -29,17 +29,15 @@ public class Project {
     // JPA only
   }
 
-  public Project(
-      UUID id,
-      String name,
-      String description,
-      OffsetDateTime createdAt,
-      OffsetDateTime updatedAt) {
-    this.id = id;
+  public Project(String name, String description) {
+
+    OffsetDateTime now = OffsetDateTime.now();
+
+    this.id = UUID.randomUUID();
     this.name = name;
     this.description = description;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.createdAt = now;
+    this.updatedAt = now;
   }
 
   public UUID getId() {

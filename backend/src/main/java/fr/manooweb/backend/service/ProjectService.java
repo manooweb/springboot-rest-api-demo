@@ -21,9 +21,7 @@ public class ProjectService {
   }
 
   public Project create(String name, String description) {
-    OffsetDateTime now = OffsetDateTime.now();
-
-    Project project = new Project(UUID.randomUUID(), name, description, now, now);
+    Project project = new Project(name, description);
 
     return projectRepository.save(project);
   }

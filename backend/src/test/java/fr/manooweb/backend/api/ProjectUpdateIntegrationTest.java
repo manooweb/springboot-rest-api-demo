@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import fr.manooweb.backend.domain.Project;
 import fr.manooweb.backend.repository.ProjectRepository;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -31,13 +30,7 @@ class ProjectUpdateIntegrationTest {
   @WithMockUser(username = "test")
   void updateProject_ShouldReturnUpdatedProject() throws Exception {
     // Given
-    Project project =
-        new Project(
-            UUID.randomUUID(),
-            "Project for updating task",
-            "Project Description",
-            OffsetDateTime.now(),
-            OffsetDateTime.now());
+    Project project = new Project("Project for updating task", "Project Description");
     projectRepository.save(project);
 
     // When & Then

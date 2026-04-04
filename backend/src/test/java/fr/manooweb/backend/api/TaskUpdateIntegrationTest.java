@@ -10,7 +10,6 @@ import fr.manooweb.backend.domain.TaskStatus;
 import fr.manooweb.backend.repository.ProjectRepository;
 import fr.manooweb.backend.repository.TaskRepository;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -36,13 +35,7 @@ class TaskUpdateIntegrationTest {
   @WithMockUser(username = "test")
   void updateTask_ShouldReturnUpdatedTask() throws Exception {
     // Given
-    Project project =
-        new Project(
-            UUID.randomUUID(),
-            "Project for updating task",
-            "Project Description",
-            OffsetDateTime.now(),
-            OffsetDateTime.now());
+    Project project = new Project("Project for updating task", "Project Description");
     projectRepository.save(project);
 
     Task task =
