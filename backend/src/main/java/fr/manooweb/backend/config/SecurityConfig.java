@@ -33,6 +33,12 @@ public class SecurityConfig {
   @Value("${app.security.jwt.secret}")
   private String jwtSecret;
 
+  @Value("${APP_USER_NAME}")
+  private String demoUsername;
+
+  @Value("${APP_USER_PASSWORD}")
+  private String demoPassword;
+
   // Password hashing strategy used for encoding in-memory user passwords.
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -45,8 +51,8 @@ public class SecurityConfig {
   public UserDetailsService userDetailsService(PasswordEncoder encoder) {
     UserDetails demoUser =
         User.builder()
-            .username("demo@example.com")
-            .password(encoder.encode("demo"))
+            .username(demoUsername)
+            .password(encoder.encode(demoPassword))
             .roles("USER")
             .build();
 

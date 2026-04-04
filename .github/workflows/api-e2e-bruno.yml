@@ -61,9 +61,20 @@ jobs:
       - name: Backend - build (skip tests)
         run: ./backend/mvnw -f backend -DskipTests package
 
-      - name: Backend - start app (docker profile)
+      - name: Backend - start app (dev profile)
+        env:
+          SPRING_PROFILES_ACTIVE: dev
+          PGHOST: localhost
+          PGPORT: 5432
+          PGDATABASE: demo
+          PGUSER: demo
+          PGPASSWORD: demo
+          APP_USER_NAME: demo@example.com
+          APP_USER_PASSWORD: demo
+          APP_SECURITY_JWT_ISSUER: http://localhost:8080
+          APP_SECURITY_JWT_SECRET: ci-test-secret-at-least-32-characters
         run: |
-          nohup ./backend/mvnw -f backend -q spring-boot:run -Dspring-boot.run.profiles=docker > springboot.log 2>&1 &
+          nohup ./backend/mvnw -f backend -q spring-boot:run > springboot.log 2>&1 &
           echo $! > springboot.pid
 
       - name: Wait for API health endpoint

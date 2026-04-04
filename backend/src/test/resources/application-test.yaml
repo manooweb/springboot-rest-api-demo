@@ -9,3 +9,8 @@ spring:
       ddl-auto: create-drop
   flyway:
     enabled: false
+
+APP_USER_NAME: test@example.com
+APP_USER_PASSWORD: test-password
+APP_SECURITY_JWT_ISSUER: http://localhost:8080
+APP_SECURITY_JWT_SECRET: test-secret-at-least-32-characters
