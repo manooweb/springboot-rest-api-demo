@@ -39,14 +39,12 @@ public class ProjectService {
 
   @SuppressWarnings("null")
   @NonNull
-  @Transactional(readOnly = true)
   public Project getById(UUID projectId) {
     return projectRepository
         .findById(projectId)
         .orElseThrow(() -> new ProjectNotFoundException(projectId));
   }
 
-  @Transactional(readOnly = true)
   public List<Project> findAll() {
     return projectRepository.findAll();
   }
