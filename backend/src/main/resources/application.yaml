@@ -5,6 +5,6 @@ spring:
 app:
   security:
     jwt:
-      issuer: "http://localhost:8080"
-      secret: "change-me-to-a-long-random-secret-at-least-32-bytes"
+      issuer: ${APP_SECURITY_JWT_ISSUER}
+      secret: ${APP_SECURITY_JWT_SECRET}
       ttl-seconds: 3600

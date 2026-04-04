@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("docker")
+@Profile("dev")
 public class DemoDataRunner implements CommandLineRunner {
 
   private static final Logger log = LoggerFactory.getLogger(DemoDataRunner.class);
@@ -45,7 +45,7 @@ public class DemoDataRunner implements CommandLineRunner {
     OffsetDateTime now = OffsetDateTime.now();
 
     Project project =
-        new Project(projectId, name, "Demo project created on startup (docker profile).", now, now);
+        new Project(projectId, name, "Demo project created on startup (dev profile).", now, now);
 
     projectRepository.save(project);
 

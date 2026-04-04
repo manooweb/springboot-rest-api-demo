@@ -126,12 +126,20 @@ flowchart LR
 
     docker compose up -d
 
-### 2) Start backend
+### 2) Create local backend environment file
+
+Copy the example file and fill in the expected values:
+
+    cp backend/.env.example backend/.env
+
+The local backend profile is driven by `SPRING_PROFILES_ACTIVE=dev` from `backend/.env`.
+
+### 3) Start backend
 
     cd backend
-    ./mvnw spring-boot:run -Dspring-boot.run.profiles=docker
+    scripts/run.sh
 
-### 3) Start frontend
+### 4) Start frontend
 
     cd frontend
     npm install
@@ -211,6 +219,18 @@ Run locally:
 
 ## 🔍 Code quality
 
+### SonarQube / SonarCloud
+
+Sonar analysis for both backend and frontend is run only in CI via GitHub Actions and SonarCloud.
+
+- Backend analysis: `.github/workflows/backend-sonarqube.yml`
+- Frontend analysis: `.github/workflows/frontend-sonarqube.yml`
+
+For local checks before push, use:
+
+- backend: `cd backend && ./mvnw clean verify`
+- frontend: `cd frontend && npm run qa`
+
 ### Formatting
 
 #### Backend
@@ -231,12 +251,19 @@ Fix formatting:
 
 #### Frontend
 
-Frontend code formatting is enforced using prettier and esLint.
+Frontend code formatting is enforced using prettier. Additional code quality rules are checked with ESLint.
+
+Verify formatting and code quality rules:
 
 ```bash
 cd frontend
-npm run format:check
-npm run lint
+npm run format:check && npm run lint
+```
+
+Fix formatting:
+
+```bash
+npm run format
 ```
 
 ---
