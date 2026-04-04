@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import fr.manooweb.backend.domain.Project;
 import fr.manooweb.backend.domain.TaskStatus;
 import fr.manooweb.backend.repository.ProjectRepository;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -58,8 +57,6 @@ class TaskCreateIntegrationTest {
   @Test
   @WithMockUser(username = "test")
   void createTask_withoutStatus_returnsBadRequest() throws Exception {
-    OffsetDateTime now = OffsetDateTime.now();
-
     Project project =
         projectRepository.save(new Project("Test project", "Created by integration test"));
 
