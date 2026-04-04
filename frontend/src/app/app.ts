@@ -45,7 +45,7 @@ export class App implements OnInit {
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event) => {
         const path = event.urlAfterRedirects; // ex: /projects/123
-        const fullUrl = window.location.origin + path;
+        const fullUrl = globalThis.location.origin + path;
 
         const title = this.getPageTitle(path);
         this.matomo.trackPageView(fullUrl, title);
