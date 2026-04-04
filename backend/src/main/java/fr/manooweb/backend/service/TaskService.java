@@ -45,12 +45,10 @@ public class TaskService {
 
   @SuppressWarnings("null")
   @NonNull
-  @Transactional(readOnly = true)
   public Task getById(UUID taskId) {
     return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
   }
 
-  @Transactional(readOnly = true)
   public List<Task> findByProject(UUID projectId, TaskStatus status) {
     projectService.getById(projectId);
 
