@@ -11,6 +11,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialogData } from './confirm-dialog.types';
 import { TranslatePipe } from '../i18n/translate.pipe';
+import { UiTextParams } from '../i18n/ui-text.service';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -35,7 +36,7 @@ export class ConfirmDialog {
     return this.data.titleKey ?? '';
   }
 
-  get titleParams(): Record<string, unknown> | undefined {
+  get titleParams(): UiTextParams | undefined {
     return this.data.titleParams;
   }
 
@@ -43,7 +44,7 @@ export class ConfirmDialog {
     return this.data.messageKey ?? '';
   }
 
-  get messageParams(): Record<string, unknown> | undefined {
+  get messageParams(): UiTextParams | undefined {
     return this.data.messageParams;
   }
 
