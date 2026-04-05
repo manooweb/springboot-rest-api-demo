@@ -36,7 +36,7 @@ import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/fo
   ],
 })
 export class ProjectDialog implements OnInit {
-  @ViewChild('formEl', { static: true }) private formEl?: ElementRef<HTMLFormElement>;
+  @ViewChild('formEl', { static: true }) private readonly formEl?: ElementRef<HTMLFormElement>;
   private readonly dialogRef = inject(MatDialogRef<ProjectDialog>);
   private readonly data = inject<ProjectDialogData>(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);
