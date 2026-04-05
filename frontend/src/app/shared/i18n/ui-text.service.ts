@@ -3,6 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 
 import { UI_DICTIONARIES, type UiLang } from './index';
 
+type UiTextParam = string | number | boolean | null | undefined;
+export type UiTextParams = Record<string, UiTextParam>;
+
 @Injectable({ providedIn: 'root' })
 export class UiTextService {
   private readonly defaultLang: UiLang = 'en';
@@ -23,7 +26,7 @@ export class UiTextService {
     this.langSubject.next(lang);
   }
 
-  t(key: string, params?: Record<string, unknown>): string {
+  t(key: string, params?: UiTextParams): string {
     const lang = this.langSubject.value;
     const dict = UI_DICTIONARIES[lang] ?? UI_DICTIONARIES[this.defaultLang];
 
@@ -36,13 +39,13 @@ export class UiTextService {
     return this.interpolate(template, params);
   }
 
-  private interpolate(template: string, params?: Record<string, unknown>): string {
+  private interpolate(template: string, params?: UiTextParams): string {
     if (!params) return template;
 
-    return template.replace(/\{(\w+)\}/g, (match, name: string) => {
+    return template.replaceAll(/\{(\w+)\}/g, (match, name: string) => {
       if (!(name in params)) return match;
       const value = params[name];
-      return value === null || value === undefined ? '' : String(value);
+      return value == null ? '' : String(value);
     });
   }
 }
