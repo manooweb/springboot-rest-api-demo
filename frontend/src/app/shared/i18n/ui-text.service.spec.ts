@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UiTextService } from './ui-text.service';
 import { type UiLang } from './index';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 describe('UiTextService (smoke)', () => {
   let service: UiTextService;
@@ -32,6 +33,16 @@ describe('UiTextService (smoke)', () => {
     expect(result).toContain('{projectName}');
   });
 
+  it('should keep unknown placeholders untouched when wrong parameter is provided', () => {
+    const result = service.t('projects.confirmDelete.title', { wrongName: 'Demo' });
+    expect(result).toContain('{projectName}');
+  });
+
+  it('should replace placeholders with empty strings when provided parameter is null', () => {
+    const result = service.t('projects.confirmDelete.title', { projectName: null });
+    expect(result).toBe('Delete project ""');
+  });
+
   it('should fall back to default language when setting an unsupported language', () => {
     // If UiLang is only 'en' right now, cast is fine for this smoke test
     service.setLanguage('en' as UiLang);
@@ -39,5 +50,12 @@ describe('UiTextService (smoke)', () => {
 
     service.setLanguage('xx' as UiLang);
     expect(service.getLanguage()).toBe('en');
+  });
+
+  it('should fall back to default language when translating in an unsupported language', () => {
+    const langSubject = Reflect.get(service, 'langSubject') as BehaviorSubject<UiLang>;
+    langSubject.next('xx' as UiLang); // Force unsupported language
+    const result = service.t('projects.message.created');
+    expect(result).toBe('Project created');
   });
 });
