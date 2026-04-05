@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Projects } from './projects';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Project, ProjectsService } from '../../services/projects';
 import { of, throwError } from 'rxjs';
+import { ProjectDialogResult } from './project-dialog.types';
 
 describe('Projects', () => {
   let projectsServiceSpy: jasmine.SpyObj<ProjectsService>;
@@ -33,7 +33,6 @@ describe('Projects', () => {
     TestBed.configureTestingModule({
       imports: [Projects],
       providers: [
-        provideAnimations(),
         { provide: ProjectsService, useValue: projectsServiceSpy },
         { provide: Router, useValue: routerSpy },
       ],
@@ -49,6 +48,81 @@ describe('Projects', () => {
     const { component } = createComponent();
 
     expect(component).toBeTruthy();
+  });
+
+  it('should not create project when create dialog is closed without create result', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult | undefined>> = {
+      afterClosed: () => of(undefined),
+    };
+    dialogSpy.open.and.returnValue(
+      dialogRefSpy as MatDialogRef<unknown, ProjectDialogResult | undefined>,
+    );
+
+    const { component } = createComponent();
+
+    component.openAddNewProjectDialog();
+
+    expect(projectsServiceSpy.create).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should create project and refresh list when create dialog returns create result', () => {
+    const dialogResult: ProjectDialogResult = {
+      mode: 'create',
+      payload: { name: 'Project 2', description: 'Description 2' },
+    };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult>> = {
+      afterClosed: () => of(dialogResult),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, ProjectDialogResult>);
+    projectsServiceSpy.create.and.returnValue(of(project));
+
+    const { component } = createComponent();
+
+    spyOn(component, 'loadProjects');
+    component.openAddNewProjectDialog();
+
+    expect(projectsServiceSpy.create).toHaveBeenCalledWith(dialogResult.payload);
+    expect(component.loadProjects).toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Project created', 'Close', jasmine.anything());
+  });
+
+  it('should not update project when edit dialog is closed without valid edit result', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult | undefined>> = {
+      afterClosed: () => of(undefined),
+    };
+    dialogSpy.open.and.returnValue(
+      dialogRefSpy as MatDialogRef<unknown, ProjectDialogResult | undefined>,
+    );
+
+    const { component } = createComponent();
+
+    component.openEditProjectDialog(project);
+
+    expect(projectsServiceSpy.update).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should update project and refresh list when edit dialog returns edit result', () => {
+    const dialogResult: ProjectDialogResult = {
+      mode: 'edit',
+      id: project.id,
+      payload: { name: 'Project 1 updated', description: 'Description updated' },
+    };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult>> = {
+      afterClosed: () => of(dialogResult),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, ProjectDialogResult>);
+    projectsServiceSpy.update.and.returnValue(of(project));
+
+    const { component } = createComponent();
+
+    spyOn(component, 'loadProjects');
+    component.openEditProjectDialog(project);
+
+    expect(projectsServiceSpy.update).toHaveBeenCalledWith(dialogResult.id!, dialogResult.payload);
+    expect(component.loadProjects).toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Project updated', 'Close', jasmine.anything());
   });
 
   it('should not delete project when confirm dialog is cancelled', () => {
@@ -102,10 +176,10 @@ describe('Projects', () => {
     );
     expect(component.loadProjects).not.toHaveBeenCalled();
   });
-
-  function createComponent() {
-    const fixture = TestBed.createComponent(Projects);
-    fixture.detectChanges(); // triggers ngOnInit -> loadProjects
-    return { fixture, component: fixture.componentInstance };
-  }
 });
+
+function createComponent() {
+  const fixture = TestBed.createComponent(Projects);
+  fixture.detectChanges(); // triggers ngOnInit -> loadProjects
+  return { fixture, component: fixture.componentInstance };
+}
