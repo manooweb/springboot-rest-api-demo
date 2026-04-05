@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { UiTextService } from './ui-text.service';
+import { UiTextService, UiTextParams } from './ui-text.service';
 
 @Pipe({
   name: 'translate',
@@ -20,7 +20,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
     });
   }
 
-  transform(key: string, params?: Record<string, unknown>): string {
+  transform(key: string, params?: UiTextParams): string {
     return this.translate.t(key, params);
   }
 
