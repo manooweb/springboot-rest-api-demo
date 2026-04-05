@@ -51,7 +51,7 @@ export class Projects implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
-      if (!result || result.mode !== 'create') return; // cancel or not create
+      if (result?.mode !== 'create') return; // cancel or not create
 
       this.projectsService.create(result.payload).subscribe({
         next: () => {
@@ -76,7 +76,7 @@ export class Projects implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
-      if (!result || result.mode !== 'edit' || !result.id) return; // Only edit expected here
+      if (result?.mode !== 'edit' || !result?.id) return; // Only edit expected here
 
       this.projectsService.update(result.id, result.payload).subscribe({
         next: () => {
