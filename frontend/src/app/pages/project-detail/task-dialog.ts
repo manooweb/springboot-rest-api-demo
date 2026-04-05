@@ -17,7 +17,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { CreateTaskRequest, Task, TaskStatus } from '../../services/tasks';
 import { TaskDialogData, TaskDialogResult } from './task-dialog.types';
 import { toIsoLocalDateString } from '../../shared/functions/date';
-import { UiTextService } from '../../shared/i18n/ui-text.service';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/form-helpers';
 
@@ -46,12 +45,11 @@ export class TaskDialog implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<TaskDialog>);
   private readonly data = inject<TaskDialogData>(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);
-  private readonly translate = inject(UiTextService);
   readonly shouldShowError = shouldShowError;
 
   submitAttempted = false;
 
-  form = this.formBuilder.group({
+  readonly form = this.formBuilder.group({
     title: this.formBuilder.control('', { validators: [Validators.required], nonNullable: true }),
     description: this.formBuilder.control('', { nonNullable: true }),
     dueDate: this.formBuilder.control<Date>(new Date(), { nonNullable: true }),

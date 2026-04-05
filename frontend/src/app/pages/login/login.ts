@@ -35,7 +35,7 @@ export class Login {
 
   submitAttempted = false;
 
-  form = this.formBuilder.group({
+  readonly form = this.formBuilder.group({
     email: this.formBuilder.control('demo@example.com', {
       validators: [Validators.required, Validators.email],
       nonNullable: true,
