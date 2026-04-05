@@ -1,8 +1,10 @@
+import { UiTextParams } from '../i18n/ui-text.service';
+
 export interface ConfirmDialogData {
   titleKey: string;
-  titleParams?: Record<string, unknown>;
+  titleParams?: UiTextParams;
   messageKey: string;
-  messageParams?: Record<string, unknown>;
+  messageParams?: UiTextParams;
   confirmButtonLabel?: string;
   cancelButtonLabel?: string;
 }
