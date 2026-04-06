@@ -14,6 +14,7 @@ import org.springframework.web.servlet.resource.TransformedResource;
 @Component
 public class SwaggerUiMatomoConfig implements BeanPostProcessor {
 
+  private static final String COMMON_JS_PATH = "/js/matomo-common.js";
   private static final String CUSTOM_JS_PATH = "/js/matomo-swagger.js";
 
   @Override
@@ -51,12 +52,18 @@ public class SwaggerUiMatomoConfig implements BeanPostProcessor {
         }
 
         // Avoid double injection
-        if (html.contains(CUSTOM_JS_PATH)) {
+        if (html.contains(COMMON_JS_PATH) || html.contains(CUSTOM_JS_PATH)) {
           return transformed;
         }
 
-        String tag = "<script src=\"" + CUSTOM_JS_PATH + "\" defer></script>";
-        String updated = html.replace("</body>", tag + "\n</body>");
+        String tags =
+            "<script src=\""
+                + COMMON_JS_PATH
+                + "\" defer></script>\n"
+                + "<script src=\""
+                + CUSTOM_JS_PATH
+                + "\" defer></script>";
+        String updated = html.replace("</body>", tags + "\n</body>");
 
         return new TransformedResource(transformed, updated.getBytes(StandardCharsets.UTF_8));
       }
