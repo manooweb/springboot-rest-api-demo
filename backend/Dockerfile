@@ -2,16 +2,18 @@ FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /build
 
-COPY backend/pom.xml backend/
-COPY backend/src/ backend/src/
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
+COPY src/ src/
 
-RUN mvn -f backend/pom.xml clean package -DskipTests
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY --from=build /build/backend/target/*.jar app.jar
+COPY --from=build /build/target/*.jar app.jar
 
 EXPOSE 8080
 
