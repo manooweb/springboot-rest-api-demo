@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+
+    hikari:
+      connection-timeout: 30000            # 30s max pour obtenir une connexion du pool
+      initialization-fail-timeout: -1      # ne pas fail-fast au démarrage si DB pas prête
+      validation-timeout: 5000
+      maximum-pool-size: 5
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+    connect-retries: 20
+    connect-retries-interval: 2
+
+server:
+  forward-headers-strategy: framework
+
+logging:
+  level:
+    root: INFO
+
+app:
+  cors:
+    allowed-origins:
+      - "https://spring-boot-api-demo-frontend-752012131551.europe-west1.run.app"
