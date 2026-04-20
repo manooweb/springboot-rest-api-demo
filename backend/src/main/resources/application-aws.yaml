@@ -30,4 +30,4 @@ logging:
 app:
   cors:
     allowed-origins:
-      - "https://spring-boot-api-demo-frontend-752012131551.europe-west1.run.app"
+      - "https://sp-1daf84dd962046f19a9b3e11971c3b34.ecs.eu-west-3.on.aws"
