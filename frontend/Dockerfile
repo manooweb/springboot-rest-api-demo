@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY . .
 RUN npm ci
-RUN npm run build -- --configuration=gcp
+
+ARG ANGULAR_BUILD_CONFIG
+RUN test -n "$ANGULAR_BUILD_CONFIG" && npm run build -- --configuration=$ANGULAR_BUILD_CONFIG
 
 FROM nginx:1.27-alpine
 
