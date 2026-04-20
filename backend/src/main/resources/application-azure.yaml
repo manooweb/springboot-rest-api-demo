@@ -30,4 +30,4 @@ logging:
 app:
   cors:
     allowed-origins:
-      - "https://spring-boot-api-demo-frontend-752012131551.europe-west1.run.app"
+      - "https://sb-rest-api-demo-frontend.mangocliff-83abab0c.francecentral.azurecontainerapps.io"
