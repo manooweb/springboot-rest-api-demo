@@ -1,9 +1,10 @@
 package fr.manooweb.backend.config;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import java.nio.charset.StandardCharsets;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +24,13 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
+
+import jakarta.servlet.http.Cookie;
 
 @Configuration
 @EnableWebSecurity
@@ -78,6 +84,24 @@ public class SecurityConfig {
     return new NimbusJwtEncoder(new ImmutableSecret<>(hmacKey()));
   }
 
+  @Bean
+  public BearerTokenResolver bearerTokenResolver() {
+    return request -> {
+      Cookie[] cookies = request.getCookies();
+      if (cookies == null) {
+        return null;
+      }
+
+      for (Cookie cookie : cookies) {
+        if ("auth_token".equals(cookie.getName())) {
+          return cookie.getValue();
+        }
+      }
+
+      return null;
+    };
+  }
+
   private SecretKey hmacKey() {
     // For HMAC, the secret should be at least 32 bytes for HS256.
     byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
@@ -101,7 +125,9 @@ public class SecurityConfig {
         .httpBasic(basic -> basic.disable())
 
         // Enable JWT Bearer token authentication (Authorization: Bearer <token>).
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        .oauth2ResourceServer(oauth2 -> oauth2
+          .bearerTokenResolver(bearerTokenResolver())
+          .jwt(Customizer.withDefaults()))
         .authorizeHttpRequests(
             auth ->
                 auth
