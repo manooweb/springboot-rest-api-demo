@@ -132,20 +132,22 @@ Copy the example file and fill in the expected values:
 
     cp backend/.env.example backend/.env
 
-The local backend profile is driven by `SPRING_PROFILES_ACTIVE=dev` from `backend/.env`.
+The backend loads `backend/.env` through Spring Boot config import in local runs.
+Deployment environments should provide the same variables directly through the target platform.
 
 ### 3) Start backend
 
     cd backend
-    scripts/run.sh
+    ./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev --server.address=0.0.0.0"
 
 ### 4) Start frontend
 
     cd frontend
     npm install
-    npm run start
+    npm run start:devlan
 
-> The frontend uses an Angular proxy configuration.
+The backend and frontend listen on `0.0.0.0` so they can be reached from another device on the local network.
+For LAN tests, make sure `frontend/src/environments/environment.devlan.ts` points to the host machine IP.
 
 ---
 

@@ -19,4 +19,4 @@ app:
   cors:
     allowed-origins:
       - "http://localhost:4200"
-      - "http://192.168.1.90:4200"
+      - "http://192.168.1.168:4200"
