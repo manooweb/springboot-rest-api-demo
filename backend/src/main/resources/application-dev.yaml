@@ -15,8 +15,17 @@ spring:
   flyway:
     enabled: true
 
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: file:/home/manu/Documents/Projets-info/remise-a-niveau-java/springboot-rest-api-demo-cert/localhost+3.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: springboot-dev
+
 app:
   cors:
     allowed-origins:
-      - "http://localhost:4200"
-      - "http://192.168.1.168:4200"
+      - "https://localhost:4200"
+      - "https://192.168.1.168:4200"
