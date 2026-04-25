@@ -1,5 +1,6 @@
 package fr.manooweb.backend.api;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,6 +52,7 @@ class TaskUpdateIntegrationTest {
     mockMvc
         .perform(
             put("/api/v1/tasks/{taskId}", task.getId())
+                .with(csrf())
                 .contentType("application/json")
                 .content(
                     """
@@ -80,6 +82,7 @@ class TaskUpdateIntegrationTest {
     mockMvc
         .perform(
             put("/api/v1/tasks/{taskId}", taskId)
+                .with(csrf())
                 .contentType("application/json")
                 .content(
                     """
@@ -104,6 +107,7 @@ class TaskUpdateIntegrationTest {
     mockMvc
         .perform(
             put("/api/v1/tasks/{taskId}", taskId)
+                .with(csrf())
                 .contentType("application/json")
                 .content(
                     """
@@ -127,6 +131,7 @@ class TaskUpdateIntegrationTest {
     mockMvc
         .perform(
             put("/api/v1/tasks/{taskId}", taskId)
+                .with(csrf())
                 .contentType("application/json")
                 // Trailing comma causes malformed JSON
                 .content(

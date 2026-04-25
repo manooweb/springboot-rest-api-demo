@@ -1,5 +1,6 @@
 package fr.manooweb.backend.api;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +48,7 @@ class TaskCreateIntegrationTest {
     mockMvc
         .perform(
             post("/api/v1/projects/{projectId}/tasks", project.getId())
+                .with(csrf())
                 .contentType("application/json")
                 .content(payload))
         .andExpect(status().isCreated())
@@ -70,6 +72,7 @@ class TaskCreateIntegrationTest {
     mockMvc
         .perform(
             post("/api/v1/projects/{projectId}/tasks", project.getId())
+                .with(csrf())
                 .contentType("application/json")
                 .content(payload))
         .andExpect(status().isBadRequest())
