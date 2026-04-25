@@ -1,10 +1,10 @@
 package fr.manooweb.backend.config;
 
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import jakarta.servlet.http.Cookie;
 import java.nio.charset.StandardCharsets;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,15 +22,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
-
-import jakarta.servlet.http.Cookie;
 
 @Configuration
 @EnableWebSecurity
@@ -73,9 +70,11 @@ public class SecurityConfig {
   }
 
   @Bean
-  public JwtDecoder jwtDecoder() {
+  public JwtDecoder jwtDecoder(@Value("${app.security.jwt.issuer}") String issuer) {
     // HMAC SHA-256 decoder using a symmetric secret.
-    return NimbusJwtDecoder.withSecretKey(hmacKey()).build();
+    NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(hmacKey()).build();
+    decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer));
+    return decoder;
   }
 
   @Bean
@@ -105,6 +104,11 @@ public class SecurityConfig {
   private SecretKey hmacKey() {
     // For HMAC, the secret should be at least 32 bytes for HS256.
     byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+
+    if (keyBytes.length < 32) {
+      throw new IllegalStateException("JWT secret must be at least 32 bytes for HS256");
+    }
+
     return new SecretKeySpec(keyBytes, "HmacSHA256");
   }
 
@@ -125,9 +129,9 @@ public class SecurityConfig {
         .httpBasic(basic -> basic.disable())
 
         // Enable JWT Bearer token authentication (Authorization: Bearer <token>).
-        .oauth2ResourceServer(oauth2 -> oauth2
-          .bearerTokenResolver(bearerTokenResolver())
-          .jwt(Customizer.withDefaults()))
+        .oauth2ResourceServer(
+            oauth2 ->
+                oauth2.bearerTokenResolver(bearerTokenResolver()).jwt(Customizer.withDefaults()))
         .authorizeHttpRequests(
             auth ->
                 auth
