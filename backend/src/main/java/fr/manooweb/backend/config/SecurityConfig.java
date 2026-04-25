@@ -2,7 +2,10 @@ package fr.manooweb.backend.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
+import fr.manooweb.backend.security.CsrfCookieFilter;
 import fr.manooweb.backend.security.JwtCookieAuthenticationFilter;
+import fr.manooweb.backend.security.SpaCsrfTokenRequestHandler;
+
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -100,6 +103,11 @@ public class SecurityConfig {
   }
 
   @Bean
+  public CsrfCookieFilter crsfCookieFilter() {
+    return new CsrfCookieFilter();
+  }
+
+  @Bean
   public RequestMatcher csrfProtectionMatcher() {
     return new AndRequestMatcher(
         CsrfFilter.DEFAULT_CSRF_MATCHER,
@@ -119,7 +127,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter, CsrfCookieFilter csrfCookieFilter) throws Exception {
     http
         // Stateless API: do not create HTTP sessions.
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -131,6 +139,7 @@ public class SecurityConfig {
         .csrf(
             csrf ->
               csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                  .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()) 
                   .requireCsrfProtectionMatcher(csrfProtectionMatcher()))
 
         // Enable HTTP Basic authentication (handy for quick testing).
@@ -139,6 +148,7 @@ public class SecurityConfig {
 
         // Enable cookie-based JWT authentication.
         .addFilterBefore(jwtCookieAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(csrfCookieFilter, CsrfFilter.class)
         .authorizeHttpRequests(
             auth ->
                 auth
