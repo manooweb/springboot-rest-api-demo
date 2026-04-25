@@ -32,8 +32,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -108,7 +108,9 @@ public class SecurityConfig {
   public RequestMatcher csrfProtectionMatcher() {
     return new AndRequestMatcher(
         CsrfFilter.DEFAULT_CSRF_MATCHER,
-        new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/login", "POST")));
+        new NegatedRequestMatcher(
+            PathPatternRequestMatcher.withDefaults()
+                .matcher(HttpMethod.POST, "/api/v1/auth/login")));
   }
 
   private SecretKey hmacKey() {
