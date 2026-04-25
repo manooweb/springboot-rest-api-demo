@@ -1,11 +1,9 @@
 package fr.manooweb.backend.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-
 import fr.manooweb.backend.security.CsrfCookieFilter;
 import fr.manooweb.backend.security.JwtCookieAuthenticationFilter;
 import fr.manooweb.backend.security.SpaCsrfTokenRequestHandler;
-
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -55,8 +53,7 @@ public class SecurityConfig {
   @Value("${app.security.jwt.issuer}")
   private String jwtIssuer;
 
-
- // Password hashing strategy used for encoding in-memory user passwords.
+  // Password hashing strategy used for encoding in-memory user passwords.
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -111,8 +108,7 @@ public class SecurityConfig {
   public RequestMatcher csrfProtectionMatcher() {
     return new AndRequestMatcher(
         CsrfFilter.DEFAULT_CSRF_MATCHER,
-        new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/login", "POST"))
-    );
+        new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/login", "POST")));
   }
 
   private SecretKey hmacKey() {
@@ -127,7 +123,11 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter, CsrfCookieFilter csrfCookieFilter) throws Exception {
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter,
+      CsrfCookieFilter csrfCookieFilter)
+      throws Exception {
     http
         // Stateless API: do not create HTTP sessions.
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -138,9 +138,9 @@ public class SecurityConfig {
         // Enable CSRF protection because of using cookies for JWT authentication.
         .csrf(
             csrf ->
-              csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                  .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()) 
-                  .requireCsrfProtectionMatcher(csrfProtectionMatcher()))
+                csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
+                    .requireCsrfProtectionMatcher(csrfProtectionMatcher()))
 
         // Enable HTTP Basic authentication (handy for quick testing).
         // Note: if you access endpoints via browser, Spring may also show a login page.

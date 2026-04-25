@@ -242,7 +242,7 @@ Java code formatting is enforced using Spotless.
 Verify formatting:
 
 ```bash
-./backend/mvnw -f backend clean verify
+./backend/mvnw -f backend spotless:check
 ```
 
 Fix formatting:
