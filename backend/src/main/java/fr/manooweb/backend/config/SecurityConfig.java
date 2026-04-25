@@ -1,7 +1,8 @@
 package fr.manooweb.backend.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import jakarta.servlet.http.Cookie;
+
+import fr.manooweb.backend.security.JwtCookieAuthenticationFilter;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -25,9 +26,15 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -42,7 +49,11 @@ public class SecurityConfig {
   @Value("${APP_USER_PASSWORD}")
   private String demoPassword;
 
-  // Password hashing strategy used for encoding in-memory user passwords.
+  @Value("${app.security.jwt.issuer}")
+  private String jwtIssuer;
+
+
+ // Password hashing strategy used for encoding in-memory user passwords.
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -70,10 +81,10 @@ public class SecurityConfig {
   }
 
   @Bean
-  public JwtDecoder jwtDecoder(@Value("${app.security.jwt.issuer}") String issuer) {
+  public JwtDecoder jwtDecoder() {
     // HMAC SHA-256 decoder using a symmetric secret.
     NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(hmacKey()).build();
-    decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer));
+    decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(jwtIssuer));
     return decoder;
   }
 
@@ -84,21 +95,16 @@ public class SecurityConfig {
   }
 
   @Bean
-  public BearerTokenResolver bearerTokenResolver() {
-    return request -> {
-      Cookie[] cookies = request.getCookies();
-      if (cookies == null) {
-        return null;
-      }
+  public JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter(JwtDecoder jwtDecoder) {
+    return new JwtCookieAuthenticationFilter(jwtDecoder);
+  }
 
-      for (Cookie cookie : cookies) {
-        if ("auth_token".equals(cookie.getName())) {
-          return cookie.getValue();
-        }
-      }
-
-      return null;
-    };
+  @Bean
+  public RequestMatcher csrfProtectionMatcher() {
+    return new AndRequestMatcher(
+        CsrfFilter.DEFAULT_CSRF_MATCHER,
+        new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/login", "POST"))
+    );
   }
 
   private SecretKey hmacKey() {
@@ -113,7 +119,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter) throws Exception {
     http
         // Stateless API: do not create HTTP sessions.
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -121,17 +127,18 @@ public class SecurityConfig {
         // Enable CORS support and delegate configuration to CorsConfigurationSource
         .cors(Customizer.withDefaults())
 
-        // Disable CSRF protection since we are not using cookies for authentication.
-        .csrf(csrf -> csrf.disable())
+        // Enable CSRF protection because of using cookies for JWT authentication.
+        .csrf(
+            csrf ->
+              csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                  .requireCsrfProtectionMatcher(csrfProtectionMatcher()))
 
         // Enable HTTP Basic authentication (handy for quick testing).
         // Note: if you access endpoints via browser, Spring may also show a login page.
         .httpBasic(basic -> basic.disable())
 
-        // Enable JWT Bearer token authentication (Authorization: Bearer <token>).
-        .oauth2ResourceServer(
-            oauth2 ->
-                oauth2.bearerTokenResolver(bearerTokenResolver()).jwt(Customizer.withDefaults()))
+        // Enable cookie-based JWT authentication.
+        .addFilterBefore(jwtCookieAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests(
             auth ->
                 auth
