@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -118,6 +119,21 @@ public class GlobalExceptionHandler {
             List.of());
 
     return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<ApiErrorResponse> handleAuthentication(
+      AuthenticationException ex, HttpServletRequest request) {
+    ApiErrorResponse body =
+        new ApiErrorResponse(
+            OffsetDateTime.now(),
+            HttpStatus.UNAUTHORIZED.value(),
+            HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+            "Invalid credentials",
+            request.getRequestURI(),
+            List.of());
+
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
   }
 
   @ExceptionHandler(Exception.class)
