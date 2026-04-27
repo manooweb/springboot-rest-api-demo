@@ -11,7 +11,7 @@ get {
 }
 
 tests {
-  test("status is 403 after logout", function () {
-    expect(res.status).to.equal(403);
+  test("status is 401 after logout", function () {
+    expect(res.status).to.equal(401);
   });
 }

@@ -1,5 +1,6 @@
 package fr.manooweb.backend.security;
 
+import fr.manooweb.backend.api.error.SecurityErrorResponseWriter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,9 +26,12 @@ public class JwtCookieAuthenticationFilter extends OncePerRequestFilter {
   private static final String AUTH_COOKIE_NAME = "auth_token";
 
   private final JwtDecoder jwtDecoder;
+  private final SecurityErrorResponseWriter responseWriter;
 
-  public JwtCookieAuthenticationFilter(JwtDecoder jwtDecoder) {
+  public JwtCookieAuthenticationFilter(
+      JwtDecoder jwtDecoder, SecurityErrorResponseWriter responseWriter) {
     this.jwtDecoder = jwtDecoder;
+    this.responseWriter = responseWriter;
   }
 
   @Override
@@ -47,6 +52,12 @@ public class JwtCookieAuthenticationFilter extends OncePerRequestFilter {
           SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException ex) {
           SecurityContextHolder.clearContext();
+          responseWriter.write(
+              request,
+              response,
+              HttpStatus.UNAUTHORIZED,
+              "Invalid or expired authentication token");
+          return;
         }
       }
     }
