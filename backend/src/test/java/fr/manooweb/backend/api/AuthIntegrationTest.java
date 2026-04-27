@@ -47,8 +47,13 @@ class AuthIntegrationTest {
             .andExpect(cookie().secure(AUTH_COOKIE_NAME, true))
             .andReturn();
 
-    String setCookie = result.getResponse().getHeader(HttpHeaders.SET_COOKIE);
-    assertThat(setCookie).contains("SameSite=Strict");
+    String authSetCookie =
+        result.getResponse().getHeaders(HttpHeaders.SET_COOKIE).stream()
+            .filter(header -> header.startsWith(AUTH_COOKIE_NAME + "="))
+            .findFirst()
+            .orElseThrow();
+
+    assertThat(authSetCookie).contains("SameSite=Strict");
   }
 
   @Test
