@@ -44,4 +44,31 @@ public class AuthController {
 
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
   }
+
+  @PostMapping("/logout")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<Void> logout() {
+    ResponseCookie authCookie =
+        ResponseCookie.from("auth_token", "")
+            .httpOnly(true)
+            .secure(true)
+            .sameSite("Strict")
+            .path("/")
+            .maxAge(0)
+            .build();
+
+    ResponseCookie csrfCookie =
+        ResponseCookie.from("XSRF-TOKEN", "")
+            .httpOnly(false)
+            .secure(true)
+            .sameSite("Strict")
+            .path("/")
+            .maxAge(0)
+            .build();
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, authCookie.toString())
+        .header(HttpHeaders.SET_COOKIE, csrfCookie.toString())
+        .build();
+  }
 }
