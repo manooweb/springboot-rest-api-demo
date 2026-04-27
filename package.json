@@ -4,7 +4,8 @@
   "description": "[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/manooweb/springboot-rest-api-demo/blob/main/LICENSE)",
   "main": "index.js",
   "scripts": {
-    "test:api": "cd bruno/backend && npx bru run e2e"
+    "test:api": "cd bruno/backend && npx bru run e2e --env Test --insecure",
+    "test:ci:api": "cd bruno/backend && npx bru run e2e --env Test --insecure"
   },
   "repository": {
     "type": "git",

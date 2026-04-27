@@ -2,14 +2,20 @@ meta {
   name: springboot-rest-api-demo (backend)
 }
 
-auth {
-  mode: bearer
-}
+script:pre-request {
+  const method = req.getMethod();
+  const url = req.getUrl();
 
-auth:bearer {
-  token: {{token}}
-}
+  if (url.includes("/api/v1/auth/login")) {
+    return;
+  }
 
-vars:pre-request {
-  baseUrl: http://localhost:8080
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+    const jar = bru.cookies.jar();
+    const csrfCookie = await jar.getCookie(req.getUrl(), "XSRF-TOKEN");
+
+    if (csrfCookie && csrfCookie.value) {
+      req.setHeader("X-XSRF-TOKEN", csrfCookie.value);
+    }
+  }
 }
