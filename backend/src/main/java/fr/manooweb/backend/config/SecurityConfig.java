@@ -1,8 +1,11 @@
 package fr.manooweb.backend.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import fr.manooweb.backend.api.error.SecurityErrorResponseWriter;
 import fr.manooweb.backend.security.CsrfCookieFilter;
 import fr.manooweb.backend.security.JwtCookieAuthenticationFilter;
+import fr.manooweb.backend.security.RestAccessDeniedHandler;
+import fr.manooweb.backend.security.RestAuthenticationEntryPoint;
 import fr.manooweb.backend.security.SpaCsrfTokenRequestHandler;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
@@ -95,8 +98,9 @@ public class SecurityConfig {
   }
 
   @Bean
-  public JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter(JwtDecoder jwtDecoder) {
-    return new JwtCookieAuthenticationFilter(jwtDecoder);
+  public JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter(
+      JwtDecoder jwtDecoder, SecurityErrorResponseWriter securityErrorResponseWriter) {
+    return new JwtCookieAuthenticationFilter(jwtDecoder, securityErrorResponseWriter);
   }
 
   @Bean
@@ -130,7 +134,9 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(
       HttpSecurity http,
       JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter,
-      CsrfCookieFilter csrfCookieFilter)
+      CsrfCookieFilter csrfCookieFilter,
+      RestAuthenticationEntryPoint authenticationEntryPoint,
+      RestAccessDeniedHandler accessDeniedHandler)
       throws Exception {
     http
         // Stateless API: do not create HTTP sessions.
@@ -151,6 +157,13 @@ public class SecurityConfig {
         // Enable HTTP Basic authentication (handy for quick testing).
         // Note: if you access endpoints via browser, Spring may also show a login page.
         .httpBasic(basic -> basic.disable())
+
+        // Return consistent JSON responses for security failures.
+        .exceptionHandling(
+            exceptions ->
+                exceptions
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedHandler(accessDeniedHandler))
 
         // Enable cookie-based JWT authentication.
         .addFilterBefore(jwtCookieAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

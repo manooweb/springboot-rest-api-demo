@@ -91,8 +91,25 @@ class AuthIntegrationTest {
   }
 
   @Test
-  void me_withoutAuthentication_ShouldReturnForbidden() throws Exception {
-    mockMvc.perform(get("/api/v1/me")).andExpect(status().isForbidden());
+  void me_withoutAuthentication_ShouldReturnUnauthorized() throws Exception {
+    mockMvc
+        .perform(get("/api/v1/me"))
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.status").value(401))
+        .andExpect(jsonPath("$.error").value("Unauthorized"))
+        .andExpect(jsonPath("$.message").value("Authentication required"))
+        .andExpect(jsonPath("$.path").value("/api/v1/me"));
+  }
+
+  @Test
+  void me_withInvalidJwtCookie_ShouldReturnUnauthorized() throws Exception {
+    mockMvc
+        .perform(get("/api/v1/me").cookie(new Cookie(AUTH_COOKIE_NAME, "invalid-token")))
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.status").value(401))
+        .andExpect(jsonPath("$.error").value("Unauthorized"))
+        .andExpect(jsonPath("$.message").value("Invalid or expired authentication token"))
+        .andExpect(jsonPath("$.path").value("/api/v1/me"));
   }
 
   @Test
@@ -141,12 +158,22 @@ class AuthIntegrationTest {
 
     mockMvc
         .perform(post("/api/v1/auth/logout").cookie(authCookie))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.status").value(403))
+        .andExpect(jsonPath("$.error").value("Forbidden"))
+        .andExpect(jsonPath("$.message").value("Invalid or missing CSRF token"))
+        .andExpect(jsonPath("$.path").value("/api/v1/auth/logout"));
   }
 
   @Test
-  void logout_withoutAuthentication_ShouldReturnForbidden() throws Exception {
-    mockMvc.perform(post("/api/v1/auth/logout").with(csrf())).andExpect(status().isForbidden());
+  void logout_withoutAuthentication_ShouldReturnUnauthorized() throws Exception {
+    mockMvc
+        .perform(post("/api/v1/auth/logout").with(csrf()))
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.status").value(401))
+        .andExpect(jsonPath("$.error").value("Unauthorized"))
+        .andExpect(jsonPath("$.message").value("Authentication required"))
+        .andExpect(jsonPath("$.path").value("/api/v1/auth/logout"));
   }
 
   private Cookie loginAndGetAuthCookie() throws Exception {

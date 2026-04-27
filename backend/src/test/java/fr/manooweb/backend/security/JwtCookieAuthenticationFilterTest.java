@@ -6,6 +6,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.manooweb.backend.api.error.SecurityErrorResponseWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import java.io.IOException;
@@ -37,7 +39,10 @@ class JwtCookieAuthenticationFilterTest {
   void setUp() {
     SecurityContextHolder.clearContext();
     jwtDecoder = mock(JwtDecoder.class);
-    filter = new JwtCookieAuthenticationFilter(jwtDecoder);
+    filter =
+        new JwtCookieAuthenticationFilter(
+            jwtDecoder,
+            new SecurityErrorResponseWriter(new ObjectMapper().findAndRegisterModules()));
   }
 
   @AfterEach
@@ -84,14 +89,20 @@ class JwtCookieAuthenticationFilterTest {
   }
 
   @Test
-  void doFilterInternal_withInvalidJwt_ShouldClearAuthentication()
+  void doFilterInternal_withInvalidJwt_ShouldReturnUnauthorized()
       throws ServletException, IOException {
     MockHttpServletRequest request = requestWithAuthCookie();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    MockFilterChain filterChain = new MockFilterChain();
     when(jwtDecoder.decode(TOKEN_VALUE)).thenThrow(new BadJwtException("Invalid JWT"));
 
-    filter.doFilterInternal(request, new MockHttpServletResponse(), new MockFilterChain());
+    filter.doFilterInternal(request, response, filterChain);
 
     assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
+    assertThat(response.getStatus()).isEqualTo(401);
+    assertThat(response.getContentAsString())
+        .contains("\"message\":\"Invalid or expired authentication token\"");
+    assertThat(filterChain.getRequest()).isNull();
     verify(jwtDecoder).decode(TOKEN_VALUE);
   }
 
