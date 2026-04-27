@@ -1,6 +1,7 @@
 package fr.manooweb.backend.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MvcResult;
 class AuthIntegrationTest {
 
   private static final String AUTH_COOKIE_NAME = "auth_token";
+  private static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
 
   @Autowired MockMvc mockMvc;
 
@@ -104,6 +106,49 @@ class AuthIntegrationTest {
         .andExpect(jsonPath("$.roles[0]").value("USER"));
   }
 
+  @Test
+  void logout_withAuthCookieAndCsrf_ShouldDeleteAuthAndCsrfCookies() throws Exception {
+    Cookie authCookie = loginAndGetAuthCookie();
+
+    MvcResult result =
+        mockMvc
+            .perform(post("/api/v1/auth/logout").cookie(authCookie).with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    String authSetCookie = getSetCookie(result, AUTH_COOKIE_NAME);
+    assertThat(authSetCookie)
+        .contains(AUTH_COOKIE_NAME + "=")
+        .contains("Max-Age=0")
+        .contains("Path=/")
+        .contains("HttpOnly")
+        .contains("Secure")
+        .contains("SameSite=Strict");
+
+    String csrfSetCookie = getSetCookie(result, CSRF_COOKIE_NAME);
+    assertThat(csrfSetCookie)
+        .contains(CSRF_COOKIE_NAME + "=")
+        .contains("Max-Age=0")
+        .contains("Path=/")
+        .contains("Secure")
+        .contains("SameSite=Strict")
+        .doesNotContain("HttpOnly");
+  }
+
+  @Test
+  void logout_withoutCsrf_ShouldReturnForbidden() throws Exception {
+    Cookie authCookie = loginAndGetAuthCookie();
+
+    mockMvc
+        .perform(post("/api/v1/auth/logout").cookie(authCookie))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void logout_withoutAuthentication_ShouldReturnForbidden() throws Exception {
+    mockMvc.perform(post("/api/v1/auth/logout").with(csrf())).andExpect(status().isForbidden());
+  }
+
   private Cookie loginAndGetAuthCookie() throws Exception {
     MvcResult result =
         mockMvc
@@ -123,5 +168,12 @@ class AuthIntegrationTest {
     Cookie authCookie = result.getResponse().getCookie(AUTH_COOKIE_NAME);
     assertThat(authCookie).isNotNull();
     return authCookie;
+  }
+
+  private String getSetCookie(MvcResult result, String cookieName) {
+    return result.getResponse().getHeaders(HttpHeaders.SET_COOKIE).stream()
+        .filter(header -> header.startsWith(cookieName + "="))
+        .findFirst()
+        .orElseThrow();
   }
 }

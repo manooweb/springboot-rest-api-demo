@@ -1,0 +1,17 @@
+meta {
+  name: Me after logout
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/v1/me
+  body: none
+  auth: inherit
+}
+
+tests {
+  test("status is 403 after logout", function () {
+    expect(res.status).to.equal(403);
+  });
+}
