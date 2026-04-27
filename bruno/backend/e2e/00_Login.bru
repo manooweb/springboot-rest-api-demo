@@ -26,11 +26,15 @@ tests {
     expect(res.status).to.equal(200);
   });
 
-  test("response has accessToken", function () {
-    expect(res.body).to.have.property("accessToken");
+  test("auth cookie is returned", function () {
+    const setCookies = res.headers["set-cookie"] || [];
+    const found = setCookies.some((cookie) => cookie.includes("auth_token="));
+    expect(found).to.equal(true);
   });
 
-  test("save token", function () {
-    bru.setVar("token", res.body.accessToken);
+  test("csrf cookie is returned", function () {
+    const setCookies = res.headers["set-cookie"] || [];
+    const found = setCookies.some((cookie) => cookie.includes("XSRF-TOKEN="));
+    expect(found).to.equal(true);
   });
 }

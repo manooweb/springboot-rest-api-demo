@@ -23,10 +23,6 @@ body:json {
   }
 }
 
-vars:pre-request {
-  projectId: 8f602828-f8aa-42f8-a643-1ce7cb1368eb
-}
-
 tests {
   test("status is 201", function () {
     expect(res.status).to.equal(201);
