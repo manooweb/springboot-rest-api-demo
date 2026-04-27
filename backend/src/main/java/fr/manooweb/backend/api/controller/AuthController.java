@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @ResponseStatus(HttpStatus.OK)
 public class AuthController {
 
+  private static final String SAME_SITE_STRICT = "Strict";
+
   private final AuthenticationManager authenticationManager;
   private final JwtTokenService tokenService;
 
@@ -37,7 +39,7 @@ public class AuthController {
         ResponseCookie.from("auth_token", token)
             .httpOnly(true)
             .secure(true)
-            .sameSite("Strict")
+            .sameSite(SAME_SITE_STRICT)
             .path("/")
             .maxAge(tokenService.getTtlSeconds())
             .build();
@@ -52,7 +54,7 @@ public class AuthController {
         ResponseCookie.from("auth_token", "")
             .httpOnly(true)
             .secure(true)
-            .sameSite("Strict")
+            .sameSite(SAME_SITE_STRICT)
             .path("/")
             .maxAge(0)
             .build();
@@ -61,7 +63,7 @@ public class AuthController {
         ResponseCookie.from("XSRF-TOKEN", "")
             .httpOnly(false)
             .secure(true)
-            .sameSite("Strict")
+            .sameSite(SAME_SITE_STRICT)
             .path("/")
             .maxAge(0)
             .build();
