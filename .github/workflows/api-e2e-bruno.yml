@@ -61,9 +61,23 @@ jobs:
       - name: Backend - build (skip tests)
         run: ./backend/mvnw -f backend -DskipTests package
 
-      - name: Backend - start app (dev profile)
+      - name: Generate CI TLS keystore
+        run: |
+          mkdir -p backend/target/certs
+          keytool -genkeypair \
+            -alias springboot-ci \
+            -keyalg RSA \
+            -keysize 2048 \
+            -storetype PKCS12 \
+            -keystore backend/target/certs/springboot-ci.p12 \
+            -storepass changeit \
+            -validity 1 \
+            -dname "CN=localhost, OU=CI, O=Manooweb, L=CI, ST=CI, C=FR" \
+            -ext "SAN=dns:localhost,ip:127.0.0.1"
+
+      - name: Backend - start app (ci profile)
         env:
-          SPRING_PROFILES_ACTIVE: dev
+          SPRING_PROFILES_ACTIVE: ci
           PGHOST: localhost
           PGPORT: 5432
           PGDATABASE: demo
@@ -73,6 +87,8 @@ jobs:
           APP_USER_PASSWORD: demo
           APP_SECURITY_JWT_ISSUER: https://localhost:8443
           APP_SECURITY_JWT_SECRET: ci-test-secret-at-least-32-characters
+          APP_SSL_KEY_STORE: ${{ github.workspace }}/backend/target/certs/springboot-ci.p12
+          APP_SSL_KEY_STORE_PASSWORD: changeit
         run: |
           nohup ./backend/mvnw -f backend -q spring-boot:run > springboot.log 2>&1 &
           echo $! > springboot.pid
