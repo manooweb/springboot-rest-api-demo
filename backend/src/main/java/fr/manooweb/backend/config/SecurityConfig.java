@@ -106,6 +106,8 @@ public class SecurityConfig {
 
   @Bean
   public RequestMatcher csrfProtectionMatcher() {
+    // Login is the only unsafe endpoint excluded from CSRF because it bootstraps
+    // the authentication and CSRF cookies. Mutating authenticated endpoints remain protected.
     return new AndRequestMatcher(
         CsrfFilter.DEFAULT_CSRF_MATCHER,
         new NegatedRequestMatcher(
@@ -138,6 +140,8 @@ public class SecurityConfig {
         .cors(Customizer.withDefaults())
 
         // Enable CSRF protection because of using cookies for JWT authentication.
+        // The CSRF cookie must be readable by SPA clients so they can echo it in the
+        // X-XSRF-TOKEN header. The JWT auth cookie remains HttpOnly.
         .csrf(
             csrf ->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
