@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: file:${APP_SSL_KEY_STORE}
+    key-store-password: ${APP_SSL_KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: springboot-ci
+
+app:
+  cors:
+    allowed-origins:
+      - "https://localhost:4200"
+
