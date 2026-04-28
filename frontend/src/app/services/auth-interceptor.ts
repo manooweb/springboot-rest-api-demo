@@ -8,19 +8,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(Auth);
   const router = inject(Router);
 
-  const token = auth.getToken();
   const isLoginCall = req.url.includes('/api/v1/auth/login');
 
-  const authReq =
-    !token || isLoginCall
-      ? req
-      : req.clone({
-          setHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-  return next(authReq).pipe(
+  return next(req).pipe(
     catchError((err) => {
       if (err.status === 401 && !isLoginCall) {
         auth.logout();

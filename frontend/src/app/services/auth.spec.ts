@@ -5,8 +5,6 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { Auth } from './auth';
 
-const TOKEN_STORAGE_KEY = 'auth_token';
-
 describe('Auth', () => {
   let service: Auth;
   let httpMock: HttpTestingController;
@@ -17,21 +15,18 @@ describe('Auth', () => {
     });
     service = TestBed.inject(Auth);
     httpMock = TestBed.inject(HttpTestingController);
-
-    localStorage.clear();
   });
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  it('should store token on login success', () => {
+  it('should mark user as authenticated on login success', () => {
     const username = 'demo';
     const password = 'demo';
-    const fakeToken = 'fake-jwt-token';
 
     service.login(username, password).subscribe(() => {
-      expect(localStorage.getItem(TOKEN_STORAGE_KEY)).toBe(fakeToken);
+      expect(service.isLoggedIn()).toBeTrue();
     });
 
     const req = httpMock.expectOne(
@@ -39,13 +34,19 @@ describe('Auth', () => {
     );
     expect(req.request.body).toEqual({ username, password });
 
-    req.flush({ accessToken: fakeToken });
+    req.flush(null);
   });
 
-  it('should clear token on logout', () => {
-    localStorage.setItem(TOKEN_STORAGE_KEY, 'abc');
+  it('should clear authenticated state on logout', () => {
+    service.login('demo', 'demo').subscribe();
+    const req = httpMock.expectOne(
+      (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'),
+    );
+    req.flush(null);
+    expect(service.isLoggedIn()).toBeTrue();
+
     service.logout();
-    expect(localStorage.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+    expect(service.isLoggedIn()).toBeFalse();
   });
 
   it('should be created', () => {
