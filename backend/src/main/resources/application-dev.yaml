@@ -15,11 +15,6 @@ spring:
   flyway:
     enabled: true
 
-springdoc:
-  swagger-ui:
-    csrf:
-      enabled: true
-
 server:
   port: 8443
   ssl:
