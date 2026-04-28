@@ -4,7 +4,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { Login } from './login';
-import { Auth, LoginResponse } from '../../services/auth';
+import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
 
 describe('Login', () => {
@@ -15,14 +15,8 @@ describe('Login', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    const fakeResponse: LoginResponse = {
-      tokenType: 'Bearer',
-      accessToken: 'fake-jwt-token',
-      expiresInSeconds: 3600,
-    };
-
     authSpy = jasmine.createSpyObj<Auth>('Auth', ['login']);
-    authSpy.login.and.returnValue(of(fakeResponse));
+    authSpy.login.and.returnValue(of(undefined));
 
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigateByUrl']);
 
