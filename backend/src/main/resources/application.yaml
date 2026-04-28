@@ -4,6 +4,11 @@ spring:
   application:
     name: backend
 
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: true
+
 app:
   security:
     jwt:
