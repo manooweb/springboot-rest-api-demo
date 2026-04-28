@@ -3,15 +3,10 @@ import { Router, RouterOutlet, RouterLink, RouterLinkActive, NavigationEnd } fro
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Auth } from './services/auth';
-import { environment } from '../environments/environment';
 import { TranslatePipe } from './shared/i18n/translate.pipe';
 import { MatomoService } from './services/matomo';
 import { filter } from 'rxjs';
 import { UiTextService } from './shared/i18n/ui-text.service';
-
-if (!environment.production) {
-  console.info('[DEV] API base URL:', environment.apiBaseUrl);
-}
 
 @Component({
   selector: 'app-root',
