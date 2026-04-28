@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_BASE_URL } from '../app.config';
 
 export interface Project {
   id: string;
@@ -18,21 +17,21 @@ export class ProjectsService {
   private readonly http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<Project[]>(`${API_BASE_URL}/api/v1/projects`);
+    return this.http.get<Project[]>('/api/v1/projects');
   }
 
   getById(id: string) {
-    return this.http.get<Project>(`${API_BASE_URL}/api/v1/projects/${id}`);
+    return this.http.get<Project>(`/api/v1/projects/${id}`);
   }
 
   create(payload: CreateProjectRequest) {
-    return this.http.post<Project>(`${API_BASE_URL}/api/v1/projects`, payload);
+    return this.http.post<Project>('/api/v1/projects', payload);
   }
 
   update(id: string, payload: CreateProjectRequest) {
-    return this.http.put<Project>(`${API_BASE_URL}/api/v1/projects/${id}`, payload);
+    return this.http.put<Project>(`/api/v1/projects/${id}`, payload);
   }
   delete(id: string) {
-    return this.http.delete<void>(`${API_BASE_URL}/api/v1/projects/${id}`);
+    return this.http.delete<void>(`/api/v1/projects/${id}`);
   }
 }
