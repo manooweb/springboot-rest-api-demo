@@ -37,15 +37,35 @@ describe('Auth', () => {
     req.flush(null);
   });
 
-  it('should clear authenticated state on logout', () => {
+  it('should call logout endpoint and clear authenticated state on logout success', () => {
     service.login('demo', 'demo').subscribe();
-    const req = httpMock.expectOne(
+    const loginReq = httpMock.expectOne(
       (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'),
     );
-    req.flush(null);
+    loginReq.flush(null);
     expect(service.isLoggedIn()).toBeTrue();
 
-    service.logout();
+    service.logout().subscribe(() => {
+      expect(service.isLoggedIn()).toBeFalse();
+    });
+
+    const logoutReq = httpMock.expectOne(
+      (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/logout'),
+    );
+    expect(logoutReq.request.body).toEqual({});
+    logoutReq.flush(null);
+  });
+
+  it('should clear authenticated state without calling backend', () => {
+    service.login('demo', 'demo').subscribe();
+    const loginReq = httpMock.expectOne(
+      (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'),
+    );
+    loginReq.flush(null);
+    expect(service.isLoggedIn()).toBeTrue();
+
+    service.clearSession();
+
     expect(service.isLoggedIn()).toBeFalse();
   });
 
