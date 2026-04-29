@@ -21,6 +21,14 @@ export class Auth {
   }
 
   logout() {
+    return this.http.post<void>('/api/v1/auth/logout', {}).pipe(
+      tap(() => {
+        this.clearSession();
+      }),
+    );
+  }
+
+  clearSession() {
     this.authenticated = false;
   }
 

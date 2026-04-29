@@ -49,8 +49,13 @@ export class App implements OnInit {
 
   onAuthAction() {
     if (this.auth.isLoggedIn()) {
-      this.auth.logout();
-      this.router.navigateByUrl('/login');
+      this.auth.logout().subscribe({
+        next: () => this.router.navigateByUrl('/login'),
+        error: () => {
+          this.auth.clearSession();
+          this.router.navigateByUrl('/login');
+        },
+      });
     } else {
       this.router.navigateByUrl('/login');
     }
