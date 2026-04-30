@@ -14,4 +14,4 @@ app:
     jwt:
       issuer: ${APP_SECURITY_JWT_ISSUER}
       secret: ${APP_SECURITY_JWT_SECRET}
-      ttl-seconds: 3600
+      ttl-seconds: ${APP_SECURITY_JWT_TTL_SECONDS:3600}
