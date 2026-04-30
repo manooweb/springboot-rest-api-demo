@@ -61,6 +61,16 @@ describe('authInterceptor', () => {
     expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith('/login');
   });
 
+  it('should not redirect on me endpoint 401 response', () => {
+    http.get('/api/v1/me').subscribe({ error: () => undefined });
+
+    const req = httpMock.expectOne('/api/v1/me');
+    req.flush({}, { status: 401, statusText: 'Unauthorized' });
+
+    expect(authSpy.clearSession).not.toHaveBeenCalled();
+    expect(routerSpy.navigateByUrl).not.toHaveBeenCalled();
+  });
+
   it('should be created', () => {
     expect(interceptor).toBeTruthy();
   });

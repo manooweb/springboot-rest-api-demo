@@ -9,10 +9,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
 
   const isLoginCall = req.url.includes('/api/v1/auth/login');
+  const isSessionCheckCall = req.url.includes('/api/v1/me');
 
   return next(req).pipe(
     catchError((err) => {
-      if (err.status === 401 && !isLoginCall) {
+      if (err.status === 401 && !isLoginCall && !isSessionCheckCall) {
         auth.clearSession();
         router.navigateByUrl('/login');
       }
