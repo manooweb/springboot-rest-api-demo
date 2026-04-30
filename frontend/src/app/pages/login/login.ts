@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,7 +23,7 @@ import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/fo
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
+export class Login implements OnInit {
   @ViewChild('formEl', { static: true }) private readonly formEl?: ElementRef<HTMLFormElement>;
   error: string | null = null;
   loading = false;
@@ -34,6 +34,12 @@ export class Login {
   readonly shouldShowError = shouldShowError;
 
   submitAttempted = false;
+
+  ngOnInit(): void {
+    if (this.auth.consumeSessionMessage() === 'sessionExpired') {
+      this.error = this.translate.t('auth.login.error.sessionExpired');
+    }
+  }
 
   readonly form = this.formBuilder.group({
     email: this.formBuilder.control('demo@example.com', {

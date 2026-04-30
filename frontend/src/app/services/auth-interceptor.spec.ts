@@ -21,7 +21,7 @@ describe('authInterceptor', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    authSpy = jasmine.createSpyObj<Auth>('Auth', ['clearSession']);
+    authSpy = jasmine.createSpyObj<Auth>('Auth', ['expireSession']);
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigateByUrl']);
 
     TestBed.configureTestingModule({
@@ -51,13 +51,13 @@ describe('authInterceptor', () => {
     req.flush({});
   });
 
-  it('should clear session and redirect to login on non-login 401 response', () => {
+  it('should expire session and redirect to login on non-login 401 response', () => {
     http.get('/api/test').subscribe({ error: () => undefined });
 
     const req = httpMock.expectOne('/api/test');
     req.flush({}, { status: 401, statusText: 'Unauthorized' });
 
-    expect(authSpy.clearSession).toHaveBeenCalled();
+    expect(authSpy.expireSession).toHaveBeenCalled();
     expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith('/login');
   });
 
@@ -67,7 +67,7 @@ describe('authInterceptor', () => {
     const req = httpMock.expectOne('/api/v1/me');
     req.flush({}, { status: 401, statusText: 'Unauthorized' });
 
-    expect(authSpy.clearSession).not.toHaveBeenCalled();
+    expect(authSpy.expireSession).not.toHaveBeenCalled();
     expect(routerSpy.navigateByUrl).not.toHaveBeenCalled();
   });
 

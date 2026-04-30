@@ -15,8 +15,9 @@ describe('Login', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    authSpy = jasmine.createSpyObj<Auth>('Auth', ['login']);
+    authSpy = jasmine.createSpyObj<Auth>('Auth', ['login', 'consumeSessionMessage']);
     authSpy.login.and.returnValue(of(undefined));
+    authSpy.consumeSessionMessage.and.returnValue(null);
 
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigateByUrl']);
 
@@ -69,6 +70,16 @@ describe('Login', () => {
 
     expect(component.submitAttempted).toBeTrue();
     expect(authSpy.login).not.toHaveBeenCalled();
+  });
+
+  it('should display session expired message when provided by auth service', () => {
+    authSpy.consumeSessionMessage.and.returnValue('sessionExpired');
+
+    fixture = TestBed.createComponent(Login);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component.error).toBe('Your session has expired. Please log in again.');
   });
 
   it('should create', () => {
