@@ -69,6 +69,52 @@ describe('Auth', () => {
     expect(service.isLoggedIn()).toBeFalse();
   });
 
+  it('should return true without calling me endpoint when already authenticated', () => {
+    service.login('demo', 'demo').subscribe();
+    const loginReq = httpMock.expectOne(
+      (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'),
+    );
+    loginReq.flush(null);
+
+    service.ensureAuthenticated().subscribe((authenticated) => {
+      expect(authenticated).toBeTrue();
+    });
+
+    httpMock.expectNone('/api/v1/me');
+  });
+
+  it('should hydrate authenticated state from me endpoint', () => {
+    service.ensureAuthenticated().subscribe((authenticated) => {
+      expect(authenticated).toBeTrue();
+      expect(service.isLoggedIn()).toBeTrue();
+    });
+
+    const req = httpMock.expectOne('/api/v1/me');
+    req.flush({ username: 'demo@example.com', roles: ['USER'] });
+  });
+
+  it('should reuse in-flight me endpoint check', () => {
+    service.ensureAuthenticated().subscribe((authenticated) => {
+      expect(authenticated).toBeTrue();
+    });
+    service.ensureAuthenticated().subscribe((authenticated) => {
+      expect(authenticated).toBeTrue();
+    });
+
+    const req = httpMock.expectOne('/api/v1/me');
+    req.flush({ username: 'demo@example.com', roles: ['USER'] });
+  });
+
+  it('should clear state and return false when me endpoint returns unauthorized', () => {
+    service.ensureAuthenticated().subscribe((authenticated) => {
+      expect(authenticated).toBeFalse();
+      expect(service.isLoggedIn()).toBeFalse();
+    });
+
+    const req = httpMock.expectOne('/api/v1/me');
+    req.flush({}, { status: 401, statusText: 'Unauthorized' });
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
