@@ -8,10 +8,13 @@ export interface CurrentUser {
   roles: string[];
 }
 
+export type SessionMessage = 'sessionExpired';
+
 @Injectable({ providedIn: 'root' })
 export class Auth {
   private authenticated = false;
   private sessionCheck$?: Observable<boolean>;
+  private sessionMessage: SessionMessage | null = null;
   private readonly http = inject(HttpClient);
 
   login(username: string, password: string) {
@@ -24,6 +27,7 @@ export class Auth {
         tap(() => {
           this.authenticated = true;
           this.sessionCheck$ = undefined;
+          this.sessionMessage = null;
         }),
       );
   }
@@ -39,6 +43,19 @@ export class Auth {
   clearSession() {
     this.authenticated = false;
     this.sessionCheck$ = undefined;
+    this.sessionMessage = null;
+  }
+
+  expireSession() {
+    this.authenticated = false;
+    this.sessionCheck$ = undefined;
+    this.sessionMessage = 'sessionExpired';
+  }
+
+  consumeSessionMessage(): SessionMessage | null {
+    const message = this.sessionMessage;
+    this.sessionMessage = null;
+    return message;
   }
 
   isLoggedIn(): boolean {

@@ -18,4 +18,5 @@ export const AUTH_EN: UiDictionary = {
 
   // Error messages
   'auth.login.error.invalidCredentials': 'Invalid credentials',
+  'auth.login.error.sessionExpired': 'Your session has expired. Please log in again.',
 };

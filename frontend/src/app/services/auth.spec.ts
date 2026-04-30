@@ -69,6 +69,27 @@ describe('Auth', () => {
     expect(service.isLoggedIn()).toBeFalse();
   });
 
+  it('should expose session expired message once', () => {
+    service.expireSession();
+
+    expect(service.isLoggedIn()).toBeFalse();
+    expect(service.consumeSessionMessage()).toBe('sessionExpired');
+    expect(service.consumeSessionMessage()).toBeNull();
+  });
+
+  it('should clear session message on login success', () => {
+    service.expireSession();
+
+    service.login('demo', 'demo').subscribe(() => {
+      expect(service.consumeSessionMessage()).toBeNull();
+    });
+
+    const loginReq = httpMock.expectOne(
+      (r) => r.method === 'POST' && r.url.includes('/api/v1/auth/login'),
+    );
+    loginReq.flush(null);
+  });
+
   it('should return true without calling me endpoint when already authenticated', () => {
     service.login('demo', 'demo').subscribe();
     const loginReq = httpMock.expectOne(
