@@ -45,10 +45,10 @@
 
 The currently deployed public MVP corresponds to:
 
-- **v0.20.0** — UI i18n-ready foundation
+- **v0.21.0** — JWT cookie authentication and frontend session handling
 
 Full release notes:
-https://github.com/manooweb/springboot-rest-api-demo/releases/tag/v0.20.0
+https://github.com/manooweb/springboot-rest-api-demo/releases/tag/v0.21.0
 
 ---
 
