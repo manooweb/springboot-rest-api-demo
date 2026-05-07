@@ -37,7 +37,7 @@
 - API: https://projects-api.manooweb.fr
 - Swagger UI: https://projects-api.manooweb.fr/swagger-ui/index.html
 - Healthcheck: https://projects-api.manooweb.fr/api/v1/health
-- Demo account: `demo / demo`
+- Demo account: `demo@example.com / demo`
 
 Additional cloud deployments:
 
@@ -63,7 +63,7 @@ https://github.com/manooweb/springboot-rest-api-demo/releases/tag/v0.21.0
 ## ⚠️ Known limitations (MVP)
 
 - Swagger UI is publicly accessible (intentional, demo purpose)
-- Demo account (`demo / demo`) is shared
+- Demo account (`demo@example.com / demo`) is shared
 - No rate limiting or advanced security hardening yet
 
 ---
@@ -152,10 +152,14 @@ Deployment environments should provide the same variables directly through the t
 
     cd frontend
     npm install
+    npm start
+
+The local frontend runs over HTTPS and proxies `/api` requests to the backend.
+For LAN tests, use:
+
     npm run start:devlan
 
 The backend and frontend listen on `0.0.0.0` so they can be reached from another device on the local network.
-For LAN tests, make sure `frontend/src/environments/environment.devlan.ts` points to the host machine IP.
 
 ---
 
@@ -173,30 +177,51 @@ Reset data:
 
 ### Frontend
 
-- http://localhost:4200
+- https://localhost:4200
 
 ### Backend
 
-- Swagger: http://localhost:8080/swagger-ui.html
-- OpenAPI: http://localhost:8080/v3/api-docs
+- Swagger: https://localhost:8443/swagger-ui/index.html
+- OpenAPI: https://localhost:8443/v3/api-docs
 
 ---
 
-## 🔐 Authentication (JWT)
+## 🔐 Authentication and JWT flow
 
-### Backend
+Authentication is based on JWTs issued by the Spring Boot backend and transported through
+secure cookies.
 
-- `POST /api/v1/auth/login`
-- Protected routes: `/api/v1/**`
-- Header: `Authorization: Bearer <token>`
+### Authentication flow
 
-### Frontend
+1. The frontend sends credentials to `POST /api/v1/auth/login`.
+2. The backend validates credentials with Spring Security.
+3. On success, the backend creates a signed JWT and sends it as an `auth_token` cookie.
+4. The `auth_token` cookie is configured as `HttpOnly`, `Secure`, and `SameSite=Strict`.
+5. The backend also exposes a readable `XSRF-TOKEN` cookie for CSRF protection.
+6. The browser automatically sends cookies on same-origin API calls.
+7. The frontend does not read, decode, store, or send the JWT manually.
+8. Protected backend routes validate the JWT extracted from the `auth_token` cookie.
+9. After a page refresh, the frontend restores its session state with `GET /api/v1/me`.
+10. On logout, the frontend calls `POST /api/v1/auth/logout`, and the backend clears both auth and CSRF cookies.
 
-- Login page
-- JWT stored client-side
-- HTTP interceptor
-- Route guard
-- Logout clears token
+### Security choices and tradeoffs
+
+- JWTs are not stored in `localStorage` or `sessionStorage` to reduce the impact of XSS.
+- The JWT cookie is `HttpOnly`, so frontend JavaScript cannot access the token value.
+- The JWT cookie is `Secure`, so HTTPS is required in production and local development.
+- Cookie-based authentication requires CSRF protection because browsers send cookies automatically.
+- CSRF protection uses a readable `XSRF-TOKEN` cookie and an `X-XSRF-TOKEN` request header.
+- Swagger UI uses the same cookie + CSRF flow as production instead of a manual Bearer token input.
+- The frontend uses relative `/api/...` URLs. Local development uses the Angular proxy, and deployed frontend containers use Nginx with `BACKEND_ORIGIN` environment variable.
+- JWT expiration is enforced by the backend. The frontend detects expired sessions from `401` responses and redirects to login with an explicit message.
+- JWT TTL is configurable with `APP_SECURITY_JWT_TTL_SECONDS` environment variable and defaults to `3600` seconds.
+
+### Current limitations
+
+- There is no refresh token yet.
+- There is no server-side JWT revocation list yet.
+- Logging out clears browser cookies but does not invalidate already issued JWTs server-side before their expiration.
+- The demo user is still in-memory and intended for demonstration purposes only.
 
 ---
 
