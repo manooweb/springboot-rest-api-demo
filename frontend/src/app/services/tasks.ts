@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
@@ -25,23 +26,23 @@ export interface CreateTaskRequest {
 export class TasksService {
   private readonly http = inject(HttpClient);
 
-  getAll(projectId: string) {
+  getAll(projectId: string): Observable<Task[]> {
     return this.http.get<Task[]>(`/api/v1/projects/${projectId}/tasks`);
   }
 
-  create(projectId: string, payload: CreateTaskRequest) {
+  create(projectId: string, payload: CreateTaskRequest): Observable<Task> {
     return this.http.post<Task>(`/api/v1/projects/${projectId}/tasks`, payload);
   }
 
-  update(taskId: string, payload: CreateTaskRequest) {
+  update(taskId: string, payload: CreateTaskRequest): Observable<Task> {
     return this.http.put<Task>(`/api/v1/tasks/${taskId}`, payload);
   }
 
-  delete(taskId: string) {
+  delete(taskId: string): Observable<void> {
     return this.http.delete<void>(`/api/v1/tasks/${taskId}`);
   }
 
-  updateStatus(taskId: string, status: TaskStatus) {
+  updateStatus(taskId: string, status: TaskStatus): Observable<Task> {
     return this.http.patch<Task>(`/api/v1/tasks/${taskId}/status`, { status });
   }
 }
