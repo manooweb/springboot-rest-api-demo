@@ -50,6 +50,19 @@ describe('Projects', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should render multiline project descriptions without flattening line breaks', () => {
+    projectsServiceSpy.getAll.and.returnValue(
+      of([{ ...project, description: 'First line\nSecond line' }]),
+    );
+
+    const { fixture } = createComponent();
+    const description = fixture.nativeElement.querySelector(
+      '.multiline-description',
+    ) as HTMLElement;
+
+    expect(description.textContent).toContain('First line\nSecond line');
+  });
+
   it('should not create project when create dialog is closed without create result', () => {
     const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult | undefined>> = {
       afterClosed: () => of(undefined),

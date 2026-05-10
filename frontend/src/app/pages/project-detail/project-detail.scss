@@ -29,6 +29,24 @@ mat-list-item.alt-row {
   background-color: var(--mat-sys-surface-variant, rgba(0, 0, 0, 0.02));
 }
 
+:host ::ng-deep .item-list .description-list-item.mdc-list-item {
+  height: auto;
+  min-height: 72px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.multiline-description {
+  white-space: pre-line;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.35;
+}
+
+.project-description {
+  margin: 0;
+}
+
 .status-card {
   margin: 0 0 8px 0;
   padding: 0;

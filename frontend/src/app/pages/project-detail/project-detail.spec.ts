@@ -70,6 +70,23 @@ describe('ProjectDetail', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should render multiline project and task descriptions without flattening line breaks', () => {
+    projectsServiceSpy.getById.and.returnValue(
+      of({ ...project, description: 'Project line 1\nProject line 2' }),
+    );
+    tasksServiceSpy.getAll.and.returnValue(
+      of([{ ...task, description: 'Task line 1\nTask line 2' }]),
+    );
+
+    const { fixture } = createComponent();
+    const descriptions = Array.from(
+      fixture.nativeElement.querySelectorAll('.multiline-description'),
+    ) as HTMLElement[];
+
+    expect(descriptions[0].textContent).toContain('Project line 1\nProject line 2');
+    expect(descriptions[1].textContent).toContain('Task line 1\nTask line 2');
+  });
+
   it('should not delete task when confirm dialog is cancelled', () => {
     const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(false),
