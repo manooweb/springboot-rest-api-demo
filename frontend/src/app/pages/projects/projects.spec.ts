@@ -100,6 +100,33 @@ describe('Projects', () => {
     expect(snackBarSpy.open).toHaveBeenCalledWith('Project created', 'Close', jasmine.anything());
   });
 
+  it('should reset loading and show error when project creation fails', () => {
+    const dialogResult: ProjectDialogResult = {
+      mode: 'create',
+      payload: { name: 'Project 2', description: 'Description 2' },
+    };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult>> = {
+      afterClosed: () => of(dialogResult),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, ProjectDialogResult>);
+    projectsServiceSpy.create.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+
+    spyOn(component, 'loadProjects');
+    component.openAddNewProjectDialog();
+
+    expect(component.loading).toBeFalse();
+    expect(component.error).toBe('Failed to create project');
+    expect(projectsServiceSpy.create).toHaveBeenCalledWith(dialogResult.payload);
+    expect(component.loadProjects).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to create project',
+      'Close',
+      jasmine.anything(),
+    );
+  });
+
   it('should not update project when edit dialog is closed without valid edit result', () => {
     const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult | undefined>> = {
       afterClosed: () => of(undefined),
@@ -136,6 +163,34 @@ describe('Projects', () => {
     expect(projectsServiceSpy.update).toHaveBeenCalledWith(dialogResult.id!, dialogResult.payload);
     expect(component.loadProjects).toHaveBeenCalled();
     expect(snackBarSpy.open).toHaveBeenCalledWith('Project updated', 'Close', jasmine.anything());
+  });
+
+  it('should reset loading and show error when project update fails', () => {
+    const dialogResult: ProjectDialogResult = {
+      mode: 'edit',
+      id: project.id,
+      payload: { name: 'Project 1 updated', description: 'Description updated' },
+    };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, ProjectDialogResult>> = {
+      afterClosed: () => of(dialogResult),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, ProjectDialogResult>);
+    projectsServiceSpy.update.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+
+    spyOn(component, 'loadProjects');
+    component.openEditProjectDialog(project);
+
+    expect(component.loading).toBeFalse();
+    expect(component.error).toBe('Failed to update project');
+    expect(projectsServiceSpy.update).toHaveBeenCalledWith(dialogResult.id!, dialogResult.payload);
+    expect(component.loadProjects).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to update project',
+      'Close',
+      jasmine.anything(),
+    );
   });
 
   it('should not delete project when confirm dialog is cancelled', () => {
@@ -188,6 +243,20 @@ describe('Projects', () => {
       jasmine.anything(),
     );
     expect(component.loadProjects).not.toHaveBeenCalled();
+  });
+
+  it('should reset loading and show error when projects loading fails', () => {
+    projectsServiceSpy.getAll.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+
+    expect(component.loading).toBeFalse();
+    expect(component.error).toBe('Failed to load projects');
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to load projects',
+      'Close',
+      jasmine.anything(),
+    );
   });
 });
 
