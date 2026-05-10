@@ -9,6 +9,7 @@ import { of, throwError } from 'rxjs';
 import { App } from './app';
 import { MatomoService } from './services/matomo';
 import { Auth } from './services/auth';
+import { Title } from '@angular/platform-browser';
 
 @Component({ standalone: true, template: '' })
 class DummyComponent {}
@@ -17,6 +18,7 @@ describe('App', () => {
   let matomoSpy: jasmine.SpyObj<MatomoService>;
   let authSpy: jasmine.SpyObj<Auth>;
   let router: Router;
+  let title: Title;
 
   beforeEach(async () => {
     matomoSpy = jasmine.createSpyObj<MatomoService>('MatomoService', ['trackPageView']);
@@ -28,9 +30,17 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideRouter([
-          { path: 'login', component: DummyComponent },
-          { path: 'projects', component: DummyComponent },
-          { path: 'projects/:id', component: DummyComponent },
+          { path: 'login', component: DummyComponent, data: { pageTitleKey: 'auth.login.title' } },
+          {
+            path: 'projects',
+            component: DummyComponent,
+            data: { pageTitleKey: 'projects.title.list' },
+          },
+          {
+            path: 'projects/:id',
+            component: DummyComponent,
+            data: { pageTitleKey: 'projects.title.detail' },
+          },
         ]),
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -41,7 +51,9 @@ describe('App', () => {
     }).compileComponents();
 
     router = TestBed.inject(Router);
+    title = TestBed.inject(Title);
     spyOn(router, 'navigateByUrl').and.callThrough();
+    spyOn(title, 'setTitle');
   });
 
   it('should create the app', () => {
@@ -66,8 +78,23 @@ describe('App', () => {
 
     expect(matomoSpy.trackPageView).toHaveBeenCalledWith(
       `${globalThis.location.origin}/projects`,
-      'Projects – list',
+      'Projects',
     );
+    expect(title.setTitle).toHaveBeenCalledWith('Projects | Project Management App');
+  });
+
+  it('should resolve page title from child route metadata', async () => {
+    const fixture = TestBed.createComponent(App);
+
+    fixture.detectChanges();
+    await router.navigateByUrl('/projects/123');
+    fixture.detectChanges();
+
+    expect(matomoSpy.trackPageView).toHaveBeenCalledWith(
+      `${globalThis.location.origin}/projects/123`,
+      'Project detail',
+    );
+    expect(title.setTitle).toHaveBeenCalledWith('Project detail | Project Management App');
   });
 
   it('should call backend logout and navigate to login when authenticated', () => {

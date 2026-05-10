@@ -3,6 +3,7 @@ import type { UiDictionary } from '../';
 export const PROJECTS_EN: UiDictionary = {
   // Titles
   'projects.title.list': 'Projects',
+  'projects.title.detail': 'Project detail',
 
   // States
   'projects.state.loading': 'Loading projects…',
