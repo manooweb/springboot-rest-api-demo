@@ -400,6 +400,77 @@ describe('ProjectDetail', () => {
     );
   });
 
+  it('should load project and reset project loading state on success', () => {
+    const loadedProject: Project = { ...project, name: 'Loaded project' };
+    projectsServiceSpy.getById.and.returnValue(of(loadedProject));
+
+    const { component } = createComponent();
+
+    expect(component.project).toEqual(loadedProject);
+    expect(component.loadingProject).toBeFalse();
+    expect(component.errorProject).toBeNull();
+    expect(projectsServiceSpy.getById).toHaveBeenCalledWith('p1');
+  });
+
+  it('should reset project loading state and show error when project loading fails', () => {
+    projectsServiceSpy.getById.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+
+    expect(component.loadingProject).toBeFalse();
+    expect(component.errorProject).toBe('Failed to load project');
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to load project',
+      'Close',
+      jasmine.anything(),
+    );
+  });
+
+  it('should not load project when project id is missing', () => {
+    const { component } = createComponent();
+    projectsServiceSpy.getById.calls.reset();
+    component.id = null;
+
+    component.loadProject();
+
+    expect(projectsServiceSpy.getById).not.toHaveBeenCalled();
+  });
+
+  it('should load tasks and reset tasks loading state on success', () => {
+    tasksServiceSpy.getAll.and.returnValue(of([task]));
+
+    const { component } = createComponent();
+
+    expect(component.tasks).toEqual([task]);
+    expect(component.loadingTasks).toBeFalse();
+    expect(component.errorTasks).toBeNull();
+    expect(tasksServiceSpy.getAll).toHaveBeenCalledWith('p1');
+  });
+
+  it('should reset tasks loading state and show error when tasks loading fails', () => {
+    tasksServiceSpy.getAll.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+
+    expect(component.loadingTasks).toBeFalse();
+    expect(component.errorTasks).toBe('Failed to load tasks for this project');
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to load tasks for this project',
+      'Close',
+      jasmine.anything(),
+    );
+  });
+
+  it('should not load tasks when project id is missing', () => {
+    const { component } = createComponent();
+    tasksServiceSpy.getAll.calls.reset();
+    component.id = null;
+
+    component.loadTasks();
+
+    expect(tasksServiceSpy.getAll).not.toHaveBeenCalled();
+  });
+
   function createComponent() {
     const fixture = TestBed.createComponent(ProjectDetail);
     fixture.detectChanges(); // triggers ngOnInit -> loadProject and loadTasks
