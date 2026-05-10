@@ -7,6 +7,7 @@ import { TranslatePipe } from './shared/i18n/translate.pipe';
 import { MatomoService } from './services/matomo';
 import { filter } from 'rxjs';
 import { UiTextService } from './shared/i18n/ui-text.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class App implements OnInit {
   readonly auth = inject(Auth);
   readonly matomo = inject(MatomoService);
   readonly translate = inject(UiTextService);
+  private readonly title = inject(Title);
 
   protected readonly copyrightStartYear = 2025;
   protected readonly copyrightEndYear = new Date().getFullYear();
@@ -42,8 +44,11 @@ export class App implements OnInit {
         const path = event.urlAfterRedirects; // ex: /projects/123
         const fullUrl = globalThis.location.origin + path;
 
-        const title = this.getPageTitle(path);
-        this.matomo.trackPageView(fullUrl, title);
+        const pageTitle = this.getCurrentPageTitle();
+        const appTitle = this.translate.t('app.title');
+
+        this.title.setTitle(`${pageTitle} | ${appTitle}`);
+        this.matomo.trackPageView(fullUrl, pageTitle);
       });
   }
 
@@ -61,10 +66,13 @@ export class App implements OnInit {
     }
   }
 
-  private getPageTitle(path: string): string {
-    if (path === '/login') return 'Login';
-    if (path === '/projects') return 'Projects – list';
-    if (path.startsWith('/projects/')) return 'Project – detail';
-    return 'App';
+  private getCurrentPageTitle(): string {
+    let route = this.router.routerState.snapshot.root;
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+
+    const pageTitleKey = route.data['pageTitleKey'] as string | undefined;
+    return pageTitleKey ? this.translate.t(pageTitleKey) : this.translate.t('app.title');
   }
 }
