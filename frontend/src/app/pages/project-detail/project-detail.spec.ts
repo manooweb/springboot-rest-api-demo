@@ -87,6 +87,212 @@ describe('ProjectDetail', () => {
     expect(descriptions[1].textContent).toContain('Task line 1\nTask line 2');
   });
 
+  it('should not create task when create dialog is closed without result', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, undefined>> = {
+      afterClosed: () => of(undefined),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, undefined>);
+
+    const { component } = createComponent();
+
+    component.openAddNewTaskDialog();
+
+    expect(tasksServiceSpy.create).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should not create task when project id is missing', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () =>
+        of({
+          mode: 'create',
+          payload: { title: 'Task 2', description: 'Description 2' },
+        }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+
+    const { component } = createComponent();
+    component.id = null;
+
+    component.openAddNewTaskDialog();
+
+    expect(tasksServiceSpy.create).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should not create task when dialog result is not create mode', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () =>
+        of({
+          mode: 'edit',
+          taskId: task.id,
+          payload: { title: 'Task 2', description: 'Description 2' },
+        }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+
+    const { component } = createComponent();
+
+    component.openAddNewTaskDialog();
+
+    expect(tasksServiceSpy.create).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should create task, refresh tasks and open snackbar when create dialog returns create result', () => {
+    const payload = { title: 'Task 2', description: 'Description 2' };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () => of({ mode: 'create', payload }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+    tasksServiceSpy.create.and.returnValue(of({ ...task, ...payload, id: 't2' }));
+
+    const { component } = createComponent();
+    spyOn(component, 'loadTasks');
+
+    component.openAddNewTaskDialog();
+
+    expect(tasksServiceSpy.create).toHaveBeenCalledWith('p1', payload);
+    expect(component.loadTasks).toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Task created', 'Close', jasmine.anything());
+  });
+
+  it('should reset loading and show error when task creation fails', () => {
+    const payload = { title: 'Task 2', description: 'Description 2' };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () => of({ mode: 'create', payload }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+    tasksServiceSpy.create.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+    spyOn(component, 'loadTasks');
+
+    component.openAddNewTaskDialog();
+
+    expect(component.loadingTasks).toBeFalse();
+    expect(component.errorTasks).toBe('Failed to create task');
+    expect(tasksServiceSpy.create).toHaveBeenCalledWith('p1', payload);
+    expect(component.loadTasks).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to create task',
+      'Close',
+      jasmine.anything(),
+    );
+  });
+
+  it('should not update task when edit dialog is closed without result', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, undefined>> = {
+      afterClosed: () => of(undefined),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, undefined>);
+
+    const { component } = createComponent();
+
+    component.openEditTaskDialog(task);
+
+    expect(tasksServiceSpy.update).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should not update task when project id is missing', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () =>
+        of({
+          mode: 'edit',
+          taskId: task.id,
+          payload: { title: 'Task updated', description: 'Description updated' },
+        }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+
+    const { component } = createComponent();
+    component.id = null;
+
+    component.openEditTaskDialog(task);
+
+    expect(tasksServiceSpy.update).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should not update task when dialog result is not edit mode', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () =>
+        of({
+          mode: 'create',
+          payload: { title: 'Task updated', description: 'Description updated' },
+        }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+
+    const { component } = createComponent();
+
+    component.openEditTaskDialog(task);
+
+    expect(tasksServiceSpy.update).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should not update task when edit dialog result has no task id', () => {
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () =>
+        of({
+          mode: 'edit',
+          payload: { title: 'Task updated', description: 'Description updated' },
+        }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+
+    const { component } = createComponent();
+
+    component.openEditTaskDialog(task);
+
+    expect(tasksServiceSpy.update).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should update task, refresh tasks and open snackbar when edit dialog returns edit result', () => {
+    const payload = { title: 'Task updated', description: 'Description updated' };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () => of({ mode: 'edit', taskId: task.id, payload }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+    tasksServiceSpy.update.and.returnValue(of({ ...task, ...payload }));
+
+    const { component } = createComponent();
+    spyOn(component, 'loadTasks');
+
+    component.openEditTaskDialog(task);
+
+    expect(tasksServiceSpy.update).toHaveBeenCalledWith(task.id, payload);
+    expect(component.loadTasks).toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Task updated', 'Close', jasmine.anything());
+  });
+
+  it('should reset loading and show error when task update fails', () => {
+    const payload = { title: 'Task updated', description: 'Description updated' };
+    const dialogRefSpy: Partial<MatDialogRef<unknown, unknown>> = {
+      afterClosed: () => of({ mode: 'edit', taskId: task.id, payload }),
+    };
+    dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, unknown>);
+    tasksServiceSpy.update.and.returnValue(throwError(() => new Error('crash')));
+
+    const { component } = createComponent();
+    spyOn(component, 'loadTasks');
+
+    component.openEditTaskDialog(task);
+
+    expect(component.loadingTasks).toBeFalse();
+    expect(component.errorTasks).toBe('Failed to update task');
+    expect(tasksServiceSpy.update).toHaveBeenCalledWith(task.id, payload);
+    expect(component.loadTasks).not.toHaveBeenCalled();
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to update task',
+      'Close',
+      jasmine.anything(),
+    );
+  });
+
   it('should not delete task when confirm dialog is cancelled', () => {
     const dialogRefSpy: Partial<MatDialogRef<unknown, boolean>> = {
       afterClosed: () => of(false),
