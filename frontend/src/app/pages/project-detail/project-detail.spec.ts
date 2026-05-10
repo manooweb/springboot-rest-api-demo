@@ -33,6 +33,7 @@ describe('ProjectDetail', () => {
       'create',
       'update',
       'delete',
+      'updateStatus',
     ]);
     dialogSpy = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
     snackBarSpy = jasmine.createSpyObj<MatSnackBar>('MatSnackBar', ['open']);
@@ -343,6 +344,60 @@ describe('ProjectDetail', () => {
       jasmine.anything(),
     );
     expect(component.loadTasks).not.toHaveBeenCalled();
+  });
+
+  it('should return next status for every task status', () => {
+    const { component } = createComponent();
+
+    expect(component.nextStatus('TODO')).toBe('IN_PROGRESS');
+    expect(component.nextStatus('IN_PROGRESS')).toBe('DONE');
+    expect(component.nextStatus('DONE')).toBe('TODO');
+  });
+
+  it('should return translation label for every task status', () => {
+    const { component } = createComponent();
+
+    expect(component.statusLabel('TODO')).toBe('tasks.status.todo');
+    expect(component.statusLabel('IN_PROGRESS')).toBe('tasks.status.inProgress');
+    expect(component.statusLabel('DONE')).toBe('tasks.status.done');
+  });
+
+  it('should return emoji for every task status', () => {
+    const { component } = createComponent();
+
+    expect(component.statusEmoji('TODO')).toBe('📝');
+    expect(component.statusEmoji('IN_PROGRESS')).toBe('⏳');
+    expect(component.statusEmoji('DONE')).toBe('✅');
+  });
+
+  it('should optimistically update task status and reset updating task id on success', () => {
+    tasksServiceSpy.updateStatus.and.returnValue(of({ ...task, status: 'IN_PROGRESS' }));
+    const { component } = createComponent();
+    const updatedTask: Task = { ...task, status: 'TODO' };
+
+    component.onStatusClick(updatedTask);
+
+    expect(updatedTask.status).toBe('IN_PROGRESS');
+    expect(component.updatingTaskId).toBeNull();
+    expect(tasksServiceSpy.updateStatus).toHaveBeenCalledWith(task.id, 'IN_PROGRESS');
+    expect(snackBarSpy.open).toHaveBeenCalledWith('Status updated', 'Close', jasmine.anything());
+  });
+
+  it('should rollback task status and reset updating task id when status update fails', () => {
+    tasksServiceSpy.updateStatus.and.returnValue(throwError(() => new Error('crash')));
+    const { component } = createComponent();
+    const updatedTask: Task = { ...task, status: 'IN_PROGRESS' };
+
+    component.onStatusClick(updatedTask);
+
+    expect(updatedTask.status).toBe('IN_PROGRESS');
+    expect(component.updatingTaskId).toBeNull();
+    expect(tasksServiceSpy.updateStatus).toHaveBeenCalledWith(task.id, 'DONE');
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to update status',
+      'Close',
+      jasmine.anything(),
+    );
   });
 
   function createComponent() {
