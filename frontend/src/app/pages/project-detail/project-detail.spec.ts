@@ -92,8 +92,8 @@ describe('ProjectDetail', () => {
     tasksServiceSpy.delete.and.returnValue(of(void 0));
 
     const { component } = createComponent();
-
     spyOn(component, 'loadTasks');
+
     component.openDeleteTaskConfirmDialog(task);
 
     expect(tasksServiceSpy.delete).toHaveBeenCalledWith(task.id);
@@ -108,8 +108,8 @@ describe('ProjectDetail', () => {
     dialogSpy.open.and.returnValue(dialogRefSpy as MatDialogRef<unknown, boolean>);
     tasksServiceSpy.delete.and.returnValue(throwError(() => new Error('crash')));
     const { component } = createComponent();
-
     spyOn(component, 'loadTasks');
+
     component.openDeleteTaskConfirmDialog(task);
 
     expect(component.errorTasks).toBe('Failed to delete task');

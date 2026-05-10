@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-detail',
@@ -44,8 +45,8 @@ export class ProjectDetail implements OnInit {
 
   project: Project | null = null;
   tasks: Task[] = [];
-  loadingProject = true;
-  loadingTasks = true;
+  loadingProject = false;
+  loadingTasks = false;
   errorProject: string | null = null;
   errorTasks: string | null = null;
   updatingTaskId: string | null = null;
@@ -70,12 +71,11 @@ export class ProjectDetail implements OnInit {
       this.errorTasks = null;
       this.tasksService.create(this.id, result.payload).subscribe({
         next: () => {
-          // refresh list
-          this.loadingTasks = true;
           this.loadTasks();
           this.notify(this.translate.t('tasks.message.created'));
         },
         error: () => {
+          this.loadingTasks = false;
           this.errorTasks = this.translate.t('tasks.message.createFailed');
           this.notify(this.errorTasks);
         },
@@ -99,12 +99,11 @@ export class ProjectDetail implements OnInit {
       this.errorTasks = null;
       this.tasksService.update(result.taskId, result.payload).subscribe({
         next: () => {
-          // refresh list
-          this.loadingTasks = true;
           this.loadTasks();
           this.notify(this.translate.t('tasks.message.updated'));
         },
         error: () => {
+          this.loadingTasks = false;
           this.errorTasks = this.translate.t('tasks.message.updateFailed');
           this.notify(this.errorTasks);
         },
@@ -133,12 +132,11 @@ export class ProjectDetail implements OnInit {
       this.errorTasks = null;
       this.tasksService.delete(task.id).subscribe({
         next: () => {
-          // refresh list
-          this.loadingTasks = true;
           this.loadTasks();
           this.notify(this.translate.t('tasks.message.deleted'));
         },
         error: () => {
+          this.loadingTasks = false;
           this.errorTasks = this.translate.t('tasks.message.deleteFailed');
           this.notify(this.errorTasks);
         },
@@ -152,17 +150,18 @@ export class ProjectDetail implements OnInit {
     this.loadingProject = true;
     this.errorProject = null;
 
-    this.projectsService.getById(this.id).subscribe({
-      next: (project) => {
-        this.project = project;
-        this.loadingProject = false;
-      },
-      error: () => {
-        this.errorProject = this.translate.t('tasks.message.loadProjectFailed');
-        this.loadingProject = false;
-        this.notify(this.errorProject);
-      },
-    });
+    this.projectsService
+      .getById(this.id)
+      .pipe(finalize(() => (this.loadingProject = false)))
+      .subscribe({
+        next: (project) => {
+          this.project = project;
+        },
+        error: () => {
+          this.errorProject = this.translate.t('tasks.message.loadProjectFailed');
+          this.notify(this.errorProject);
+        },
+      });
   }
 
   loadTasks() {
@@ -171,17 +170,18 @@ export class ProjectDetail implements OnInit {
     this.loadingTasks = true;
     this.errorTasks = null;
 
-    this.tasksService.getAll(this.id).subscribe({
-      next: (tasks) => {
-        this.tasks = tasks;
-        this.loadingTasks = false;
-      },
-      error: () => {
-        this.errorTasks = this.translate.t('tasks.message.loadTasksFailed');
-        this.loadingTasks = false;
-        this.notify(this.errorTasks);
-      },
-    });
+    this.tasksService
+      .getAll(this.id)
+      .pipe(finalize(() => (this.loadingTasks = false)))
+      .subscribe({
+        next: (tasks) => {
+          this.tasks = tasks;
+        },
+        error: () => {
+          this.errorTasks = this.translate.t('tasks.message.loadTasksFailed');
+          this.notify(this.errorTasks);
+        },
+      });
   }
 
   ngOnInit() {
@@ -197,18 +197,19 @@ export class ProjectDetail implements OnInit {
     task.status = next;
     this.updatingTaskId = task.id;
 
-    this.tasksService.updateStatus(task.id, next).subscribe({
-      next: () => {
-        this.updatingTaskId = null;
-        this.notify(this.translate.t('tasks.message.statusUpdated'));
-      },
-      error: () => {
-        // rollback
-        task.status = previous;
-        this.updatingTaskId = null;
-        this.notify(this.translate.t('tasks.message.statusUpdateFailed'));
-      },
-    });
+    this.tasksService
+      .updateStatus(task.id, next)
+      .pipe(finalize(() => (this.updatingTaskId = null)))
+      .subscribe({
+        next: () => {
+          this.notify(this.translate.t('tasks.message.statusUpdated'));
+        },
+        error: () => {
+          // rollback
+          task.status = previous;
+          this.notify(this.translate.t('tasks.message.statusUpdateFailed'));
+        },
+      });
   }
 
   nextStatus(current: TaskStatus): TaskStatus {

@@ -14,6 +14,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projects',
@@ -53,13 +54,15 @@ export class Projects implements OnInit {
     dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
       if (result?.mode !== 'create') return; // cancel or not create
 
+      this.loading = true;
+      this.error = null;
       this.projectsService.create(result.payload).subscribe({
         next: () => {
-          // refresh list
           this.loadProjects();
           this.notify(this.translate.t('projects.message.created'));
         },
         error: () => {
+          this.loading = false;
           this.error = this.translate.t('projects.message.createFailed');
           this.notify(this.error);
         },
@@ -78,13 +81,15 @@ export class Projects implements OnInit {
     dialogRef.afterClosed().subscribe((result?: ProjectDialogResult) => {
       if (result?.mode !== 'edit' || !result?.id) return; // Only edit expected here
 
+      this.loading = true;
+      this.error = null;
       this.projectsService.update(result.id, result.payload).subscribe({
         next: () => {
-          // refresh list
           this.loadProjects();
           this.notify(this.translate.t('projects.message.updated'));
         },
         error: () => {
+          this.loading = false;
           this.error = this.translate.t('projects.message.updateFailed');
           this.notify(this.error);
         },
@@ -109,13 +114,15 @@ export class Projects implements OnInit {
     dialogRef.afterClosed().subscribe((result?: boolean) => {
       if (result !== true) return; // Cancelled
 
+      this.loading = true;
+      this.error = null;
       this.projectsService.delete(project.id).subscribe({
         next: () => {
-          // refresh list
           this.loadProjects();
           this.notify(this.translate.t('projects.message.deleted'));
         },
         error: () => {
+          this.loading = false;
           this.error = this.translate.t('projects.message.deleteFailed');
           this.notify(this.error);
         },
@@ -127,17 +134,18 @@ export class Projects implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.projectsService.getAll().subscribe({
-      next: (projects) => {
-        this.projects = projects;
-        this.loading = false;
-      },
-      error: () => {
-        this.error = this.translate.t('projects.message.loadFailed');
-        this.loading = false;
-        this.notify(this.error);
-      },
-    });
+    this.projectsService
+      .getAll()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (projects) => {
+          this.projects = projects;
+        },
+        error: () => {
+          this.error = this.translate.t('projects.message.loadFailed');
+          this.notify(this.error);
+        },
+      });
   }
 
   showProjectDetail(projectId: string) {

@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { UiTextService } from '../../shared/i18n/ui-text.service';
 import { TranslatePipe } from '../../shared/i18n/translate.pipe';
 import { shouldShowError, focusFirstInvalidControl } from '../../shared/forms/form-helpers';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -74,15 +75,16 @@ export class Login implements OnInit {
 
     const { email, password } = this.form.getRawValue();
 
-    this.auth.login(email.trim(), password.trim()).subscribe({
-      next: () => {
-        this.loading = false;
-        this.router.navigateByUrl('/projects');
-      },
-      error: () => {
-        this.loading = false;
-        this.error = this.translate.t('auth.login.error.invalidCredentials');
-      },
-    });
+    this.auth
+      .login(email.trim(), password.trim())
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl('/projects');
+        },
+        error: () => {
+          this.error = this.translate.t('auth.login.error.invalidCredentials');
+        },
+      });
   }
 }
