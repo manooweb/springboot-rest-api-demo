@@ -17,7 +17,7 @@ export class Auth {
   private sessionMessage: SessionMessage | null = null;
   private readonly http = inject(HttpClient);
 
-  login(username: string, password: string) {
+  login(username: string, password: string): Observable<void> {
     return this.http
       .post<void>('/api/v1/auth/login', {
         username,
@@ -32,7 +32,7 @@ export class Auth {
       );
   }
 
-  logout() {
+  logout(): Observable<void> {
     return this.http.post<void>('/api/v1/auth/logout', {}).pipe(
       tap(() => {
         this.clearSession();
@@ -40,13 +40,13 @@ export class Auth {
     );
   }
 
-  clearSession() {
+  clearSession(): void {
     this.authenticated = false;
     this.sessionCheck$ = undefined;
     this.sessionMessage = null;
   }
 
-  expireSession() {
+  expireSession(): void {
     this.authenticated = false;
     this.sessionCheck$ = undefined;
     this.sessionMessage = 'sessionExpired';

@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Project {
   id: string;
@@ -16,22 +17,23 @@ export interface CreateProjectRequest {
 export class ProjectsService {
   private readonly http = inject(HttpClient);
 
-  getAll() {
+  getAll(): Observable<Project[]> {
     return this.http.get<Project[]>('/api/v1/projects');
   }
 
-  getById(id: string) {
+  getById(id: string): Observable<Project> {
     return this.http.get<Project>(`/api/v1/projects/${id}`);
   }
 
-  create(payload: CreateProjectRequest) {
+  create(payload: CreateProjectRequest): Observable<Project> {
     return this.http.post<Project>('/api/v1/projects', payload);
   }
 
-  update(id: string, payload: CreateProjectRequest) {
+  update(id: string, payload: CreateProjectRequest): Observable<Project> {
     return this.http.put<Project>(`/api/v1/projects/${id}`, payload);
   }
-  delete(id: string) {
+
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`/api/v1/projects/${id}`);
   }
 }
