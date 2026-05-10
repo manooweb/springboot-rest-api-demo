@@ -41,7 +41,7 @@
       >
     </mat-card-header>
     <mat-card-content>
-      <p>{{ project?.description }}</p>
+      <p class="multiline-description project-description">{{ project?.description }}</p>
     </mat-card-content>
   </mat-card>
 
@@ -58,11 +58,11 @@
 
   <mat-list class="item-list">
     @for (task of tasks; track task.id; let odd = $odd; let last = $last) {
-      <mat-list-item [class.alt-row]="odd">
+      <mat-list-item [class.alt-row]="odd" [class.description-list-item]="task.description">
         <span matListItemTitle>{{ task.title }}</span>
 
         @if (task.description) {
-          <span matListItemLine>{{ task.description }}</span>
+          <span matListItemLine class="multiline-description">{{ task.description }}</span>
         }
 
         <span matListItemLine class="task-subline">

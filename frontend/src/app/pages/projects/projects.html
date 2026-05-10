@@ -31,9 +31,9 @@
   <div class="page-content">
     <mat-list class="item-list">
       @for (project of projects; track project.id; let odd = $odd; let last = $last) {
-        <mat-list-item [class.alt-row]="odd">
+        <mat-list-item [class.alt-row]="odd" [class.description-list-item]="project.description">
           <span matListItemTitle>{{ project.name }}</span>
-          <span matListItemLine>{{ project.description }}</span>
+          <span matListItemLine class="multiline-description">{{ project.description }}</span>
 
           <span matListItemMeta class="item-meta">
             <button
