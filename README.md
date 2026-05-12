@@ -43,9 +43,14 @@ Additional cloud deployments:
 
 | Platform | Frontend | API |
 | --- | --- | --- |
-| AWS | https://sp-1daf84dd962046f19a9b3e11971c3b34.ecs.eu-west-3.on.aws | https://sp-7328faaeeaea4fd99620d217a37df837.ecs.eu-west-3.on.aws |
-| GCP | https://spring-boot-api-demo-frontend-752012131551.europe-west1.run.app | https://springboot-rest-api-demo-752012131551.europe-west1.run.app |
-| Azure | https://sb-rest-api-demo-frontend.mangocliff-83abab0c.francecentral.azurecontainerapps.io | https://springboot-rest-api-demo-backend.mangocliff-83abab0c.francecentral.azurecontainerapps.io |
+| GCP | https://spring-boot-api-demo-frontend-752012131551.europe-west1.run.app/login | https://springboot-rest-api-demo-752012131551.europe-west1.run.app |
+
+Cloud deployment experience also validated on:
+
+- AWS ECS Fargate
+- Azure Container Apps
+
+**Only actively maintained public deployment endpoints are listed above.**
 
 ---
 
