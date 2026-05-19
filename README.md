@@ -24,7 +24,7 @@
 
 **Fullstack demo project** built with a modern Java / Angular stack.
 
-- **Backend**: Spring Boot 3 (Java 21), PostgreSQL, Flyway, Spring Security, JWT
+- **Backend**: Spring Boot 3 (Java 25), PostgreSQL, Flyway, Spring Security, JWT
 - **Frontend**: Angular 20 + Angular Material (standalone components only)
 - **API documentation**: OpenAPI / Swagger
 - **API tests**: Bruno (manual + E2E in CI)
@@ -131,7 +131,7 @@ flowchart LR
 
 ### Prerequisites
 
-- Java 21
+- Java 25
 - Node.js + npm
 - Docker + Docker Compose
 
